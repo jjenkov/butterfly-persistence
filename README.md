@@ -26,8 +26,8 @@ was released in 2009.
 Today you are probably better off going with something more "modern", more widely used and documented
 such as Hibernate / JPA.
 
-I am mostly keeping the code online here, because some users have told me they still use, and prefer,
-Butterfly Persistence to other, more heavy weight alternatives.
+I am mostly keeping the code online here, because some users have told me they still use
+Butterfly Persistence, and prefer it to other, more heavy weight alternatives.
 
 ### Java 11 Support + Maven Builds
 I am currently working on getting Butterfly Persistence to build using Java 11 and Maven. 

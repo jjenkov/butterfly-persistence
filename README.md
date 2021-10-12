@@ -29,7 +29,7 @@ such as Hibernate / JPA.
 I am mostly keeping the code online here, because some users have told me they still use
 Butterfly Persistence, and prefer it to other, more heavy weight alternatives.
 
-### Java 11 Support + Maven Builds
+## Java 11 Support + Maven Builds
 I am currently working on getting Butterfly Persistence to build using Java 11 and Maven. 
 This also requires upgrading JUnit to 5.4+ and finding my old test mock toolkit Butterfly Testing Tools
 too ! 

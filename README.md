@@ -1,7 +1,15 @@
 # Butterfly Persistence
 Butterfly Persistence is a simple, no nonsense Java JDBC based persistence API. It aims to provide a simple relational persistence API. 
-Its features include automatic/manual connection management, easier JDBC operations via JDBC templates, 
-simple object relational mapping, and map reading for dynamic queries. 
+Its features include:
+
+ - Automatic/manual connection management
+ - Easier JDBC operations via JDBC templates
+ - Simple record-to-map reading for dynamic queries.
+ - Simple object relational mapping. 
+ - Auto-generation of SQL for inserts, updates and deletes
+ - Support for batch updates.
+ - Support for transactions.
+
 It provides a simple and pragmatic approach to persistence and will either help you, or get out of the way and let 
 you do the job manually.
 

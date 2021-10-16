@@ -7,7 +7,9 @@ Its features include:
  - Simple record-to-map reading for dynamic queries.
  - Simple object relational mapping.
  - Simple Auto-mapping of POJO classes and fields to database tables and columns
- - Ability to customize mappings, or create semi-automatic mappings where you customize what cannot be automated.  
+ - Annotation based mappings of POJO classes to database tables and columns
+ - Programmatic mapping of POJO classes to database tables and columns
+ - Combination of the mapping methods above, so you can create semi-automatic mappings where you customize what cannot be automated.  
  - Auto-generation of SQL for inserts, updates and deletes
  - Support for batch updates.
  - Support for transactions.

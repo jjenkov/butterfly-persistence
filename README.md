@@ -5,7 +5,9 @@ Its features include:
  - Automatic/manual connection management
  - Easier JDBC operations via JDBC templates
  - Simple record-to-map reading for dynamic queries.
- - Simple object relational mapping. 
+ - Simple object relational mapping.
+ - Simple Auto-mapping of POJO classes and fields to database tables and columns
+ - Ability to customize mappings, or create semi-automatic mappings where you customize what cannot be automated.  
  - Auto-generation of SQL for inserts, updates and deletes
  - Support for batch updates.
  - Support for transactions.

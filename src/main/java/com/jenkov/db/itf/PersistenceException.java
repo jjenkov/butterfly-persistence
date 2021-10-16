@@ -9,26 +9,23 @@ import java.sql.SQLException;
  * precisely. The interface won't be changed though, and still only throw this super
  * type, PersistenceException.
  *
- * <br/><br/>
  * Like any other exception PersistenceException can have a root cause (an exception)
  * attached to it. In addition to this normal root cause a PersistenceException can have
  * two other exceptions attached to it:
  *
- * <br/><br/>
  * <ol>
- *    <li>A connection rollback exception<br/>
+ *    <li>A connection rollback exception
  *        If an exception is thrown during execution of a dao command in a transaction,
  *        and the connection.rollback() method throws an exception too, then the
  *        exception thrown by connection.rollback() is attached.
  *    </li>
- *    <li>A connection close exception<br/>
+ *    <li>A connection close exception
  *        If an exception is thrown from a dao command, and the connection.close()
  *        call throws an exception too, then the exception thrown from the connection.close()
  *        method is attached.
  *    </li>
  * </ol>
  *
- * <br/><br/>
  * If an exception is thrown during connection.close() and no exception has been thrown earlier,
  * then a PersistenceException will be thrown. This PersistenceException will not have a close
  * exception attached since it is itself the close exception. This situation cannot occur

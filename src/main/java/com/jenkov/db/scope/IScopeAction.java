@@ -14,7 +14,7 @@ public interface IScopeAction {
      * This method is called by the scope boundary object when
      * it is time to execute the actions inside the scope.
      *
-     * <br/><br/>
+     * 
      * As you may have noticed the connection that is scoped
      * is not passed to the IScopeAction in this method.
      * Your implementation of the IScopeAction interface

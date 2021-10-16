@@ -59,6 +59,7 @@ public interface IDaos {
     /**
      * Closes the connection used by this IDaos instance. If closing the connection fails
      * a PersistenceException is thrown (this exception is unchecked).
+     * @throws PersistenceException If closing the connection fails.
      */
     public void                      closeConnection() throws PersistenceException;
 

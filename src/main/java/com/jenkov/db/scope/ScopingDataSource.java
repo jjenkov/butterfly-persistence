@@ -14,49 +14,46 @@ import java.util.logging.Logger;
  * You can either use instances of this class directly, or use
  * it via a ScopeFactory.
  *
- * <br/><br/>
  * The ScopingDataSource needs a real DataSource implementation
  * to obtain the connections from.
  *
- * <br/><br/>
  * Using the ScopingDataSource directly to demarcate a connection scope can be done like this:
  *
- * <br/><br/>
  * <code>
- * ScopingDataSource scopingDataSource = new ScopingDataSource(dataSource);<br/>
- * <br/>
- * try{<br/>
- * &nbsp;&nbsp;    scopingDatasSource.beginConnectionScope();<br/>
- * &nbsp;&nbsp;    Connection connection = scopingDataSource.getConnection();<br/>
- * &nbsp;&nbsp;    //do something with connection<br/>
- * &nbsp;&nbsp;    <br/>
- * &nbsp;&nbsp;    // same connection as previously returned<br/>
- * &nbsp;&nbsp;    Connection connection2 = scopingDataSource.getConnection();<br/>
- * &nbsp;&nbsp;    //do something with the connection<br/>
- * &nbsp;&nbsp;    <br/>
- * &nbsp;&nbsp;    scopingDataSource.endConnectionScope();<br/>
- * } catch(Throwable t){<br/>
- * &nbsp;&nbsp;    scopingDataSource.endConnectionScope(t);<br/>
- * }<br/>
+ * ScopingDataSource scopingDataSource = new ScopingDataSource(dataSource);
+ *
+ * try{
+ * &nbsp;&nbsp;    scopingDatasSource.beginConnectionScope();
+ * &nbsp;&nbsp;    Connection connection = scopingDataSource.getConnection();
+ * &nbsp;&nbsp;    //do something with connection
+ * &nbsp;&nbsp;
+ * &nbsp;&nbsp;    // same connection as previously returned
+ * &nbsp;&nbsp;    Connection connection2 = scopingDataSource.getConnection();
+ * &nbsp;&nbsp;    //do something with the connection
+ * &nbsp;&nbsp;
+ * &nbsp;&nbsp;    scopingDataSource.endConnectionScope();
+ * } catch(Throwable t){
+ * &nbsp;&nbsp;    scopingDataSource.endConnectionScope(t);
+ * }
  * </code>
  *
- * <br/><br/>
+ *
  * Demarcating a transaction scope can be done similarly, like this:
  *
- * <br/>
- * try{<br/>
- * &nbsp;&nbsp;    scopingDatasSource.beginTransactionScope();<br/>
- * &nbsp;&nbsp;    Connection connection = scopingDataSource.getConnection();<br/>
- * &nbsp;&nbsp;    //do something with connection<br/>
- * &nbsp;&nbsp;    <br/>
- * &nbsp;&nbsp;    // same connection as previously returned<br/>
- * &nbsp;&nbsp;    Connection connection2 = scopingDataSource.getConnection();<br/>
- * &nbsp;&nbsp;    //do something with the connection<br/>
- * &nbsp;&nbsp;    <br/>
- * &nbsp;&nbsp;    scopingDataSource.endTransactionScope();<br/>
- * } catch(Throwable t){<br/>
- * &nbsp;&nbsp;    scopingDataSource.abortTransactionScope(t);<br/>
- * }<br/>
+ * <code>
+ * try{
+ * &nbsp;&nbsp;    scopingDatasSource.beginTransactionScope();
+ * &nbsp;&nbsp;    Connection connection = scopingDataSource.getConnection();
+ * &nbsp;&nbsp;    //do something with connection
+ * &nbsp;&nbsp;
+ * &nbsp;&nbsp;    // same connection as previously returned
+ * &nbsp;&nbsp;    Connection connection2 = scopingDataSource.getConnection();
+ * &nbsp;&nbsp;    //do something with the connection
+ * &nbsp;&nbsp;
+ * &nbsp;&nbsp;    scopingDataSource.endTransactionScope();
+ * } catch(Throwable t){
+ * &nbsp;&nbsp;    scopingDataSource.abortTransactionScope(t);
+ * }
  * </code>
  *
  *
@@ -117,7 +114,7 @@ public class ScopingDataSource implements DataSource{
     /**
      * Returns true if a connection is currently open inside
      * this connection or transaction scope.
-     * @return
+     * @return True if the connection is open internally. False if not.
      */
     public synchronized boolean isConnectionOpen(){
         //if(!isInsideConnectionScope() && !isInsideTransactionScope()) return false;

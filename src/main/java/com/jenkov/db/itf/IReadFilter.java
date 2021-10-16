@@ -10,14 +10,12 @@ import java.sql.SQLException;
  *  read pages of objects, for instance object 10-20 of a total <code>ResultSet</code>
  *  of 50 records.
  *
- * <br/><br/>
  * It can also be used to just filter the <code>ResultSet</code>
  * further than was possible (or hard to do) in the SQL generating the <code>ResultSet</code>
  * in the first place. Also read filters can be combined, making it easier to have
  * filters that can be switched on and off. Easier than having to generate the SQL
  * for those kinds of on/off filterings.
  *
- * <br/><br/>
  * Read filters are used when calling the functions of the object reader.
  * @author Jakob Jenkov, Jenkov Development
  */
@@ -28,6 +26,8 @@ public interface IReadFilter {
      * manipulate the result set before the reading takes place, for instance, moving
      * the result set forward to a certain record. This way paged reading can be implemented.
      * @param result The ResultSet to initialize.
+     * @throws SQLException If initialization fails
+     * @throws PersistenceException If initialization fails.
      */
     public void init(ResultSet result) throws SQLException, PersistenceException;
 
@@ -38,6 +38,8 @@ public interface IReadFilter {
      * part of the list of objects read.
      * @param result The ResultSet instance apply the filter filter to.
      * @return True if the filter accepts the current record. False if not.
+     * @throws SQLException If something fails during acceptance/rejectance of the record the ResultSet points to.
+     * @throws PersistenceException If something fails during acceptance/rejectance of the reocrd the ResultSet points to.
      */
     public boolean accept(ResultSet result) throws SQLException, PersistenceException;
 

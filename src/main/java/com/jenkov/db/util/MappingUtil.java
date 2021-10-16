@@ -17,6 +17,7 @@ public class MappingUtil {
      * This method can insert the given key value object into a prepared statement. This
      * is a utility method used by the object reader and object writer.
      *
+     * @param  mapping    The object mapping to use during insertion of key value.
      * @param  keyValue   The key value to insert into the prepared statement.
      * @param  statement  The prepared statement to insert the key value into.
      * @param  index      The index of the prepared statement parameter

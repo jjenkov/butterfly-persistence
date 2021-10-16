@@ -52,6 +52,7 @@ public class DatabaseInitializer {
      * that have a version number greater than the version number of the database will be executed.
      *
      * @param daos The IDaos instance used to execute the database initializations with.
+     * @throws PersistenceException If initializing the database fails.
      */
     public void initialize(IDaos daos) throws PersistenceException{
         int databaseVersion = this.databaseVersionDeterminer.determineDatabaseVersion(daos);
@@ -86,7 +87,8 @@ public class DatabaseInitializer {
      * want to upgrade the database from one version to another (or make sure it is upgraded), call the
      * <code>initialize()</code> method instead.
      *
-     * @param daos The IDaos instance to use for resetting the database. 
+     * @param daos The IDaos instance to use for resetting the database.
+     * @throws PersistenceException If resetting the database fails.
      */
     public void reset(IDaos daos) throws PersistenceException{
         if(databaseVersionDeterminer.tableExists(daos, "db_info")){

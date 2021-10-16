@@ -8,7 +8,7 @@ import java.sql.PreparedStatement;
  * This interface represents the functions special to getter method mappings.
  * Getter method mappings represent a method from a getter method in a class
  * to a column in the database.
- * <br/><br/>
+ *
  * Getter method mappings are used when writing/updating objects to/in the database.
  * Getter method mappings can extract the values from objects to be inserted/updated
  * by calling the getter method they are method from (on the target object),
@@ -53,7 +53,6 @@ public interface IGetterMapping extends IMethodMapping{
      * that are inserted automatically by the database when a new record is inserted, or r timestamps
      * columns updated by the database each time a record is updated.
      *
-     * <br/><br/>
      * It is important to mark getter method mappings as auto generated if they are. Trying to specify a
      * value for an auto generated column when inserting or updating records will result in a
      * database error. The database will refuse this action. Therefore it is essential for the
@@ -74,7 +73,6 @@ public interface IGetterMapping extends IMethodMapping{
      * that are inserted automatically by the database when a new record is inserted, or timestamps
      * columns updated by the database each time a record is updated.
      *
-     * <br/><br/>
      * It is important to mark getter method mappings as auto generated if they are. Trying to specify a
      * value for an auto generated column when inserting or updating records will result in a
      * database error. The database will refuse this action. Therefore it is essential for the

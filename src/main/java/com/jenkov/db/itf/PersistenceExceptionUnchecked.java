@@ -6,13 +6,13 @@ import java.sql.SQLException;
  * An unchecked version of PersistenceException. Used by the unchecked dao command executor.
  * Usually wraps a PersistenceException.
  *
- * <br/><br/>
+ * 
  * Call getPersistenceException() to obtain it if there is one. The wrapped PersistenceException
  * may have connection rollback and close exceptions attached.
  * You can also use the shortcut methods getConnectionRollbackException() and getConnectionCloseException().
  *
  *
- * <br/><br/>
+ * 
  * See PersistenceException for more information.
  *
  *

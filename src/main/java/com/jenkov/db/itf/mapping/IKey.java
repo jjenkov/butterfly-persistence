@@ -12,7 +12,6 @@ import java.util.Collection;
  * The <code>IKey</code> supports that. In addition a <code>IKey</code>
  * can be used to map foreign keys too.
  *
- * <br/><br/>
  * A key mapping consists of a table name and collections of getter and setter methods
  * that are mapped to the columns included in the key. For a primary key the table name
  * is the same table
@@ -81,7 +80,6 @@ public interface IKey {
      * If the key value contains values for all columns in this key,
      * this method returns true. False if not.
      *
-     * <br/><br/>
      * If the key value contains values for columns that are not
      * part of this key, these column values are ignored.
      *

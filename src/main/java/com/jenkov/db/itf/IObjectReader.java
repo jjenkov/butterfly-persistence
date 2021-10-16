@@ -33,14 +33,12 @@ public interface IObjectReader {
      * and a database connection. Use this method only with single column primary keys and single object
      * primary key values.
      *
-     * <br/><br/>
      * The SQL string has to be of the format
      * <code>select [field1], [field2], [field3] (etc.) from [table] where [fieldPrimaryKey] = ?</code>. The
      * primary key value must be a ? for use with a PreparedStatement. The object reader will insert the
      * value in a PreparedStatement internally. The SQLGenerator class can generate a suitable SQL string for
      * use with the object reader, so you don't have to do it yourself.
      *
-     * <br/><br/>
      * Remember to close the <code>Connection</code> yourself when you are done with it.
      * @param mapping The object mapping to use to read this object.
      * @param primaryKey The primary key value of the object to read from the database.
@@ -62,7 +60,7 @@ public interface IObjectReader {
      * and a database connection. This method can be used with both single column primary key tables
      * and compound primary key tables.
      *
-     * <br/><br/>
+     *
      * The SQL string has to be of the format
      * <code>select [field1], [field2], [field3] (etc.) from [table]
      * where [fieldPrimaryKey1] = ? and [fieldPrimaryKey2] = ? (etc.)</code>. The
@@ -70,7 +68,7 @@ public interface IObjectReader {
      * value in a PreparedStatement internally. The SQLGenerator class can generate a suitable SQL string for
      * use with the object reader, so you don't have to do it yourself.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> yourself when you are done with it.
      * @param mapping The object mapping to use to read this object.
      * @param primaryKey The primary key value of the object to read from the database.
@@ -93,7 +91,7 @@ public interface IObjectReader {
      * If the <code>ResultSet</code> has just been opened, you will have to call the <code>ResultSet.next()</code>
      * or the <code>ResultSet.first()</code> before calling this method.
      *
-     * <br/><br/>
+     *
      * You must close the <code>ResultSet</code>
      * yourself when you are done with it.
      * @param mapping The object mapping to use to read the object.
@@ -112,7 +110,7 @@ public interface IObjectReader {
      * instance returns more than one record, the first one is used to read the object.
      * If the <code>ResultSet</code> is empty null is returned.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Statement</code> object yourself when you are done with it.
      * @param mapping The object mapping to use to read the object.
      * @param statement The <code>Statement</code> instance to use to execute the SQL.
@@ -128,7 +126,7 @@ public interface IObjectReader {
      * Reads an object using the given object mappping, SQL, and the <code>Connection</code> instance.
      * The SQL can be freely written as long as it is valid and your database understands it.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> instance yourself when you are done with it.
      * @param mapping The object mapping to use to read the object.
      * @param sql The SQL that locates the record in the database to read the object from.
@@ -143,9 +141,9 @@ public interface IObjectReader {
     /**
      * Reads an object from the database using the given object mapping and <code>PreparedStatement</code>.
      * You must have set all values on the <code>PreparedStatement</code> instance before calling this method
-     * (using the appropriate <code>PreparedStatement.setXXX(int index, XXX value) methods ).
+     * (using the appropriate <code>PreparedStatement.setXXX(int index, XXX value) methods )</code>.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>PreparedStatement</code> instance yourself when you are done with it.
      * @param mapping The object mapping to use to read this object.
      * @param preparedStatement The <code>PreparedStatement</code> that locates the record that this
@@ -159,14 +157,14 @@ public interface IObjectReader {
     /**
      * Reads an object from the database using the given object mapping, SQL string, and parameters.
      *
-     * <br/><br/>
+     *
      * A <code>PreparedStatement</code> instance will be created using the
      * given SQL string, and the parameters collection will be inserted into it.
      * Therefore the SQL string should have the same format as those used with a
      * <code>PreparedStatement</code>. The parameters will be inserted in the
      * sequence returned by the parameter collection's iterator.
      *
-     * <br/><br/>
+     *
      * If the <code>ResultSet</code> generated
      * by the <code>PreparedStatement</code> instance contains
      * more than one record, only the first record in the
@@ -186,14 +184,14 @@ public interface IObjectReader {
     /**
      * Reads an object from the database using the given object mapping, SQL string, and parameters.
      *
-     * <br/><br/>
+     *
      * A <code>PreparedStatement</code> instance will be created using the
      * given SQL string, and the parameters in the array will be inserted into it.
      * Therefore the SQL string should have the same format as those used with a
      * <code>PreparedStatement</code>. The parameters will be inserted in the
      * sequence of their indexes in the array, meaning parameters[0] will be inserted first.
      *
-     * <br/><br/>
+     *
      * If the <code>ResultSet</code> generated
      * by the <code>PreparedStatement</code> instance contains
      * more than one record, only the first record in the
@@ -219,7 +217,7 @@ public interface IObjectReader {
      * values in a PreparedStatement internally. The SQLGenerator class can generate a suitable SQL string for
      * use with the object reader, so you don't have to do it yourself.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> yourself when you are done with it.
      * @param mapping The object mapping to use to read the objects.
      * @param primaryKeys The primary key values of the objects to read from the database.
@@ -240,19 +238,20 @@ public interface IObjectReader {
      * be done.
      *
      *
-     * <br/><br/>
+     *
      * The SQL string has to be of the format
      * <code>select [field1], [field2], [field3] ... from [table] where [fieldPrimaryKey] in (?, ?, ? ...)</code>.
      * The primary key values must be ?-marks for use with a PreparedStatement. The object reader will insert the
      * values in a PreparedStatement internally. The SQLGenerator class can generate a suitable SQL string for
      * use with the object reader, so you don't have to do it yourself.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> yourself when you are done with it.
      * @param mapping The object mapping to use to read the objects.
      * @param primaryKeys The primary key values of the objects to read from the database.
      * @param sql The SQL generated by the SQLGenerator class (or by you if you prefer).
      * @param connection The database connection to use for reading the object. Remember that
+     * @param filter      The IReadFilter which can filter out records from being included in the returned List.
      * you must close this connection yourself afterwards. The object reader only closes objects
      * it opens itself.
      * 
@@ -270,7 +269,7 @@ public interface IObjectReader {
      * object mapping. The list returned will contain the objects read in the same sequence as
      * the coresponding records appear in the <code>ResultSet</code>.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>ResultSet</code> yourself when you are done with it.
      * @param mapping The object mapping to use to read the objects.
      * @param result The <code>ResultSet</code> to read the objects from.
@@ -306,7 +305,7 @@ public interface IObjectReader {
      * SQL string. The objects will appear in the list in the same sequence as they appear in the
      * <code>ResultSet</code> generated by the SQL string.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Statement</code> instance when you are done with it. This method will not
      * close it.
      * @param mapping The object mapping to use to read the objects.
@@ -326,7 +325,7 @@ public interface IObjectReader {
      * <code>ResultSet</code>, and can also signal that it won't accept anymore records at all,
      * so the object reader can stop the <code>ResultSet</code> iteration.
 
-     * <br/><br/>
+     *
      * Remember to close the <code>Statement</code> instance when you are done with it. This method will not
      * close it.
      * @param mapping The object mapping to use to read the objects.
@@ -345,7 +344,7 @@ public interface IObjectReader {
      * and <code>Connection</code>. The objects will appear in the list in the same sequence
      * as they appear in the <code>ResultSet</code> generated by the SQL string.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> instance when you are done with it. This method will not
      * close it.
      * @param mapping The object mapping to use to read the objects.
@@ -366,7 +365,7 @@ public interface IObjectReader {
      * <code>ResultSet</code>, and can also signal that it won't accept anymore records at all,
      * so the object reader can stop the <code>ResultSet</code> iteration.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> instance when you are done with it. This method will not
      * close it.
      * @param mapping The object mapping to use to read the objects.
@@ -386,12 +385,12 @@ public interface IObjectReader {
      * Reads a list of objects from the database using the given object mapping
      * and <code>PreparedStatement</code>.
      * You must have set all values on the <code>PreparedStatement</code> instance before calling this method
-     * (using the appropriate <code>PreparedStatement.setXXX(int index, XXX value) methods ).
+     * (using the appropriate <code>PreparedStatement.setXXX(int index, XXX value) methods )</code>.
      *
      * The objects will appear in the list in the same sequence
      * as they appear in the <code>ResultSet</code> generated by the SQL string.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> instance when you are done with it. This method will not
      * close it.
      * @param mapping The object mapping to use to read the objects.
@@ -407,18 +406,18 @@ public interface IObjectReader {
     /**
      * Reads a list of objects from the database using the given object mapping, SQL string, and parameters.
      *
-     * <br/><br/>
+     *
      * A <code>PreparedStatement</code> instance will be created using the
      * given SQL string, and the parameters collection will be inserted into it.
      * Therefore the SQL string should have the same format as those used with a
      * <code>PreparedStatement</code>. The parameters will be inserted in the
      * sequence returned by the parameter collection's iterator.
      *
-     * <br/><br/>
+     *
      * The objects will appear in the list in the same sequence
      * as they appear in the <code>ResultSet</code> generated by the SQL string.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> instance when you are done with it. This method will not
      * close it.
      *
@@ -436,18 +435,18 @@ public interface IObjectReader {
     /**
      * Reads a list of objects from the database using the given object mapping, SQL string, and parameters.
      *
-     * <br/><br/>
+     *
      * A <code>PreparedStatement</code> instance will be created using the
      * given SQL string, and the parameters in the array will be inserted into it.
      * Therefore the SQL string should have the same format as those used with a
      * <code>PreparedStatement</code>. The parameters will be inserted in the
      * sequence of their indexes in the array, meaning parameters[0] will be inserted first.
      *
-     * <br/><br/>
+     *
      * The objects will appear in the list in the same sequence
      * as they appear in the <code>ResultSet</code> generated by the SQL string.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> instance when you are done with it. This method will not
      * close it.
      *
@@ -466,18 +465,18 @@ public interface IObjectReader {
      * Reads a list of objects from the database using the given object mapping
      * and <code>PreparedStatement</code>.
      * You must have set all values on the <code>PreparedStatement</code> instance before calling this method
-     * (using the appropriate <code>PreparedStatement.setXXX(int index, XXX value) methods ).
+     * (using the appropriate <code>PreparedStatement.setXXX(int index, XXX value) methods )</code>.
      *
-     * <br/><br/>
+     *
      * The objects will appear in the list in the same sequence
      * as they appear in the <code>ResultSet</code> generated by the SQL string.
      *
-     * <br/><br/>
+     *
      * The read filter can either accept or reject records in the
      * <code>ResultSet</code>, and can also signal that it won't accept anymore records at all,
      * so the object reader can stop the <code>ResultSet</code> iteration.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> instance when you are done with it. This method will not
      * close it.
      *
@@ -496,23 +495,23 @@ public interface IObjectReader {
     /**
      * Reads a list of objects from the database using the given object mapping, SQL string, and parameters.
      *
-     * <br/><br/>
+     *
      * A <code>PreparedStatement</code> instance will be created using the
      * given SQL string, and the parameters collection will be inserted into it.
      * Therefore the SQL string should have the same format as those used with a
      * <code>PreparedStatement</code>. The parameters will be inserted in the
      * sequence returned by the parameter collection's iterator.
      *
-     * <br/><br/>
+     *
      * The objects will appear in the list in the same sequence
      * as they appear in the <code>ResultSet</code> generated by the SQL string.
      *
-     * <br/><br/>
+     *
      * The read filter can either accept or reject records in the
      * <code>ResultSet</code>, and can also signal that it won't accept anymore records at all,
      * so the object reader can stop the <code>ResultSet</code> iteration.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> instance when you are done with it. This method will not
      * close it.
      *
@@ -520,6 +519,7 @@ public interface IObjectReader {
      * @param sql         The SQL string to use for the <code>PreparedStatement</code>.
      * @param parameters  The parameters to insert into the <code>PreparedStatement</code>.
      * @param connection  The database connection to use to create the <code>PreparedStatement</code> instance.
+     * @param filter      The IReadFilter which can filter out records to be excluded from the returned List.
      * @return The objects read from the database.
      * @throws PersistenceException If anything goes wrong during the read.
      */
@@ -530,23 +530,23 @@ public interface IObjectReader {
     /**
      * Reads a list of objects from the database using the given object mapping, SQL string, and parameters.
      *
-     * <br/><br/>
+     *
      * A <code>PreparedStatement</code> instance will be created using the
      * given SQL string, and the parameters in the array will be inserted into it.
      * Therefore the SQL string should have the same format as those used with a
      * <code>PreparedStatement</code>. The parameters will be inserted in the
      * sequence of their indexes in the array, meaning parameters[0] will be inserted first.
      *
-     * <br/><br/>
+     *
      * The objects will appear in the list in the same sequence
      * as they appear in the <code>ResultSet</code> generated by the SQL string.
      *
-     * <br/><br/>
+     *
      * The read filter can either accept or reject records in the
      * <code>ResultSet</code>, and can also signal that it won't accept anymore records at all,
      * so the object reader can stop the <code>ResultSet</code> iteration.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> instance when you are done with it. This method will not
      * close it.
      *
@@ -554,6 +554,7 @@ public interface IObjectReader {
      * @param sql         The SQL string to use for the <code>PreparedStatement</code>.
      * @param parameters  The parameters to insert into the <code>PreparedStatement</code>.
      * @param connection  The database connection to use to create the <code>PreparedStatement</code> instance.
+     * @param filter      The IReadFilter which can filter out records to be excluded from the returned List.
      * @return The objects read from the database.
      * @throws PersistenceException If anything goes wrong during the read.
      */

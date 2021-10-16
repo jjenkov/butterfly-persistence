@@ -9,7 +9,7 @@ import java.lang.reflect.Method;
  * The purpose of the object mapping factory is to make it easier for the users of the API to
  * create customized object mappings and method mappings.
  *
- * <br/><br/>
+ * 
  * The object mapping factory is also used by the object mapper in Butterfly Persistence.
  *
  * @author Jakob Jenkov, Jenkov Development
@@ -138,7 +138,7 @@ public interface IObjectMappingFactory {
      * map from the getter method with the given method name to the column with
      * the given column name.
      *
-     * <br/><br/>
+     * 
      * The parameter <code>isTableMapped</code> tells whether
      * the column exists in a table in the database, or only in an SQL query. This
      * information is used when generating SQL for reads and writes.
@@ -161,7 +161,7 @@ public interface IObjectMappingFactory {
      * map from the getter method with the given method name to the column with
      * the given column name.
      *
-     * <br/><br/>
+     * 
      * The parameter <code>isTableMapped</code> tells whether
      * the column exists in a table in the database, or only in an SQL query. This
      * information is used when generating SQL for reads and writes.
@@ -186,7 +186,7 @@ public interface IObjectMappingFactory {
      * from the setter method with the given name to the column with the supplied
      * column name.
      *
-     * <br/><br/>
+     * 
      * The parameter <code>isTableMapped</code> tells whether
      * the column exists in a table in the database, or only in an SQL query. This
      * information is used when generating SQL for reads and writes.
@@ -210,12 +210,10 @@ public interface IObjectMappingFactory {
      * from the setter method with the given name to the column with the supplied
      * column name.
      *
-     * <br/><br/>
      * The <code>parameterType</code> parameter tells which setter method to use,
      * if you have more than one setter method with the same name, but different
      * parameter types (overloaded setter methods).
      *
-     * <br/><br/>
      * The parameter <code>isTableMapped</code> tells whether
      * the column exists in a table in the database, or only in an SQL query. This
      * information is used when generating SQL for reads and writes.

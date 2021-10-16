@@ -23,12 +23,12 @@ public class SimpleDataSource implements DataSource{
 
 
     /**
+     * Creates a SimpleDataSource instance.
      *
-     *
-     * @param driver
-     * @param url
-     * @param user
-     * @param password
+     * @param driver The JDBC driver (fully qualified class name) to use.
+     * @param url The JDBC database URL
+     * @param user The database user name
+     * @param password The database user password
      * @throws IllegalArgumentException If the driver cannot be instantiated.
      */
     public SimpleDataSource(String driver, String url, String user, String password) {

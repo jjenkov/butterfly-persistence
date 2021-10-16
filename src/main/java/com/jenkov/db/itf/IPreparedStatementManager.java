@@ -8,7 +8,6 @@ import java.sql.SQLException;
  * Represents a manager capable of preparing, initializing parameters of,
  * executing and post processing a PreparedStatement.
  *
- * <br/><br/>
  * In most cases you can just extend the PreparedStatementManagerBase which
  * has default implementations for all four methods. Then you just
  * override the methods you need. Typically it will be the init method.

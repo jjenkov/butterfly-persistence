@@ -11,11 +11,9 @@ import java.sql.Connection;
  * table name, and is used by both the object reader and object writer for functions like
  * read-by-primary-key, insert, updateBatch, delete and delete-by-primary-key.
  *
- * <br/><br/>
  * As of now the database primary key determiner can only determine single column primary keys, and not
  * primary keys consisting of several columns.
  *
- * <br/><br/>
  * The database primary key determiner is used internally in the object mapper.
  *
  * @author Jakob Jenkov,  Jenkov Development

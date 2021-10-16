@@ -17,7 +17,7 @@ public class ScopeFactory implements IScopeFactory{
      * internally in a ScopingDataSource instance. You can obtain
      * the ScopingDataSource instance by calling the getScopingDataSource()
      * method.
-     * @param dataSource
+     * @param dataSource The DataSource to wrap in a ScopingDataSource.
      */
     public ScopeFactory(DataSource dataSource) {
         this.scopingDataSource = new ScopingDataSource(dataSource);

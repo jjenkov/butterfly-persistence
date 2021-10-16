@@ -14,21 +14,19 @@ import java.sql.ResultSet;
  * Represents one method from an object to the database, and/or from the database to the object. Both way mappings
  * possible in the same object method.
  *
- * <br/><br/>
  * There can only be one method method containing a given
  * database column name, and only one method method containing any given object method. While method "overloading"
  * would seem nice, meaning that you can have many mappings from different query/database fields to the same
  * object methods all gathered in one object method, this cannot be done for the following reasons:
  *
- * <br/><br/>
  * <ol>
  * <li>With many different database column names in the object method it can be hard to know which method mappings
  * are used when.</li>
  * <li>Also, you risk getting into situations where the query result actually contains a column name that one of you
  * method mappings are pointing too, in a situation where you don't want that column mapped to that method in the
  * object.</li>
+ * </ol>
  *
- * <br/><br/>
  * While the above problems could have been solved using some sort of method method "shadowing" or aliasing
  * ignoring certain fields or having them mapped to other names, this has not (yet) been implemented. Also, using
  * this kind of shadowing and aliasing could cause trouble all over the place if the original object method that

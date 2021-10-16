@@ -14,12 +14,14 @@ public interface IKeyValue {
      * Adds a value to a column of this key.
      * @param column The column to specify the value of.
      * @param value  The column value.
+     * @return       The same IKeyValue instance this method was called on.
      */
     public IKeyValue addColumnValue(String column, Object value);
 
     /**
      * Removes a column value from this key value.
      * @param column The column to remove the value of.
+     * @return       The same IKeyValue instance this method was called on.
      */
     public IKeyValue removeColumnValue(String column);
 

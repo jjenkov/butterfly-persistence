@@ -128,14 +128,14 @@ public class ClassUtil {
 
 
     /**
-     * Compares to objects to each other, where one or both of the objects may be null.<br/>
-     * If both references are null they are considered equal and 0 is returned.<br/>
-     * If the first reference is null and the second isn't, 1 is returned<br/>
-     * If the second reference is null and the first isn't, -1 is returned<br/>
+     * Compares to objects to each other, where one or both of the objects may be null.
+     * If both references are null they are considered equal and 0 is returned.
+     * If the first reference is null and the second isn't, 1 is returned
+     * If the second reference is null and the first isn't, -1 is returned
      * If both references are not nul, and the first reference is an instance of
-     * <code>Comparable</code> o1.compareTo(o2) is returned.<br/>
+     * <code>Comparable</code> o1.compareTo(o2) is returned.
      *
-     * <br/>
+     * 
      * In all other cases 0 is returned, meaning the objects are considered equal, since
      * they cannot be compared. This is useful when comparing various different
      * objects, which can also be null.

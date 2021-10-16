@@ -54,6 +54,7 @@ public class ScopingConnection implements Connection {
     /**
      * Returns the wrapped connection. For some operations the original connection is necessary,
      * for instance when working with Oracle AQ (Advanced Queues).
+     * @return The connection wrapped by this ScopingConnection object.
      */
     public Connection getOriginalConnection(){
         return this.connection;

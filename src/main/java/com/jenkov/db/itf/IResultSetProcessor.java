@@ -9,7 +9,6 @@ import java.sql.SQLException;
  * Represents a processor capable of initializing and processing a
  * ResultSet, and returning a result afterwards.
  *
- * <br/><br/>
  * In most cases it is easiest to extend the ResultSetProcessorBase
  * which has empty implementations for all methods. Then you only
  * have to override the methods you need special behaviour in.
@@ -23,6 +22,7 @@ public interface IResultSetProcessor {
      * Initializes the ResultSet. For instance, scrolls down to
      * the correct first record etc.
      * @param result         The ResultSet to initialize.
+     * @param daos           The IDaos instance that this database connection belongs to.
      * @throws SQLException  If the intialization fails.
      * @throws PersistenceException If something else fails during initialization.
      */

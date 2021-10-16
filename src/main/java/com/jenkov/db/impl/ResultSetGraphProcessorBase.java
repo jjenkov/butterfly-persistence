@@ -52,6 +52,8 @@ public class ResultSetGraphProcessorBase extends ResultSetProcessorBase implemen
      * @param daos      The IDaos instance used to obtain the JdbcDao with. Can be used to read objects from
      *                  the current record in the ResultSet etc.
      * @param columnSet The columns making up the set to watch for changes.
+     * @throws SQLException If anything fails during processing of this record.
+     * @throws PersistenceException If anything fails during processing of this record.
      */
     protected void onColumnChange(ResultSet result, IDaos daos, Set columnSet) throws SQLException, PersistenceException {
 
@@ -62,6 +64,8 @@ public class ResultSetGraphProcessorBase extends ResultSetProcessorBase implemen
      * @param result The ResultSet iterated.
      * @param daos      The IDaos instance used to obtain the JdbcDao with. Can be used to read objects from
      *                  the current record in the ResultSet etc.
+     * @throws SQLException If anything fails during the processing of the record.
+     * @throws PersistenceException If anything fails during the processing of the record.
      */
     protected void onRecord(ResultSet result, IDaos daos) throws SQLException, PersistenceException  {
 

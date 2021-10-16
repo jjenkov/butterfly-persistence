@@ -21,7 +21,7 @@ public class UpdateResult {
      * it's an array is so that it can contain one record update
      * count per SQL query in a batch update. For single update queries,
      * only the first element is filled in.
-     * @return
+     * @return The array of affected record counts.
      */
     public int[] getAffectedRecords() {
         return affectedRecords;
@@ -29,7 +29,7 @@ public class UpdateResult {
 
     /**
      * Used internally by Butterfly Persistence.
-     * @param affectedRecords
+     * @param affectedRecords The affected records array
      */
     public void setAffectedRecords(int[] affectedRecords) {
         this.affectedRecords = affectedRecords;
@@ -46,7 +46,7 @@ public class UpdateResult {
 
     /**
      * Used internally by Butterfly Persistence.
-     * @param key
+     * @param key The generated key to add to this UpdateResult
      */
     public void addGeneratedKey(Object key){
         this.generatedKeys.add(key);

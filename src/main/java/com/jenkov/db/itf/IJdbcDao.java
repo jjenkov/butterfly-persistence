@@ -11,7 +11,7 @@ public interface IJdbcDao {
     /**
      * Reads a long from the database using the given SQL query. The first column of the first record
      * is returned as a long. This method is handy when you need just the id of some record.
-     * For instance:<br/><br/>
+     * For instance:
      *
      * select id from books where title = 'Summer Night Dream'
      *
@@ -24,7 +24,7 @@ public interface IJdbcDao {
     /**
      * Reads a long from the database using the given SQL query. The first column of the first record
      * is returned as a long. This method is handy when you need just the id of some record.
-     * For instance:<br/><br/>
+     * For instance:
      *
      * select id from books where title = 'Summer Night Dream'
      *
@@ -107,7 +107,7 @@ public interface IJdbcDao {
      *                    It is easiest to extend the ResultSetProcessorBase which has empty
      *                    implementations for init(...), process(...), and getResult(). Then
      *                    you only have to override the methods you need.
-     * @return
+     * @return            The object returned by the IResultSetProcessor.getResult() method.
      * @throws PersistenceException If anything goes wrong during the execution of the SQL and the
      *                    iteration of the ResultSet.
      */
@@ -126,7 +126,7 @@ public interface IJdbcDao {
      *                    It is easiest to extend the ResultSetProcessorBase which has empty
      *                    implementations for init(...), process(...), and getResult(). Then
      *                    you only have to override the methods you need.
-     * @return
+     * @return            The object returned by the IResultSetProcessor.getResult() method.
      * @throws PersistenceException If anything goes wrong during the execution of the SQL and the
      *                    iteration of the ResultSet.
      */
@@ -149,7 +149,7 @@ public interface IJdbcDao {
      *                    It is easiest to extend the ResultSetProcessorBase which has empty
      *                    implementations for init(...), process(...), and getResult(). Then
      *                    you only have to override the methods you need.
-     * @return
+     * @return            The object returned by the IResultSetProcessor.getResult() method.
      * @throws PersistenceException If anything goes wrong during the execution of the SQL and the
      *                    iteration of the ResultSet.
      */

@@ -213,7 +213,7 @@ public class ObjectDao implements IObjectDao {
        * concrete AbstractDao subclass
        * has a manual object mapping it wants to use for the given object mapping key.
        *
-       * <br/><br/>
+       * 
        * If <code>createManualObjectMapping()</code> returns null, then this method will call
        * the <code>getTableName(objectMappingKey)</code> to see if the concrete AbstractDao subclass wants
        * to map the object to a certain database table, that cannot be guessed automatically
@@ -225,7 +225,7 @@ public class ObjectDao implements IObjectDao {
        * If an object mapping is generated it will be stored in the object
        * method cache under the given method key for later use.
        *
-       * <br/><br/>
+       * 
        * The <code>Class</code> instance should be the class of the object to be stored, meaning
        * if you want to store objects of the class Employee, the class instance should be
        * Employee.class.

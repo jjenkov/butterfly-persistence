@@ -16,24 +16,20 @@ import java.sql.SQLException;
  * inside the PersistenceManager, so you should reuse the same instance once you have created it. Assign it to a
  * constant, or make it a singleton, like this:
  *
- * <br/><br/>
  * <code>
  * public static final PERSISTENCE_MANAGER = new PersistenceManager();
  *
- * <br/><br/>
  * IDaos       daos = PERSISTENCE_MANAGER.createDaos(connection);
  * </code>
  *
  *
- * <br/><br/>
  * The PersistenceManager instance
  * should be reused throughout the application lifetime. Each application should create it's own PersistenceManager
  * instance.
  *
- * <br/><br/>
- * It is safe to share PersistenceManager instances if: <br/><br/>
- * 1) The components sharing them are reading the same type of objects from the same database.<br/>
- * 2) The components sharing them are reading different types of objects from the same or different databases.<br/>
+ * It is safe to share PersistenceManager instances if:
+ * 1) The components sharing them are reading the same type of objects from the same database.
+ * 2) The components sharing them are reading different types of objects from the same or different databases.
  *
  *
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
@@ -52,7 +48,7 @@ public class PersistenceManager {
 
     /**
      * Creates a PersistenceManager instance and stores the given DataSource in the default persistence configuration.
-     * @param dataSource
+     * @param dataSource The DataSource to use internally by this PersistenceManager
      */
     public PersistenceManager(DataSource dataSource){
         init();
@@ -63,7 +59,6 @@ public class PersistenceManager {
      * Creates a PersistenceManager instance and stores the given <code>DatabaseInitiazliser</code>
      * in the default persistence configuration.
      *
-     * <br/><br/>
      * You don't have to set a <code>DatabaseInitializer</code>
      * as the persistence configuration has a default instance you can access via the
      * <code>getConfiguration().getDatabaseInitializer()</code> method call. But sometimes when configuring
@@ -125,7 +120,6 @@ public class PersistenceManager {
     /**
      * Sets the <code>DatabaseIntializer</code> to be used by this PersistenceManager.
      *
-     * <br/><br/>
      * You don't have to set a <code>DatabaseInitializer</code>
      * as the persistence configuration has a default instance you can access via the
      * <code>getConfiguration().getDatabaseInitializer()</code> method call. But sometimes when configuring
@@ -149,6 +143,8 @@ public class PersistenceManager {
      * initialize the database. A database connection will be obtained from the <code>DataSource</code>
      * set on this <code>PersistenceManager</code> instance. The connection will be closed after
      * the initialization.
+     *
+     * @throws PersistenceException If anything fails during initialization of the database.
      */
     public void initializeDatabase() throws PersistenceException{
         IDaos daos = null;
@@ -174,6 +170,8 @@ public class PersistenceManager {
      *
      * @param connection The database connection to use during the database initialization. This connection
      *                   will not be closed after the initialization.
+     * @throws PersistenceException If anything fails during initialization of the database.
+     *
      */
     public void initializeDatabase(Connection connection) throws PersistenceException {
         IDaos daos = null;
@@ -187,6 +185,9 @@ public class PersistenceManager {
      * initializes the database. The effect is that the database is re-created from scratch. If you only
      * want to upgrade the database from one version to another (or make sure it is upgraded), call the
      * <code>initializeDatabase()</code> method instead.
+     *
+     * @throws PersistenceException If anything fails during reset of the database.
+     *
      */
     public void resetDatabase() throws PersistenceException{
         IDaos daos = null;
@@ -212,7 +213,10 @@ public class PersistenceManager {
      * want to upgrade the database from one version to another (or make sure it is upgraded), call the
      * <code>initializeDatabase()</code> method instead.
      *
-     * @param connection The database connection to use for resetting the database. 
+     * @param connection The database connection to use for resetting the database.
+     *
+     * @throws PersistenceException If anything fails during reset of the database.
+     *
      */
     public void resetDatabase(Connection connection) throws PersistenceException {
         IDaos daos = createDaos(connection);

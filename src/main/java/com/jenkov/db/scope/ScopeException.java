@@ -50,7 +50,7 @@ public class ScopeException extends RuntimeException {
 
     /**
      * Returns the root cause of this ScopeException.
-     * @return
+     * @return The cause of this ScopeException
      */
     public Throwable getCause() {
         if (super.getCause()                 != null) return super.getCause();

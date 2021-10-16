@@ -450,9 +450,9 @@ public class ObjectReader implements IObjectReader {
     }
 
 
-   /**************************
-    *   UTILTY METHODS BELOW
-    **************************/
+   //**************************
+   // *   UTILTY METHODS BELOW
+   // **************************/
 
     protected Object newInstance(Class persistentObjectClass, ResultSet result) throws PersistenceException{
         Constructor constructor = null;

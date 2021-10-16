@@ -19,14 +19,12 @@ import java.sql.SQLException;
  * can be useful to see if your class will be mapped correctly
  * by the API, or you will have to adjust the mapping manually.
  *
- * <br/><br/>
  * The MappingTool utility can be run from commmand line, or be instantiated
  * and run from within an application.
  *
- * <br/><br/>
  * The method tool needs a database property file in order to connect to the
  * database. There has to be the following 4 properties present in the file:
- * <br/><br/>
+ *
  *  <ol> <li><code>db.driver=xxx</code> The name of the JDBC driver class used to connect
  *        to the database</li>
  *       <li><code>db.url</code> The URL to the database server used to connect to the database.</li>
@@ -106,7 +104,7 @@ public class MappingTool implements Runnable{
     /**
      * Validates the properties found in the property file. There has to be the
      * following 4 properties present in the file:
-     * <br/><br/>
+     *
      *  <ol> <li><code>db.driver=xxx</code> The name of the JDBC driver class used to connect
      *        to the database</li>
      *       <li><code>db.url</code> The URL to the database server used to connect to the database.</li>
@@ -265,7 +263,6 @@ public class MappingTool implements Runnable{
      * @param args The arguments passed to the MappingTool class from the command line.
      * The MappingTool class requires two arguments and has an additional optional argument:
      *
-     * <br/><br/>
      * <ol>
      *   <li>propertyFile - The path to the database property file</li>
      *   <li>className - The fully qualified name of the class to map</li>

@@ -11,7 +11,6 @@ import java.sql.Connection;
  * result of such a method is an object mapping instance. See IObjectMapping for more info on
  * these.
  *
- * <br/><br/>
  * The object mapper uses a database name guesser, a database name determiner and a
  * database primary key determiner internally to do it's job.
  *
@@ -66,8 +65,8 @@ public interface IObjectMapper {
      * @param objectMappingKey The key under which to retrieve and/or store the object mapping.
      * @param configuration    The configuration containing the object mapping cache.
      * @param connection       A database connection used in case the mapper
-     * @return
-     * @throws PersistenceException
+     * @return                 An object mapping for the given object mapping key, persistence configuration and JDBC Connection
+     * @throws PersistenceException If anything fails during generation of the object mapping key.
      */
     public IObjectMapping getObjectMapping(Object objectMappingKey, IPersistenceConfiguration configuration, Connection connection)
             throws PersistenceException;
@@ -140,14 +139,16 @@ public interface IObjectMapper {
      * method instance is created and used. An object containing a
      * setHomeAddress will have a method method with the method name "setHomeAddress". This method is very
      * useful when method objects to SQL queries instead of tables. With a self-mapped object you can read
-     * values into it using an sql like: <code>select homeAddr as setHomeAddress from users</code>. The method in the
+     * values into it using an sql like: "select homeAddr as setHomeAddress from users". The method in the
      * result set will be called setHomeAddres. The object mapping will then translate that name to the
      * setHomeAddress(...) method (because that method is mapped to a method called "setHomeAddress" in the
      * object mapping).
      *
      * @param persistentObjectClass The class to map to itself.
+     * @param objectMapping The object mapping to store the field mappings in.
      * @return An object mapping with all setters mapped to fields with the same name as the
      *          coresponding setter method.
+     * @throws PersistenceException If anything fails during mapping of the class to columns with the same names as its fields.
      */
     public IObjectMapping mapSettersToSelf (Class persistentObjectClass, IObjectMapping objectMapping) throws PersistenceException;
 

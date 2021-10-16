@@ -34,6 +34,8 @@ public interface IPersistenceConfiguration {
      * If you change the database instance you will have to change the other components manually,
      * or you will have a semantically incoherent persistence configuration. In other words: Do
      * not change the database configuration unless you know what you are doing.
+     *
+     * @param database The Database to use in this IPersistenceConfiguration.
      */
     public void setDatabase(Database database);
 
@@ -45,6 +47,7 @@ public interface IPersistenceConfiguration {
 
     /**
      * Sets the data source associated with this persistence configuration.
+     * @param dataSource The DataSource to use in this IPersistenceConfiguration.
      */
     public void setDataSource(DataSource dataSource);
 
@@ -71,7 +74,7 @@ public interface IPersistenceConfiguration {
      * remove the previously stored <code>IPersistenceConfiguration</code>
      * yourself.
      *
-     * <br/><br/>
+     * 
      * Calling the updateBatch method of a <code>IPersistenceConfiguration</code>
      * instance will however store that instance by the new key. But the instance will
      * remain mapped to the old key as well in the MrPersister class.

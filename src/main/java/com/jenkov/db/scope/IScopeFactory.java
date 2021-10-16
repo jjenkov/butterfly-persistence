@@ -4,7 +4,6 @@ package com.jenkov.db.scope;
  * A factory capable of creating IScopeBoundary objects. IScopeBoundary
  * objects can be either ConnectionScope or TransactionScope objects.
  *
- * <br/><br/>
  * The default implementation of this IScopeFactory interface is
  * the ScopeFactory class.
  *
@@ -33,7 +32,6 @@ public interface IScopeFactory {
      * object. Only methods that are implementations of
      * interface methods will be wrapped.
      *
-     * <br/><br/>
      * The returned object implements the same interfaces as the scopeTarget.
      * You can therefore cast the returned object to any of those interfaces.
      * Whenever you call one of the methods on the returned object, which
@@ -44,7 +42,7 @@ public interface IScopeFactory {
      * if the scopeTarget object obtains it's connections from the
      * ScopingDatasource referenced by this ScopeFactory instance.
      *
-     * @param scopeTarget
+     * @param scopeTarget The object to wrap in a connection scope object.
      * @return An object implementing the same interfaces as the scopeTarget,
      *         and has all interface methods wrapped in a connection scope.
      */
@@ -63,7 +61,6 @@ public interface IScopeFactory {
      * object. Only methods that are implementations of
      * interface methods will be wrapped.
      *
-     * <br/><br/>
      * The returned object implements the same interfaces as the scopeTarget.
      * You can therefore cast the returned object to any of those interfaces.
      * Whenever you call one of the methods on the returned object, which
@@ -75,7 +72,7 @@ public interface IScopeFactory {
      * if the scopeTarget object obtains it's connections from the
      * ScopingDatasource referenced by this ScopeFactory instance.
      *
-     * @param scopeTarget
+     * @param scopeTarget The object to wrap in a connection scope object.
      * @return An object implementing the same interfaces as the scopeTarget,
      *         and has all interface methods wrapped in a connection scope.
      */

@@ -25,7 +25,7 @@ public interface IObjectWriter {
     /**
      * Inserts the given object into the table it is mapped to in the given object mapping.
      *
-     * <br/><br/>
+     *
      * The SQL string is used to create a PreparedStatement and must be of the format
      * <code>insert into [table]( [field1], [field2], [field3] (etc.)) values (?, ?, ? etc)</code>.
      * The object writer will insert the values in a PreparedStatement internally. Therefore
@@ -34,7 +34,7 @@ public interface IObjectWriter {
      * The SQLGenerator class can generate a suitable SQL string for
      * use with the object writer, so you don't have to do it yourself.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> yourself when you are done with it. This method
      * doesn't close it.
      * @param mapping  The object mapping to use to insert the object as a record in the database.
@@ -55,7 +55,7 @@ public interface IObjectWriter {
      * batch updates to do the job, meaning all insert statements are batched and
      * sent in one go to the database.
      *
-     * <br/><br/>
+     *
      * The SQL string is used to create a PreparedStatement and must be of the format
      * <code>insert into [table]( [field1], [field2], [field3] (etc.)) values (?, ?, ? etc)</code>.
      * The object writer will insert the values in a PreparedStatement internally. Therefore
@@ -64,7 +64,7 @@ public interface IObjectWriter {
      * The SQLGenerator class can generate a suitable SQL string for
      * use with the object writer, so you don't have to do it yourself.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> yourself when you are done with it. This method
      * doesn't close it.
      * @param mapping   The object mapping to use to insert the object as a record in the database.
@@ -91,7 +91,7 @@ public interface IObjectWriter {
      * the update will have no effect. If you need to update a record including it's primary key, use
      * the other update method.
      *
-     * <br/><br/>
+     *
      * The SQL string must be of the format
      * <code>update [table] set [field1]=?, [field2]=?, [field3]=? etc. where [primaryKeyField]=?</code>
      * The object writer will insert the values in a PreparedStatement internally. Therefore
@@ -100,7 +100,7 @@ public interface IObjectWriter {
      * The SQLGenerator class can generate a suitable SQL string for
      * use with the object writer, so you don't have to do it yourself.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> yourself when you are done with it. This method
      * doesn't close it.
      * @param mapping    The object mapping to use to update the objects record in the database.
@@ -123,7 +123,7 @@ public interface IObjectWriter {
      * primary key value into the "where" clause of the PreparedStatement, so the
      * correct record is updated.
      *
-     * <br/><br/>
+     *
      * The SQL string must be of the format
      * <code>update [table] set [field1]=?, [field2]=?, [field3]=? etc. where [primaryKeyField]=?</code>
      * The object writer will insert the values in a PreparedStatement internally. Therefore
@@ -132,7 +132,7 @@ public interface IObjectWriter {
      * The SQLGenerator class can generate a suitable SQL string for
      * use with the object writer, so you don't have to do it yourself.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> yourself when you are done with it. This method
      * doesn't close it.
      * @param mapping    The object mapping to use to update the objects record in the database.
@@ -157,7 +157,7 @@ public interface IObjectWriter {
     * in larger batches/chunks, instead of sending them individually. This increases test_config
     * of updates radically.
     *
-    * <br/><br/>
+    *
     * Do not
     * use this method if the primary key values of the objects/records are also changed
     * during the update. If you do, this method may have no or a wrong effect.
@@ -169,7 +169,7 @@ public interface IObjectWriter {
     * If you need to update a record including it's primary key, use
     * the other batch update method.
     *
-    * <br/><br/>
+    *
     * The SQL string must be of the format
     * <code>update [table] set [field1]=?, [field2]=?, [field3]=? etc. where [primaryKeyField]=?</code>
     * The object writer will insert the values in a PreparedStatement internally. Therefore
@@ -178,7 +178,7 @@ public interface IObjectWriter {
     * The SQLGenerator class can generate a suitable SQL string for
     * use with the object writer, so you don't have to do it yourself.
     *
-    * <br/><br/>
+    *
     * Remember to close the <code>Connection</code> yourself when you are done with it. This method
     * doesn't close it.
     * @param mapping    The object mapping to use to update the objects record in the database.
@@ -202,13 +202,13 @@ public interface IObjectWriter {
     * in larger batches/chunks, instead of sending them individually. This increases test_config
     * of updates radically.
     *
-    * <br/><br/>
+    *
     * Use this method if the primary key values of the objects/records are changed
     * during the update. The old primary keys are used to identify the records to
     * update. The values of the primary keys in
     * the objects are the values the the primary keys of the records will have after the update.
     *
-    * <br/><br/>
+    *
     * The SQL string must be of the format
     * <code>update [table] set [field1]=?, [field2]=?, [field3]=? etc. where [primaryKeyField]=?</code>
     * The object writer will insert the values in a PreparedStatement internally. Therefore
@@ -217,7 +217,7 @@ public interface IObjectWriter {
     * The SQLGenerator class can generate a suitable SQL string for
     * use with the object writer, so you don't have to do it yourself.
     *
-    * <br/><br/>
+    *
     * Remember to close the <code>Connection</code> yourself when you are done with it. This method
     * doesn't close it.
     * @param mapping    The object mapping to use to update the objects record in the database.
@@ -245,7 +245,7 @@ public interface IObjectWriter {
      * The SQLGenerator class can generate a suitable SQL string for
      * use with the object writer, so you don't have to do it yourself.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> yourself when you are done with it. This method
      * doesn't close it.
      * @param mapping    The object mapping to use to delete this object.
@@ -271,7 +271,7 @@ public interface IObjectWriter {
      * The SQLGenerator class can generate a suitable SQL string for
      * use with the object writer, so you don't have to do it yourself.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> yourself when you are done with it. This method
      * doesn't close it.
      * @param mapping    The object mapping to use to delete this object.
@@ -294,7 +294,7 @@ public interface IObjectWriter {
      * The SQLGenerator class can generate a suitable SQL string for
      * use with the object writer, so you don't have to do it yourself.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> yourself when you are done with it. This method
      * doesn't close it.
      * @param mapping    The object mapping to use to delete this object.
@@ -320,7 +320,7 @@ public interface IObjectWriter {
      * The SQLGenerator class can generate a suitable SQL string for
      * use with the object writer, so you don't have to do it yourself.
      *
-     * <br/><br/>
+     *
      * Remember to close the <code>Connection</code> yourself when you are done with it. This method
      * doesn't close it.
      * @param mapping     The object mapping to use to delete this object.

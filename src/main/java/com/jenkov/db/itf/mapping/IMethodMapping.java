@@ -10,11 +10,9 @@ import java.lang.reflect.Method;
  * ISetterMapping instances have in common (it is the super-interface
  * of both).
  *
- * <br/><br/>
  * A method method maps a method in a class (getter or setter) to a column
  * name in a table in the database.
  *
- * <br/><br/>
  * Field mappings are stored in the object mappings and used by the object reader
  * and object writer to determine what columns from the database to read and write.
  * They are also used by the SQL generator to generate the SQL to read and write
@@ -83,7 +81,7 @@ public interface IMethodMapping {
      * Objects can be mapped to SQL queries with arbitrary column names not existing in the database.
      * For instance a setter method of an object can be mapped to the column name totalCount in the SQL query
      * <code>"select count(*) totalCount from employees</code>
-     * @param isTableMapped
+     * @param isTableMapped Set to true if the column referenced by this mapping exists in a table. False if not.
      */
     public void    setTableMapped(boolean isTableMapped);
 }

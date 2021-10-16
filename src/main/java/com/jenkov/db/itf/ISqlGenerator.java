@@ -28,6 +28,7 @@ public interface ISqlGenerator {
      * value for the primary key itself, but a "?" character instead.
      *
      * @param mapping The object mapping to generate the read-by-primary-key SQL string for.
+     * @param primaryKeyCount The number of columns in the primary key
      * @return The <code>String</code> instance containing the generated SQL.
      * @throws PersistenceException If anything goes wrong during the SQL string generation.
      */

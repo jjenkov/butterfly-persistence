@@ -17,30 +17,27 @@ import java.util.*;
  * Using a string or some other class as the key may be slightly slower, since the <code>hashCode()</code>
  * and the <code>equals()</code> calls may be slower than this implementation.
  *
- * <br/><br/>
  * <code>ObjectMappingKey</code> instances can also contain an <code>ICustomObjectMapper</code> instance which will
  * create, or assist in creating, the object mapping this <code>ObjectMappingKey</code> instance represents.
  *
- * <br/><br/>
  * When creating object mapping keys,
  * assign them to a constant in some class of yours, like the example below (reading user
  * instances from the database):
  *
- * <br/><br/>
  *
  * <code>
- * public class ObjectMappingKeys{  <br/>
- *                                  <br/>
- * &nbsp;&nbsp;&nbsp;public USER_READ   = ObjectMappingKey.createInstance(User.class, "User Read");  <br/>
- * &nbsp;&nbsp;&nbsp;public USER_INSERT = ObjectMappingKey.createInstance(User.class, "User Insert");  <br/>
- * &nbsp;&nbsp;&nbsp;public USER_UPDATE = ObjectMappingKey.createInstance(User.class, "User Update");  <br/>
- * &nbsp;&nbsp;&nbsp;public USER_UPDATE_LAST_LOGIN = ObjectMappingKey.createInstance(User.class, "User Update Last Login");  <br/>
- * &nbsp;&nbsp;&nbsp;public USER_UPDATE_PASSWORD = ObjectMappingKey.createInstance(User.class, "User Update Password");  <br/>
- * &nbsp;&nbsp;&nbsp;public USER_DEACTIVATE = ObjectMappingKey.createInstance(User.class, "User Deactivate");  <br/>
- * &nbsp;&nbsp;&nbsp;public USER_DELETE = ObjectMappingKey.createInstance(User.class, "User Delete");  <br/>
- *                                  <br/>
- * }                                <br/>
-
+ * public class ObjectMappingKeys{  <br>
+ *                                  <br>
+ * &nbsp;&nbsp;&nbsp;public USER_READ   = ObjectMappingKey.createInstance(User.class, "User Read");  <br>
+ * &nbsp;&nbsp;&nbsp;public USER_INSERT = ObjectMappingKey.createInstance(User.class, "User Insert");  <br>
+ * &nbsp;&nbsp;&nbsp;public USER_UPDATE = ObjectMappingKey.createInstance(User.class, "User Update");  <br>
+ * &nbsp;&nbsp;&nbsp;public USER_UPDATE_LAST_LOGIN = ObjectMappingKey.createInstance(User.class, "User Update Last Login");  <br>
+ * &nbsp;&nbsp;&nbsp;public USER_UPDATE_PASSWORD = ObjectMappingKey.createInstance(User.class, "User Update Password");  <br>
+ * &nbsp;&nbsp;&nbsp;public USER_DEACTIVATE = ObjectMappingKey.createInstance(User.class, "User Deactivate");  <br>
+ * &nbsp;&nbsp;&nbsp;public USER_DELETE = ObjectMappingKey.createInstance(User.class, "User Delete");  <br>
+ *                                  <br>
+ * }                                <br>
+ * </code>
  *
  */
 
@@ -115,7 +112,6 @@ public class ObjectMappingKey {
      * Creates an instance of <code>ObjectMappingKey</code> with the object class set only.
      * A unique id will be assigned to the <code>ObjectMappingKey</code> before it is returned.
      *
-     * <br/><br/>
      * When creating object mapping keys, assign them to a constant in some class of yours.
      *
      * @param objectClass The class mapped by the object mapping that this ObjectMappingKey instance
@@ -134,7 +130,6 @@ public class ObjectMappingKey {
      * The <code>ICustomObjectMapper</code> will be used when creating an object mapping for
      * this object mapping key.
      *
-     * <br/><br/>
      * When creating object mapping keys, assign them to a constant in some class of yours.
      *
      * @param objectClass The class mapped by the object mapping that this ObjectMappingKey instance
@@ -155,7 +150,6 @@ public class ObjectMappingKey {
      * The <code>ICustomObjectMapper</code> will be used when creating an object mapping for
      * this object mapping key.
      *
-     * <br/><br/>
      * When creating object mapping keys, assign them to a constant in some class of yours.
      *
      * @param objectClass The class mapped by the object mapping that this ObjectMappingKey instance
@@ -186,11 +180,11 @@ public class ObjectMappingKey {
      * The <code>ICustomObjectMapper</code> will be used when creating an object mapping for
      * this object mapping key.
      *
-     * <br/><br/>
      * When creating object mapping keys, assign them to a constant in some class of yours.
      *
      * @param objectClass The class mapped by the object mapping that this ObjectMappingKey instance
      *                    is key for.
+     * @param columns     The column names
      * @param tableName   The name of the table to map this class to.
      * @return An <code>ObjectMappingKey</code> instance with the given name and object class set.
      */
@@ -216,7 +210,6 @@ public class ObjectMappingKey {
      * The <code>ICustomObjectMapper</code> will be used when creating an object mapping for
      * this object mapping key.
      *
-     * <br/><br/>
      * When creating object mapping keys, assign them to a constant in some class of yours.
      *
      * @param objectClass The class mapped by the object mapping that this ObjectMappingKey instance
@@ -243,7 +236,6 @@ public class ObjectMappingKey {
      * The <code>ICustomObjectMapper</code> will be used when creating an object mapping for
      * this object mapping key.
      *
-     * <br/><br/>
      * When creating object mapping keys, assign them to a constant in some class of yours.
      *
      * @param objectClass The class mapped by the object mapping that this ObjectMappingKey instance

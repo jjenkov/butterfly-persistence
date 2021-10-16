@@ -3,25 +3,29 @@ package com.jenkov.db.test;
 import com.jenkov.db.PersistenceManager;
 import com.jenkov.db.itf.*;
 import com.jenkov.db.jdbc.SimpleDataSource;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class PersistenceManagerTest extends TestCase {
+public class PersistenceManagerTest {
     PersistenceManager manager = new PersistenceManager();
 
     protected void setUp() throws Exception {
 
     }
 
+    @Test
     public void testGettersSetters(){
         assertNotNull(manager.getConfiguration());
     }
 
+    @Test
     public void testGetSetDataSource(){
         DataSource dataSource = new SimpleDataSource("org.h2.Driver", "jdbc:hsqldb:hsql://localhost", "sa", "");
         PersistenceManager manager = new PersistenceManager();

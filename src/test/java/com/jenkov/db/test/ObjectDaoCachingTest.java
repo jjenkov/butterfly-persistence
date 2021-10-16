@@ -1,6 +1,5 @@
 package com.jenkov.db.test;
 
-import junit.framework.TestCase;
 import com.jenkov.db.PersistenceManager;
 import com.jenkov.db.test.objects.PrimaryObject;
 import com.jenkov.db.test.objects.RelatedObject;
@@ -18,9 +17,10 @@ import java.sql.SQLException;
 /**
 
  */
-public class ObjectDaoCachingTest extends TestCase {
+public class ObjectDaoCachingTest {
 
     /*
+    @Test
     public void testRead() throws Exception {
         PersistenceManager manager = new PersistenceManager(Environment.getDataSource());
         IDaos daos    = manager.createDaos();

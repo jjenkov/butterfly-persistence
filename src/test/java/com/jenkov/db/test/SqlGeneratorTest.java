@@ -11,14 +11,15 @@ import com.jenkov.db.itf.mapping.IGetterMapping;
 import com.jenkov.db.test.objects.CompoundPkObject;
 import com.jenkov.db.test.objects.PersistentObject;
 import com.jenkov.db.util.JdbcUtil;
-import junit.framework.TestCase;
 
 import java.sql.Connection;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Jakob Jenkov,  Jenkov Development
  */
-public class SqlGeneratorTest extends TestCase{
+public class SqlGeneratorTest {
 
     protected ISqlGenerator  generator  = null;
     protected IObjectMapping mapping    = null;
@@ -41,36 +42,37 @@ public class SqlGeneratorTest extends TestCase{
         String readByPrimaryKeySql =
                 this.generator.generateReadByPrimaryKeyStatement(this.mapping).toLowerCase();
 
-        assertTrue("should start with select", readByPrimaryKeySql.startsWith("select "));
-        assertTrue("should contain 'id' in select statement", readByPrimaryKeySql.indexOf("id") > -1);
-        assertTrue("should contain 'name' in select statement", readByPrimaryKeySql.indexOf("name") > -1);
-        assertTrue("should contain 'persistent_object' in select statement", readByPrimaryKeySql.indexOf("persistent_object") > -1);
-        assertTrue("should not contain 'objectValue' in select statement", readByPrimaryKeySql.indexOf("objectValue") == -1);
-        assertTrue("should contain ' where id = ?' in select statement", readByPrimaryKeySql.indexOf(" where id = ?") > -1);
+        assertTrue(readByPrimaryKeySql.startsWith("select "), "should start with select");
+        assertTrue(readByPrimaryKeySql.indexOf("id") > -1, "should contain 'id' in select statement");
+        assertTrue(readByPrimaryKeySql.indexOf("name") > -1, "should contain 'name' in select statement");
+        assertTrue(readByPrimaryKeySql.indexOf("persistent_object") > -1, "should contain 'persistent_object' in select statement");
+        assertTrue(readByPrimaryKeySql.indexOf("objectValue") == -1, "should not contain 'objectValue' in select statement");
+        assertTrue(readByPrimaryKeySql.indexOf(" where id = ?") > -1, "should contain ' where id = ?' in select statement");
     }
 
     public void testGenerateReadListByPrimaryKeysStatement() throws Exception {
         String readByPrimaryKeySql =
                 this.generator.generateReadListByPrimaryKeysStatement(this.mapping, 1).toLowerCase();
 
-        assertTrue("should start with select", readByPrimaryKeySql.startsWith("select "));
-        assertTrue("should contain 'id' in select statement", readByPrimaryKeySql.indexOf("id") > -1);
-        assertTrue("should contain 'name' in select statement", readByPrimaryKeySql.indexOf("name") > -1);
-        assertTrue("should contain 'persistent_object' in select statement", readByPrimaryKeySql.indexOf("persistent_object") > -1);
-        assertTrue("should not contain 'objectValue' in select statement", readByPrimaryKeySql.indexOf("objectValue") == -1);
-        assertTrue("should contain ' where (id = ?)' in select statement", readByPrimaryKeySql.indexOf(" where (id = ?)") > -1);
+        assertTrue(readByPrimaryKeySql.startsWith("select "), "should start with select");
+        assertTrue(readByPrimaryKeySql.indexOf("id") > -1, "should contain 'id' in select statement");
+        assertTrue(readByPrimaryKeySql.indexOf("name") > -1, "should contain 'name' in select statement");
+        assertTrue(readByPrimaryKeySql.indexOf("persistent_object") > -1, "should contain 'persistent_object' in select statement");
+        assertTrue(readByPrimaryKeySql.indexOf("objectValue") == -1, "should not contain 'objectValue' in select statement");
+        assertTrue(readByPrimaryKeySql.indexOf(" where (id = ?)") > -1, "should contain ' where (id = ?)' in select statement");
 
 
         readByPrimaryKeySql =
                 this.generator.generateReadListByPrimaryKeysStatement(this.mapping, 3).toLowerCase();
 
-        assertTrue("should start with select", readByPrimaryKeySql.startsWith("select "));
-        assertTrue("should contain 'id' in select statement", readByPrimaryKeySql.indexOf("id") > -1);
-        assertTrue("should contain 'name' in select statement", readByPrimaryKeySql.indexOf("name") > -1);
-        assertTrue("should contain 'persistent_object' in select statement", readByPrimaryKeySql.indexOf("persistent_object") > -1);
-        assertTrue("should not contain 'objectValue' in select statement", readByPrimaryKeySql.indexOf("objectValue") == -1);
-        assertTrue("should contain ' where (id = ?) or (id = ?) or (id = ?)' in select statement",
-                readByPrimaryKeySql.indexOf(" where (id = ?) or (id = ?) or (id = ?)") > -1);
+        assertTrue(readByPrimaryKeySql.startsWith("select "), "should start with select");
+        assertTrue(readByPrimaryKeySql.indexOf("id") > -1, "should contain 'id' in select statement");
+        assertTrue(readByPrimaryKeySql.indexOf("name") > -1, "should contain 'name' in select statement");
+        assertTrue(readByPrimaryKeySql.indexOf("persistent_object") > -1, "should contain 'persistent_object' in select statement");
+        assertTrue(readByPrimaryKeySql.indexOf("objectValue") == -1, "should not contain 'objectValue' in select statement");
+        assertTrue(readByPrimaryKeySql.indexOf(" where (id = ?) or (id = ?) or (id = ?)") > -1 ,
+                "should contain ' where (id = ?) or (id = ?) or (id = ?)' in select statement"
+        );
 
 
         try {
@@ -88,12 +90,12 @@ public class SqlGeneratorTest extends TestCase{
 
         String beginning = "insert into persistent_object (";
 
-        assertEquals("wrong sql generated for PersistentObject", beginning, insertSql.substring(0, beginning.length()).toLowerCase());
-        assertTrue("should contain id in insert statement", insertSql.indexOf("id") > -1);
-        assertTrue("should contain name in insert statement", insertSql.indexOf("name") > -1);
-        assertTrue("should contain object value in insert statement", insertSql.indexOf("objectvalue") > -1);
-        assertTrue("should contain some_boolean in insert statement", insertSql.indexOf("some_boolean") > -1);
-        assertTrue("should contain value statement in insert statement", insertSql.indexOf(" values (?, ?, ?, ?, ?)") > -1);
+        assertEquals(beginning, insertSql.substring(0, beginning.length()).toLowerCase(), "wrong sql generated for PersistentObject");
+        assertTrue(insertSql.indexOf("id") > -1, "should contain id in insert statement");
+        assertTrue(insertSql.indexOf("name") > -1, "should contain name in insert statement");
+        assertTrue(insertSql.indexOf("objectvalue") > -1, "should contain object value in insert statement");
+        assertTrue(insertSql.indexOf("some_boolean") > -1, "should contain some_boolean in insert statement");
+        assertTrue(insertSql.indexOf(" values (?, ?, ?, ?, ?)") > -1, "should contain value statement in insert statement");
 
         IObjectMapping mapping2 = new ObjectMapping();
         try{
@@ -119,11 +121,11 @@ public class SqlGeneratorTest extends TestCase{
         String beginning = "update persistent_object ";
 
         assertEquals("wrong sql generated for PersistentObject", beginning, updateSql.substring(0, beginning.length()));
-        assertTrue("should contain id in update statement", updateSql.indexOf("id = ?") > -1);
-        assertTrue("should contain name in update statement", updateSql.indexOf("name = ?") > -1);
-        assertTrue("should contain object value in update statement", updateSql.indexOf("objectvalue = ?") > -1 );
-        assertTrue("should contain auto column in update statement", updateSql.indexOf("autocolumn = ?") > -1);
-        assertTrue("should contain where clause in update statement", updateSql.indexOf("where id = ?") > -1);
+        assertTrue(updateSql.indexOf("id = ?") > -1, "should contain id in update statement");
+        assertTrue(updateSql.indexOf("name = ?") > -1, "should contain name in update statement");
+        assertTrue(updateSql.indexOf("objectvalue = ?") > -1,"should contain object value in update statement" );
+        assertTrue(updateSql.indexOf("autocolumn = ?") > -1, "should contain auto column in update statement");
+        assertTrue(updateSql.indexOf("where id = ?") > -1, "should contain where clause in update statement");
 
         IObjectMapping mapping2 = new ObjectMapping();
         try{
@@ -163,11 +165,11 @@ public class SqlGeneratorTest extends TestCase{
         String beginning = "update persistent_object ";
 
         assertEquals("wrong sql generated for PersistentObject", beginning, updateSql.substring(0, beginning.length()));
-        assertTrue("should contain id in update statement", updateSql.indexOf("id = ?") > -1);
-        assertTrue("should contain name in update statement", updateSql.indexOf("name = ?") > -1);
-        assertTrue("should contain object value in update statement", updateSql.indexOf("objectvalue = ?") > -1);
-        assertFalse("should NOT contain auto column in update statement", updateSql.indexOf("autocolumn = ?") > -1);
-        assertTrue("should contain where clause in update statement", updateSql.indexOf("where id = ?") > -1);
+        assertTrue(updateSql.indexOf("id = ?") > -1, "should contain id in update statement");
+        assertTrue(updateSql.indexOf("name = ?") > -1, "should contain name in update statement");
+        assertTrue(updateSql.indexOf("objectvalue = ?") > -1, "should contain object value in update statement");
+        assertFalse(updateSql.indexOf("autocolumn = ?") > -1, "should NOT contain auto column in update statement");
+        assertTrue(updateSql.indexOf("where id = ?") > -1, "should contain where clause in update statement");
     }
 
     public void testGenerateUpdateStatement_compoundKeys() throws Exception{

@@ -13,16 +13,18 @@ import com.jenkov.db.itf.mapping.IKeyValue;
 import com.jenkov.db.itf.mapping.IObjectMapping;
 import com.jenkov.db.test.objects.CompoundPkObject;
 import com.jenkov.db.util.JdbcUtil;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.*;
 
 import java.sql.Connection;
 import java.util.List;
 import java.util.ArrayList;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class ObjectReaderCompoundKeyTest extends TestCase{
+public class ObjectReaderCompoundKeyTest {
 
     String INSERT1 = "insert into compound_pk_objects(id, id2) values(1,1)";
     String INSERT2 = "insert into compound_pk_objects(id, id2) values(1,2)";
@@ -38,6 +40,7 @@ public class ObjectReaderCompoundKeyTest extends TestCase{
     protected IObjectMapping mapping    = null;
 
 
+    @BeforeEach
     protected void setUp() throws Exception {
         this.connection = Environment.getConnection();
         this.reader     = new ObjectReader();
@@ -46,6 +49,7 @@ public class ObjectReaderCompoundKeyTest extends TestCase{
         this.mapping    = new ObjectMapper(new ObjectMappingFactory()).mapToTable(CompoundPkObject.class, null, this.connection, null, null);
     }
 
+    @AfterEach
     protected void tearDown() throws Exception {
         JdbcUtil.closeIgnore(this.connection);
         this.reader    = null;
@@ -53,6 +57,7 @@ public class ObjectReaderCompoundKeyTest extends TestCase{
     }
 
 
+    @Test
     public void testReadByPrimaryKey_CompoundKey() throws Exception{
 
         try {
@@ -67,8 +72,8 @@ public class ObjectReaderCompoundKeyTest extends TestCase{
             CompoundPkObject object = (CompoundPkObject)
                     this.reader.readByPrimaryKey( this.mapping, keyValue,
                             this.generator.generateReadByPrimaryKeyStatement(this.mapping), this.connection);
-            assertEquals("id  should be 1", 1, object.getId());
-            assertEquals("id2 should be 1", 1, object.getId2());
+            assertEquals(1, object.getId(), "id  should be 1");
+            assertEquals(1, object.getId2(), "id2 should be 1");
 
 
             keyValue = createKeyValue(1,3);
@@ -76,21 +81,22 @@ public class ObjectReaderCompoundKeyTest extends TestCase{
             object = (CompoundPkObject)
                     this.reader.readByPrimaryKey( this.mapping, keyValue,
                             this.generator.generateReadByPrimaryKeyStatement(this.mapping), this.connection);
-            assertEquals("id  should be 1", 1, object.getId());
-            assertEquals("id2 should be 3", 3, object.getId2());
+            assertEquals(1, object.getId(), "id  should be 1");
+            assertEquals(3, object.getId2(), "id2 should be 3");
 
             keyValue = createKeyValue(1,4);
 
             object = (CompoundPkObject)
                     this.reader.readByPrimaryKey( this.mapping, keyValue,
                             this.generator.generateReadByPrimaryKeyStatement(this.mapping), this.connection);
-            assertNull("should be null", object);
+            assertNull(object, "should be null");
 
         } finally {
             Environment.executeSql(DELETE);
         }
     }
 
+    @Test
     public void testReadListByPrimaryKeys_CompoundKey() throws Exception{
         try{
             Environment.executeSql(INSERT1);
@@ -113,19 +119,19 @@ public class ObjectReaderCompoundKeyTest extends TestCase{
                     this.generator.generateReadListByPrimaryKeysStatement(this.mapping, primaryKeys.size()) + " order by id2",
                     this.connection);
 
-            assertEquals("should contain 3 objects", 3, objects.size());
+            assertEquals(3, objects.size(), "should contain 3 objects");
 
             CompoundPkObject object = (CompoundPkObject) objects.get(0);
-            assertEquals("id  should be 1", 1, object.getId());
-            assertEquals("id2 should be 1", 1, object.getId2());
+            assertEquals(1, object.getId(), "id  should be 1");
+            assertEquals(1, object.getId2(), "id2 should be 1");
 
             object = (CompoundPkObject) objects.get(1);
-            assertEquals("id  should be 1", 1, object.getId());
-            assertEquals("id2 should be 2", 2, object.getId2());
+            assertEquals(1, object.getId(), "id  should be 1");
+            assertEquals(2, object.getId2(), "id2 should be 2");
 
             object = (CompoundPkObject) objects.get(2);
-            assertEquals("id  should be 1", 1, object.getId());
-            assertEquals("id2 should be 3", 3, object.getId2());
+            assertEquals(1, object.getId(), "id  should be 1");
+            assertEquals(3, object.getId2(), "id2 should be 3");
 
             primaryKeys.remove(2);
             objects = this.reader.readListByPrimaryKeys(
@@ -133,15 +139,15 @@ public class ObjectReaderCompoundKeyTest extends TestCase{
                     this.generator.generateReadListByPrimaryKeysStatement(this.mapping, primaryKeys.size()) + " order by id2",
                     this.connection);
 
-            assertEquals("should contain 2 objects", 2, objects.size());
+            assertEquals(2, objects.size(), "should contain 2 objects");
 
             object = (CompoundPkObject) objects.get(0);
-            assertEquals("id  should be 1", 1, object.getId());
-            assertEquals("id2 should be 1", 1, object.getId2());
+            assertEquals(1, object.getId(), "id  should be 1");
+            assertEquals(1, object.getId2(), "id2 should be 1");
 
             object = (CompoundPkObject) objects.get(1);
-            assertEquals("id  should be 1", 1, object.getId());
-            assertEquals("id2 should be 2", 2, object.getId2());
+            assertEquals(1, object.getId(), "id  should be 1");
+            assertEquals(2, object.getId2(), "id2 should be 2");
 
             primaryKeys.clear();
             keyValue1 = createKeyValue(1, 4);
@@ -150,13 +156,14 @@ public class ObjectReaderCompoundKeyTest extends TestCase{
                     this.mapping, primaryKeys,
                     this.generator.generateReadListByPrimaryKeysStatement(this.mapping, primaryKeys.size()) + " order by id2",
                     this.connection);
-            assertEquals("should be empty", 0, objects.size());
+            assertEquals(0, objects.size(), "should be empty");
 
         } finally {
             Environment.executeSql(DELETE);
         }
     }
 
+    @Test
     public void testReadListByPrimaryKeys_CompoundKey_Filtered() throws Exception{
         try {
             Environment.executeSql(INSERT1);
@@ -190,19 +197,19 @@ public class ObjectReaderCompoundKeyTest extends TestCase{
                     this.connection,
                     filter);
 
-              assertEquals("should contain 3 objects", 3, objects.size());
+              assertEquals(3, objects.size(), "should contain 3 objects");
 
               CompoundPkObject object = (CompoundPkObject) objects.get(0);
-              assertEquals("id  should be 1", 1, object.getId());
-              assertEquals("id2 should be 1", 1, object.getId2());
+              assertEquals(1, object.getId(), "id  should be 1");
+              assertEquals(1, object.getId2(), "id2 should be 1");
 
               object = (CompoundPkObject) objects.get(1);
-              assertEquals("id  should be 1", 1, object.getId());
-              assertEquals("id2 should be 3", 3, object.getId2());
+              assertEquals(1, object.getId(), "id  should be 1");
+              assertEquals(3, object.getId2(), "id2 should be 3");
 
               object = (CompoundPkObject) objects.get(2);
-              assertEquals("id  should be 1", 1, object.getId());
-              assertEquals("id2 should be 5", 5, object.getId2());
+              assertEquals(1, object.getId(), "id  should be 1");
+              assertEquals(5, object.getId2(), "id2 should be 5");
 
             filter = new AcceptEveryOtherFilter(3);
             primaryKeys.remove(4);
@@ -212,15 +219,15 @@ public class ObjectReaderCompoundKeyTest extends TestCase{
                     this.connection,
                     filter);
 
-            assertEquals("should contain 2 objects", 2, objects.size());
+            assertEquals(2, objects.size(), "should contain 2 objects");
 
             object = (CompoundPkObject) objects.get(0);
-            assertEquals("id  should be 1", 1, object.getId());
-            assertEquals("id2 should be 1", 1, object.getId2());
+            assertEquals(1, object.getId(), "id  should be 1");
+            assertEquals(1, object.getId2(), "id2 should be 1");
 
             object = (CompoundPkObject) objects.get(1);
-            assertEquals("id  should be 1", 1, object.getId());
-            assertEquals("id2 should be 3", 3, object.getId2());
+            assertEquals(1, object.getId(), "id  should be 1");
+            assertEquals(3, object.getId2(), "id2 should be 3");
 
             filter = new AcceptEveryOtherFilter(3);
             primaryKeys.clear();
@@ -231,7 +238,7 @@ public class ObjectReaderCompoundKeyTest extends TestCase{
                     this.generator.generateReadListByPrimaryKeysStatement(this.mapping, primaryKeys.size()) + " order by id2",
                     this.connection,
                     filter);
-            assertEquals("should be empty", 0, objects.size());
+            assertEquals(0, objects.size(), "should be empty");
 
 
         } finally {

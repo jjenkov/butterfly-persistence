@@ -1,6 +1,5 @@
 package com.jenkov.db.test;
 
-import junit.framework.TestCase;
 import com.jenkov.db.PersistenceManager;
 import com.jenkov.db.test.objects.PrimaryObject;
 import com.jenkov.db.test.objects.RelatedObject;
@@ -17,7 +16,7 @@ import java.sql.SQLException;
 /**
 
  */
-public class ResultSetViewTest extends TestCase {
+public class ResultSetViewTest {
 
     /*
     public void test() throws Exception {

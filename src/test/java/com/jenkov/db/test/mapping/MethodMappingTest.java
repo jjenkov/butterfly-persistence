@@ -2,22 +2,22 @@ package com.jenkov.db.test.mapping;
 
 import com.jenkov.db.impl.mapping.method.MethodMapping;
 import com.jenkov.db.itf.mapping.IMethodMapping;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * Tests the methods of the default implementation of IMethodMapping, the
  * MethodMapping class.
  */
-public class MethodMappingTest extends TestCase{
+public class MethodMappingTest {
 
     protected IMethodMapping fieldMapping = null;
 
-    public MethodMappingTest(String test){
-        super(test);
-    }
-
+    @BeforeEach
     public void setUp(){
         //IObjectMapping objectMapping = new ObjectMapping();
         this.fieldMapping = new MethodMapping();
@@ -49,14 +49,15 @@ public class MethodMappingTest extends TestCase{
      * isTableMapped() flag correctly.
      * @throws Exception If an exception is thrown during the test.
      */
+    @Test
     public void testIsTableMapped() throws Exception{
-        assertFalse("should default to false", this.fieldMapping.isTableMapped());
+        assertFalse(this.fieldMapping.isTableMapped(), "should default to false");
 
         this.fieldMapping.setTableMapped(true);
-        assertTrue("should be true", this.fieldMapping.isTableMapped());
+        assertTrue(this.fieldMapping.isTableMapped(), "should be true");
 
         this.fieldMapping.setTableMapped(false);
-        assertFalse("should be false", this.fieldMapping.isTableMapped());
+        assertFalse(this.fieldMapping.isTableMapped(), "should be false");
     }
 
 
@@ -106,14 +107,16 @@ public class MethodMappingTest extends TestCase{
      * (Getter / Setter Test) Tests that the getColumnName() / setColumnName() works correctly.
      * @throws Exception If any exceptions are thrown during the test.
      */
+
+    @Test
     public void testGetDbFieldName() throws Exception{
-        assertNull("should default to null", this.fieldMapping.getColumnName());
+        assertNull(this.fieldMapping.getColumnName(), "should default to null");
 
         this.fieldMapping.setColumnName("test");
-        assertEquals("should be test", "test", this.fieldMapping.getColumnName());
+        assertEquals("test", this.fieldMapping.getColumnName(), "should be test");
 
         this.fieldMapping.setColumnName(null);
-        assertNull("should be null", this.fieldMapping.getColumnName());
+        assertNull(this.fieldMapping.getColumnName(), "should be null");
     }
 
 
@@ -121,60 +124,62 @@ public class MethodMappingTest extends TestCase{
      * (Getter / Setter Test) Tests that the getObjectMethod() / setObjectMethod() works correctly.
      * @throws Exception If any exceptions are thrown during the test.
      */
+    @Test
     public void testGetObjectMember() throws Exception{
-        assertNull("should default to null", this.fieldMapping.getObjectMethod());
+        assertNull(this.fieldMapping.getObjectMethod(), "should default to null");
 
         Method method = MethodMapping.class.getMethod("getColumnType", null);
 
         this.fieldMapping.setObjectMethod(MethodMapping.class.getMethod("getColumnType", null));
-        assertEquals("should be method", method, this.fieldMapping.getObjectMethod());
+        assertEquals(method, this.fieldMapping.getObjectMethod(), "should be method");
 
         this.fieldMapping.setObjectMethod(null);
-        assertNull("should be null", this.fieldMapping.getObjectMethod());
+        assertNull(this.fieldMapping.getObjectMethod(), "should be null");
     }
 
     /**
      * Tests the equals(Object o) method of the MethodMapping implementation
      */
+    @Test
     public void testEquals() throws Exception{
         IMethodMapping field1 = new com.jenkov.db.impl.mapping.method.MethodMapping();
         IMethodMapping field2 = new com.jenkov.db.impl.mapping.method.MethodMapping();
 
-        assertEquals("should default to equal", field1, field2);
+        assertEquals(field1, field2, "should default to equal");
 
         //test setColumnName and equals()
         field1.setColumnName("method");
-        assertFalse("db method 1 set", field1.equals(field2));
+        assertFalse(field1.equals(field2), "db method 1 set");
 
         field1.setColumnName(null);
         field2.setColumnName("method");
-        assertFalse("db method 2 set", field1.equals(field2));
+        assertFalse(field1.equals(field2), "db method 2 set");
 
         field1.setColumnName("method");
-        assertEquals("should be to equal - db fields equal", field1, field2);
+        assertEquals(field1, field2, "should be to equal - db fields equal");
 
         
         //test setObjectMethod and equals()
         field1.setObjectMethod(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null));
-        assertFalse("field1 object objectMethod set", field1.equals(field2));
+        assertFalse(field1.equals(field2), "field1 object objectMethod set");
 
         field1.setObjectMethod(null);
         field2.setObjectMethod(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null));
-        assertFalse("field2 object objectMethod set", field1.equals(field2));
+        assertFalse(field1.equals(field2), "field2 object objectMethod set");
 
         field1.setObjectMethod(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null));
-        assertEquals("should be to equal - same object objectMethod", field1, field2);
+        assertEquals(field1, field2, "should be to equal - same object objectMethod");
 
         //test setTableMapped and equals()
         field1.setTableMapped(true);
-        assertFalse("field1 table mapped true", field1.equals(field2));
+        assertFalse(field1.equals(field2), "field1 table mapped true");
 
         field1.setTableMapped(false);
         field2.setTableMapped(true);
-        assertFalse("field2 table mapped true", field1.equals(field2));
+        assertFalse(field1.equals(field2), "field2 table mapped true");
 
         field1.setTableMapped(true);
-        assertEquals("should be to equal - table mapped true", field1, field2);
+        assertEquals(field1, field2, "should be to equal - table mapped true");
     }
 
 

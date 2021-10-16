@@ -13,17 +13,21 @@ import com.jenkov.db.test.objects.PersistentObject;
 import com.jenkov.db.test.objects.TableWithAutoIncrement;
 import com.jenkov.db.util.JdbcUtil;
 import com.jenkov.db.PersistenceManager;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.sql.Connection;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author Jakob Jenkov,  Jenkov Development
  */
-public class ObjectWriterTest extends TestCase {
+public class ObjectWriterTest {
 
     protected IObjectReader reader    = null;
     protected IObjectWriter writer    = null;
@@ -33,10 +37,7 @@ public class ObjectWriterTest extends TestCase {
     protected SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
     protected IPersistenceConfiguration configuration = new PersistenceConfiguration(null);
 
-    public ObjectWriterTest(String testName){
-        super(testName);
-    }
-
+    @BeforeEach
     public void setUp() throws Exception{
         this.reader = new ObjectReader();
         this.writer = new ObjectWriter();
@@ -47,6 +48,7 @@ public class ObjectWriterTest extends TestCase {
         this.writer.setDatabase(Database.determineDatabase(connection));
     }
 
+    @AfterEach
     public void tearDown(){
         this.reader = null;
         this.writer = null;
@@ -56,6 +58,7 @@ public class ObjectWriterTest extends TestCase {
     }
 
 
+    @Test
     public void testInsertUpdateDelete() throws Exception{
         PersistentObject object1 = new PersistentObject();
         PersistentObject object2 = null;
@@ -88,12 +91,12 @@ public class ObjectWriterTest extends TestCase {
             object2 = (PersistentObject) this.reader.read(mapping, "select * from persistent_object where id=1",
                         this.connection);
 
-            assertEquals("wrong id", 1, object2.getId());
-            assertEquals("wrong name", "name changed", object2.getName());
+            assertEquals(1, object2.getId(), "wrong id");
+            assertEquals("name changed", object2.getName(), "wrong name");
 
             if(Environment.DATABASE == Environment.MYSQL){
-                assertFalse ("auto column should have auto generated date",
-                    object2.getAutoColumn().equals(this.dateFormat.parse("2004-01-01")));
+                assertFalse (object2.getAutoColumn().equals(this.dateFormat.parse("2004-01-01")),
+                        "auto column should have auto generated date");
             }
         } finally {
             Environment.executeSql(Environment.DELETE_PERSISTENT_OBJECT);
@@ -102,6 +105,7 @@ public class ObjectWriterTest extends TestCase {
         }
     }
 
+    @Test
     public void testUpdateWithOldPrimaryKeyValue() throws Exception{
         PersistentObject object1 = new PersistentObject();
         PersistentObject object2 = null;
@@ -133,12 +137,12 @@ public class ObjectWriterTest extends TestCase {
             object2 = (PersistentObject) this.reader.read(mapping, "select * from persistent_object where id=2",
                         this.connection);
 
-            assertEquals("wrong id", 2, object2.getId());
-            assertEquals("wrong name", "name changed", object2.getName());
+            assertEquals(2, object2.getId(), "wrong id");
+            assertEquals("name changed", object2.getName(), "wrong name");
 
             if(Environment.DATABASE == Environment.MYSQL){
-                assertFalse ("auto column should have auto generated date",
-                    object2.getAutoColumn().equals(this.dateFormat.parse("2004-01-01")));
+                assertFalse (object2.getAutoColumn().equals(this.dateFormat.parse("2004-01-01")),
+                        "auto column should have auto generated date");
             }
         } finally {
             this.writer.delete(mapping, object1, this.generator.generateDeleteStatement(mapping), this.connection);
@@ -147,7 +151,7 @@ public class ObjectWriterTest extends TestCase {
 
     }
 
-
+    @Test
     public void testInsertBatch() throws Exception {
         PersistentObject object1 = new PersistentObject();
         PersistentObject object2 = new PersistentObject();
@@ -179,12 +183,12 @@ public class ObjectWriterTest extends TestCase {
             objectsRead = this.reader.readList(mapping, "select * from persistent_object order by id", this.connection);
 
             object = (PersistentObject) objectsRead.get(0);
-            assertEquals("wrong id"  , 1      , object.getId());
-            assertEquals("wrong name", "name1", object.getName());
+            assertEquals(1      , object.getId(), "wrong id");
+            assertEquals("name1", object.getName(), "wrong name");
 
             object = (PersistentObject) objectsRead.get(1);
-            assertEquals("wrong id"  , 2      , object.getId());
-            assertEquals("wrong name", "name2", object.getName());
+            assertEquals(2      , object.getId(), "wrong id");
+            assertEquals("name2", object.getName(), "wrong name");
 
         } finally {
             this.writer.deleteByPrimaryKey(mapping, new Long(1), this.generator.generateDeleteStatement(mapping), this.connection);
@@ -193,6 +197,7 @@ public class ObjectWriterTest extends TestCase {
     }
 
 
+    @Test
     public void testUpdateBatch() throws Exception {
         PersistentObject object1 = new PersistentObject();
         PersistentObject object2 = new PersistentObject();
@@ -230,12 +235,12 @@ public class ObjectWriterTest extends TestCase {
             objectsRead = this.reader.readList(mapping, "select * from persistent_object order by id", this.connection);
 
             object = (PersistentObject) objectsRead.get(0);
-            assertEquals("wrong id"  , 1      , object.getId());
-            assertEquals("wrong name", "name11", object.getName());
+            assertEquals(1      , object.getId(), "wrong id");
+            assertEquals("name11", object.getName(), "wrong name");
 
             object = (PersistentObject) objectsRead.get(1);
-            assertEquals("wrong id"  , 2      , object.getId());
-            assertEquals("wrong name", "name22", object.getName());
+            assertEquals(2      , object.getId(), "wrong id");
+            assertEquals("name22", object.getName(), "wrong name");
 
         } finally {
             this.writer.deleteByPrimaryKey(mapping, new Long(1), this.generator.generateDeleteStatement(mapping), this.connection);
@@ -244,6 +249,7 @@ public class ObjectWriterTest extends TestCase {
     }
 
 
+    @Test
     public void testUpdateBatchWithOldPrimaryKeyValue() throws Exception {
         PersistentObject object1 = new PersistentObject();
         PersistentObject object2 = new PersistentObject();
@@ -285,15 +291,15 @@ public class ObjectWriterTest extends TestCase {
 
             objectsRead = this.reader.readList(mapping, "select * from persistent_object order by id", this.connection);
 
-            assertEquals("wrong object count", 2, objectsRead.size());
+            assertEquals(2, objectsRead.size(), "wrong object count");
 
             object = (PersistentObject) objectsRead.get(0);
-            assertEquals("wrong id"  , 11      , object.getId());
-            assertEquals("wrong name", "name11", object.getName());
+            assertEquals(11      , object.getId(), "wrong id");
+            assertEquals("name11", object.getName(), "wrong name");
 
             object = (PersistentObject) objectsRead.get(1);
-            assertEquals("wrong id"  , 22      , object.getId());
-            assertEquals("wrong name", "name22", object.getName());
+            assertEquals(22      , object.getId(), "wrong id"  );
+            assertEquals("name22", object.getName(), "wrong name");
 
         } finally {
             this.writer.deleteByPrimaryKey(mapping, new Long(1), this.generator.generateDeleteStatement(mapping), this.connection);
@@ -304,7 +310,7 @@ public class ObjectWriterTest extends TestCase {
     }
 
 
-
+    @Test
     public void testDeleteBatch() throws Exception {
         PersistentObject object1 = new PersistentObject();
         PersistentObject object2 = new PersistentObject();
@@ -335,7 +341,7 @@ public class ObjectWriterTest extends TestCase {
             this.writer.deleteBatch(mapping, objects, this.generator.generateDeleteStatement(mapping), this.connection);
 
             objectsRead = this.reader.readList(mapping, "select * from persistent_object order by id", this.connection);
-            assertEquals("List should be empty", 0, objectsRead.size());
+            assertEquals(0, objectsRead.size(), "List should be empty");
 
         } finally {
             this.writer.deleteByPrimaryKey(mapping, new Long(1), this.generator.generateDeleteStatement(mapping), this.connection);
@@ -346,7 +352,7 @@ public class ObjectWriterTest extends TestCase {
 
 
 
-
+    @Test
     public void testDeleteByPrimaryKey() throws Exception{
         PersistentObject object = null;
         IObjectMapping mapping = null;
@@ -359,26 +365,26 @@ public class ObjectWriterTest extends TestCase {
 
             object = (PersistentObject) this.reader.readByPrimaryKey(
                     mapping, new Long(1), this.generator.generateReadByPrimaryKeyStatement(mapping), connection);
-            assertNotNull("1 should exist", object);
+            assertNotNull(object, "1 should exist");
             object = (PersistentObject) this.reader.readByPrimaryKey(
                     mapping, new Long(2), this.generator.generateReadByPrimaryKeyStatement(mapping), connection);
-            assertNotNull("2 should exist", object);
+            assertNotNull(object, "2 should exist");
 
             this.writer.deleteByPrimaryKey(mapping, new Long(1), this.generator.generateDeleteStatement(mapping), connection);
             object = (PersistentObject) this.reader.readByPrimaryKey(
                     mapping, new Long(1), this.generator.generateReadByPrimaryKeyStatement(mapping), connection);
-            assertNull("1 should be deleted", object);
+            assertNull(object, "1 should be deleted");
             object = (PersistentObject) this.reader.readByPrimaryKey(
                     mapping, new Long(2), this.generator.generateReadByPrimaryKeyStatement(mapping), connection);
-            assertNotNull("2 should still exist", object);
+            assertNotNull(object, "2 should still exist");
 
             this.writer.deleteByPrimaryKey(mapping, new Long(2), this.generator.generateDeleteStatement(mapping), connection);
             object = (PersistentObject) this.reader.readByPrimaryKey(
                     mapping, new Long(1), this.generator.generateReadByPrimaryKeyStatement(mapping), connection);
-            assertNull("1 should be deleted", object);
+            assertNull(object, "1 should be deleted");
             object = (PersistentObject) this.reader.readByPrimaryKey(
                     mapping, new Long(2), this.generator.generateReadByPrimaryKeyStatement(mapping), connection);
-            assertNull("2 should be deleted", object);
+            assertNull(object, "2 should be deleted");
         } finally {
             Environment.executeSql("delete from persistent_object where id = 1");
             Environment.executeSql("delete from persistent_object where id = 2");
@@ -386,7 +392,7 @@ public class ObjectWriterTest extends TestCase {
         }
     }
 
-
+    @Test
     public void testDeleteByPrimaryKeysBatch() throws Exception{
         PersistentObject object1 = new PersistentObject();
         PersistentObject object2 = new PersistentObject();
@@ -420,7 +426,7 @@ public class ObjectWriterTest extends TestCase {
             this.writer.deleteByPrimaryKeysBatch(mapping, primaryKeys, this.generator.generateDeleteStatement(mapping), this.connection);
 
             objectsRead = this.reader.readList(mapping, "select * from persistent_object order by id", this.connection);
-            assertEquals("List should be empty", 0, objectsRead.size());
+            assertEquals(0, objectsRead.size(), "List should be empty");
         } finally {
             this.writer.deleteByPrimaryKey(mapping, new Long(1), this.generator.generateDeleteStatement(mapping), this.connection);
             this.writer.deleteByPrimaryKey(mapping, new Long(2), this.generator.generateDeleteStatement(mapping), this.connection);
@@ -428,21 +434,18 @@ public class ObjectWriterTest extends TestCase {
     }
 
 
-
-
-
     protected void assertObject1ReadCorrectly(PersistentObject object) throws Exception{
-        assertEquals("id    retrieved wrong", 1     , object.getId());
-        assertEquals("name  retrieved wrong", "name", object.getName());
-        assertEquals("value retrieved wrong", null  , object.getObjectValue());
-        assertEquals("object should not be retrieved", null, object.getObject());
+        assertEquals(1     , object.getId(), "id    retrieved wrong");
+        assertEquals("name", object.getName(), "name  retrieved wrong");
+        assertEquals(null  , object.getObjectValue(), "value retrieved wrong");
+        assertEquals(null, object.getObject(), "object should not be retrieved");
         if(Environment.DATABASE == Environment.MYSQL){
-            assertNotNull("auto column should not be null", object.getAutoColumn());
-            assertFalse ("auto column should have auto generated date",
-                    object.getAutoColumn().equals(this.dateFormat.parse("2004-01-01")));
+            assertNotNull(object.getAutoColumn(),"auto column should not be null");
+            assertFalse (object.getAutoColumn().equals(this.dateFormat.parse("2004-01-01")),
+                    "auto column should have auto generated date");
         }
 
-        assertTrue("ResultSet constructor not called", object.wasResultSetConstructorCalled());
+        assertTrue(object.wasResultSetConstructorCalled(), "ResultSet constructor not called");
     }
 
 }

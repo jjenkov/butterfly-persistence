@@ -1,12 +1,13 @@
 package com.jenkov.db.test;
 
-import junit.framework.TestCase;
 import com.jenkov.db.itf.PersistenceException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class PersistenceExceptionTest extends TestCase{
+public class PersistenceExceptionTest{
 
 
     public void testConstructors(){

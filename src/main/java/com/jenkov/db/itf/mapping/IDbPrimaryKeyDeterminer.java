@@ -25,11 +25,11 @@ public interface IDbPrimaryKeyDeterminer {
 
     /**
      * Returns a list of the columns that are part of the
-     * @param table
-     * @param databaseName
-     * @param connection
-     * @return
-     * @throws PersistenceException
+     * @param table         The table to determine the primary key for.
+     * @param databaseName  The name of the database containing the table
+     * @param connection    A JDBC Connection to the database.
+     * @return              An IKey instance representing the primary key for the given table.
+     * @throws PersistenceException If anything fails during determining the primary key for the table.
      */
     public IKey getPrimaryKeyMapping(String table, String databaseName, Connection connection)
     throws PersistenceException;

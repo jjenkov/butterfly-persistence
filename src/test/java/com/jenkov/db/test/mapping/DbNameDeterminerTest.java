@@ -3,7 +3,6 @@
  */
 package com.jenkov.db.test.mapping;
 
-import junit.framework.TestCase;
 import com.jenkov.db.impl.mapping.DbNameGuesser;
 import com.jenkov.db.impl.mapping.DbNameDeterminer;
 import com.jenkov.db.itf.PersistenceException;
@@ -16,16 +15,14 @@ import java.sql.Connection;
 import java.util.Collection;
 import java.lang.reflect.Method;
 
-public class DbNameDeterminerTest extends TestCase{
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+public class DbNameDeterminerTest {
 
     protected DbNameGuesser    nameGuesser    = new DbNameGuesser();
     protected DbNameDeterminer nameDeterminerOld = new DbNameDeterminer();
     protected Connection connection = null;
-
-    public DbNameDeterminerTest(String test){
-        super(test);
-    }
-
 
     public void setUp() throws Exception{
         this.connection = Environment.getConnection();

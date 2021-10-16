@@ -1,22 +1,27 @@
 package com.jenkov.db.test.init;
 
-import junit.framework.TestCase;
 import com.jenkov.db.jdbc.SimpleDataSource;
 import com.jenkov.db.PersistenceManager;
 import com.jenkov.db.itf.IDaos;
 import com.jenkov.db.itf.PersistenceException;
 import com.jenkov.db.impl.init.DatabaseVersionDeterminer;
+import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
 
  */
-public class DatabaseVersionDeterminerTest extends TestCase {
+public class DatabaseVersionDeterminerTest {
 
+    @Test
     public void testDetermineDatabaseVersion() throws PersistenceException {
 
-        SimpleDataSource          dataSource         = new SimpleDataSource("org.h2.Driver", "jdbc:h2:database/h2/init-test", "sa", "");
+        //todo should this DataSource, or the database coordinates at least, be obtained from the Environment class?
+        SimpleDataSource          dataSource         = new SimpleDataSource("org.h2.Driver", "jdbc:h2:./database/h2/init-test", "sa", "");
         PersistenceManager        persistenceManager = new PersistenceManager(dataSource);
         DatabaseVersionDeterminer versionDeterminer  = new DatabaseVersionDeterminer();
 

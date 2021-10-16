@@ -5,6 +5,8 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.io.PrintWriter;
+import java.sql.SQLFeatureNotSupportedException;
+import java.util.logging.Logger;
 
 /**
  * This class is still experimental. Though Butterfly Persistence will eventually get
@@ -18,6 +20,7 @@ public class SimpleDataSource implements DataSource{
     private String url      = null;
     private String user     = null;
     private String password = null;
+
 
     /**
      *
@@ -47,6 +50,19 @@ public class SimpleDataSource implements DataSource{
         } catch (ClassNotFoundException e) {
             throw new IllegalArgumentException("Error instantiating JDBC driver: " + e.getMessage());
         }
+    }
+
+
+
+
+    /**
+     * Not supported.
+     * @return 0
+     * @throws SQLFeatureNotSupportedException Never.
+     */
+    @Override
+    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+        throw new SQLFeatureNotSupportedException("getParentLogger() is not supported");
     }
 
     /**

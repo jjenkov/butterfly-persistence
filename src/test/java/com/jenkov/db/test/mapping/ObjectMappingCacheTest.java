@@ -1,15 +1,18 @@
 package com.jenkov.db.test.mapping;
 
-import junit.framework.TestCase;
 import com.jenkov.db.impl.mapping.ObjectMappingCache;
 import com.jenkov.db.impl.mapping.ObjectMapping;
 import com.jenkov.db.itf.mapping.IObjectMapping;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class ObjectMappingCacheTest extends TestCase {
+public class ObjectMappingCacheTest {
 
+    @Test
     public void testAddGetRemoveObjectMapping(){
         ObjectMappingCache cache = new ObjectMappingCache();
         IObjectMapping mapping1 = new ObjectMapping();

@@ -64,6 +64,7 @@ public interface IObjectMappingFactory {
      */
     public IGetterMapping createGetterMapping(Class objectType);
 
+
     public IGetterMapping createGetterMapping(Class methodOwner, String methodName, String columnName) throws PersistenceException;
 
     public IGetterMapping createGetterMapping(Class methodOwner, String methodName, String columnName, boolean isTableMapped) throws PersistenceException;
@@ -237,6 +238,8 @@ public interface IObjectMappingFactory {
     /**
      * Creates a new <code>IKey</code> instance.  Key instances are used
      * to represent database keys. For instance primary keys and foreign keys.
+     *
+     * @return The IKey instance just created.
      */
     public IKey createKey();
 }

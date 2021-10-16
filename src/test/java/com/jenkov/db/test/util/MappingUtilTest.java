@@ -9,14 +9,17 @@ import com.jenkov.db.util.MappingUtil;
 import com.jenkov.testing.mock.impl.MethodInvocation;
 import com.jenkov.testing.mock.impl.MockFactory;
 import com.jenkov.testing.mock.itf.IMock;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.sql.PreparedStatement;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class MappingUtilTest extends TestCase{
+public class MappingUtilTest{
 
     private IObjectMappingFactory mappingFactory = new ObjectMappingFactory();
 
@@ -24,6 +27,7 @@ public class MappingUtilTest extends TestCase{
     private IObjectMapping mapping = null;
 
 
+    @BeforeEach
     protected void setUp() throws Exception {
         mapping = mappingFactory.createObjectMapping();
 
@@ -48,10 +52,8 @@ public class MappingUtilTest extends TestCase{
 
     }
 
-    protected void tearDown() throws Exception {
-        super.tearDown();
-    }
 
+    @Test
     public void testInsertPrimaryKey() throws Exception{
 
         PreparedStatement statement = (PreparedStatement) MockFactory.createProxy(PreparedStatement.class);
@@ -81,7 +83,7 @@ public class MappingUtilTest extends TestCase{
         this.mapping.getPrimaryKey().removeColumn("id");
         invocationHandler.clear();
         MappingUtil.insertPrimaryKey(this.mapping, keyValue, statement, 1);
-        assertEquals("should be no invcations", 0, invocationHandler.getInvocations().size());
+        assertEquals(0, invocationHandler.getInvocations().size(), "should be no invcations");
 
         
     }

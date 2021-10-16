@@ -6,18 +6,21 @@ import com.jenkov.db.impl.ObjectDao;
 import com.jenkov.db.impl.PersistenceConfiguration;
 import com.jenkov.db.itf.IObjectDao;
 import com.jenkov.db.itf.IPersistenceConfiguration;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import static org.junit.jupiter.api.Assertions.assertSame;
+
 
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class DaosTest extends TestCase {
+public class DaosTest {
 
+    @Test
     public void testGetters() throws SQLException, IllegalAccessException, IOException, ClassNotFoundException, InstantiationException {
         Connection                connection = Environment.getConnection();
         IPersistenceConfiguration config     = new PersistenceConfiguration(new PersistenceManager());

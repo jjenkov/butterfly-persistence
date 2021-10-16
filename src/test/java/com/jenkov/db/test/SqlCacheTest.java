@@ -1,14 +1,17 @@
 package com.jenkov.db.test;
 
-import junit.framework.TestCase;
 import com.jenkov.db.impl.SqlCache;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Jakob Jenkov - Copyright 2004-2006 Jenkov Development
  */
-public class SqlCacheTest extends TestCase {
+public class SqlCacheTest {
 
 
+    @Test
     public void test() throws Exception {
         SqlCache cache = new SqlCache();
 

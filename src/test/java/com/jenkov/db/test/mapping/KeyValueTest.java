@@ -1,13 +1,16 @@
 package com.jenkov.db.test.mapping;
 
-import junit.framework.TestCase;
 import com.jenkov.db.impl.mapping.KeyValue;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class KeyValueTest extends TestCase {
+public class KeyValueTest {
 
+    @Test
     public void testToString(){
         KeyValue keyValue = new KeyValue();
         keyValue.addColumnValue("one", new Integer(1));

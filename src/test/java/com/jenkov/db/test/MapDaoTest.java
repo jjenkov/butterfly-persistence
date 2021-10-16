@@ -1,17 +1,21 @@
 package com.jenkov.db.test;
 
-import junit.framework.TestCase;
 import com.jenkov.db.PersistenceManager;
 import com.jenkov.db.itf.IDaos;
+import org.junit.jupiter.api.Test;
 
 import java.util.Map;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 /**
  * @author Jakob Jenkov - Copyright 2004-2006 Jenkov Development
  */
-public class MapDaoTest extends TestCase {
+public class MapDaoTest {
 
+    @Test
     public void testReadMap() throws Exception {
         PersistenceManager manager = new PersistenceManager(Environment.getDataSource());
 

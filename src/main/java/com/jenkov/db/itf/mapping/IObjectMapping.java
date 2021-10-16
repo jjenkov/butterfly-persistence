@@ -83,8 +83,10 @@ public interface IObjectMapping {
      *
      * @param object The object containing the primary key values to extract into the
      *        IKeyValue instance.
+     * @param keyValue The IKeyValue to insert the key value into (which is then returned). If null is passed, a new IKeyValue is created and returned.
      * @return An IKeyValue matching the IKey primary key of this object mapping,
      *        with the values extracted from this object.
+     * @throws PersistenceException If returning an IKeyValue for the primary key fails.
      */
     public IKeyValue    getPrimaryKeyValueForObject(Object object, IKeyValue keyValue) throws PersistenceException;
 
@@ -92,9 +94,10 @@ public interface IObjectMapping {
     /**
      * Returns the primary key value as an IKeyValue instance for the record the ResultSet is
      * pointing to.
-     * @param result
-     * @return
-     * @throws PersistenceException
+     * @param result The ResultSet pointing to the record to read the primary key value for
+     * @param keyValue The IKeyValue to insert the key value into (which is then returned). If null is passed, a new IKeyValue is created and returned.
+     * @return The IKeyValue matching the primary key for the given record.
+     * @throws PersistenceException If creating an IKeyValue somehow fails for the given record.
      */
     public IKeyValue    getPrimaryKeyValueForRecord(ResultSet result, IKeyValue keyValue) throws PersistenceException;
 
@@ -160,6 +163,12 @@ public interface IObjectMapping {
     public void         removeGetterMapping(Method method);
 
 
+    /**
+     * Replaces a given getter mapping with a new getter mapping instead.
+     * @param currentColumnName The current column name - which you want to replace
+     * @param newColumnName The new column name you want to replace the current column name with.
+     * @throws PersistenceException If replacing the getter mapping fails.
+     */
     public void replaceGetterMapping(String currentColumnName, String newColumnName) throws PersistenceException;
 
 

@@ -1,18 +1,21 @@
 package com.jenkov.db.test.util;
 
 import com.jenkov.db.util.CollectionUtils;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class CollectionUtilTest extends TestCase{
+public class CollectionUtilTest {
 
+    @Test
     public void testToList() throws Exception {
         List list = new ArrayList();
         assertSame(list, CollectionUtils.toList(list));
@@ -23,7 +26,7 @@ public class CollectionUtilTest extends TestCase{
         set.add("test3");
 
         List list2 = CollectionUtils.toList(set);
-        assertEquals("size should be 3", 3, list2.size());
+        assertEquals(3, list2.size(), "size should be 3");
         assertTrue(list2.contains("test1"));
         assertTrue(list2.contains("test2"));
         assertTrue(list2.contains("test3"));

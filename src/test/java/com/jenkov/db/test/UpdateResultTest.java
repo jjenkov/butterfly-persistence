@@ -1,15 +1,18 @@
 package com.jenkov.db.test;
 
 import com.jenkov.db.itf.UpdateResult;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import java.math.BigDecimal;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class UpdateResultTest extends TestCase {
+public class UpdateResultTest {
 
+    @Test
     public void testAddGetGeneratedKeys(){
         UpdateResult result = new UpdateResult();
         result.addGeneratedKey("123");
@@ -20,6 +23,7 @@ public class UpdateResultTest extends TestCase {
         assertEquals(new BigDecimal(123), result.getGeneratedKeyAsBigDecimal(0));
     }
 
+    @Test
     public void testAddGetGeneratedKeysAsNumbers(){
         UpdateResult result = new UpdateResult();
         result.addGeneratedKey(new Long(123));

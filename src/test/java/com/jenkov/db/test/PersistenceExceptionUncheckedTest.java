@@ -2,15 +2,18 @@ package com.jenkov.db.test;
 
 import com.jenkov.db.itf.PersistenceExceptionUnchecked;
 import com.jenkov.db.itf.PersistenceException;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class PersistenceExceptionUncheckedTest extends TestCase {
+public class PersistenceExceptionUncheckedTest {
 
+    @Test
     public void testConstructors(){
         PersistenceExceptionUnchecked unchecked = new PersistenceExceptionUnchecked();
         assertNull(unchecked.getMessage());

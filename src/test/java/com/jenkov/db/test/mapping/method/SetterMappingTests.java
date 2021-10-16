@@ -4,7 +4,7 @@ import com.jenkov.db.impl.mapping.method.*;
 import com.jenkov.testing.mock.impl.MethodInvocation;
 import com.jenkov.testing.mock.impl.MockFactory;
 import com.jenkov.testing.mock.itf.IMock;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -16,11 +16,14 @@ import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.ResultSet;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class SetterMappingTests extends TestCase{
+public class SetterMappingTests {
 
+    @Test
     public void testByteArrraySetterMappiing() throws Exception {
         ByteArraySetterMapping mapping = new ByteArraySetterMapping();
         mapping.setObjectMethod(DataObject.class.getMethod("setByteArray", new Class[]{byte[].class}));
@@ -50,7 +53,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(mock.getInvocations());
         mock.assertInvoked(new MethodInvocation("getAsciiStream", new Class[]{String.class}, new Object[]{null}));
-        assertEquals("wrong value set on data object", new AsciiStream(input), dataObject.getAsciiStream());
+        assertEquals(new AsciiStream(input), dataObject.getAsciiStream(), "wrong value set on data object");
     }
 
 
@@ -67,7 +70,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(Mock.getInvocations());
         Mock.assertInvoked(new MethodInvocation("getBigDecimal", new Class[]{String.class}, new Object[]{null}));
-        assertEquals("wrong value set on data object", new BigDecimal(12), dataObject.getBigDecimal());
+        assertEquals(new BigDecimal(12), dataObject.getBigDecimal(), "wrong value set on data object");
     }
 
     public void testBinaryStreamSetterMapping() throws Exception {
@@ -84,7 +87,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(Mock.getInvocations());
         resultMock.assertInvoked(new MethodInvocation("getBinaryStream", new Class[]{String.class}, new Object[]{null}));
-        assertEquals("wrong value set on data object", new BinaryStream(input), dataObject.getBinaryStream());
+        assertEquals(new BinaryStream(input), dataObject.getBinaryStream(), "wrong value set on data object");
     }
 
 
@@ -102,7 +105,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(resultMock.getInvocations());
         resultMock.assertInvoked(new MethodInvocation("getBlob", new Class[]{String.class}, new Object[]{null}));
-        assertSame("wrong value set on data object", blob, dataObject.getBlob());
+        assertSame(blob, dataObject.getBlob(), "wrong value set on data object");
     }
 
     public void testBooleanSetterMapping() throws Exception {
@@ -118,7 +121,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(Mock.getInvocations());
         resultMock.assertInvoked(new MethodInvocation("getBoolean", new Class[]{String.class}, new Object[]{null}));
-        assertEquals("wrong value set on data object", true, dataObject.isBoolean());
+        assertEquals(true, dataObject.isBoolean(), "wrong value set on data object");
 
         resultMock.clear();
         mapping.insertValueIntoObject(dataObject, result);
@@ -151,7 +154,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
 //        System.out.println(resultMock.getInvocations());
         resultMock.assertInvoked(new MethodInvocation("getByte", new Class[]{String.class}, new Object[]{null}));
-        assertEquals("wrong value set on data object", 25, dataObject.getByteData());
+        assertEquals(25, dataObject.getByteData(), "wrong value set on data object");
 
         resultMock.clear();
         mapping.insertValueIntoObject(dataObject, result);
@@ -173,7 +176,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(resultMock.getInvocations());
         resultMock.assertInvoked(new MethodInvocation("getCharacterStream", new Class[]{String.class}, new Object[]{null}));
-        assertEquals("wrong value set on data object", new CharacterStream(reader), dataObject.getCharacterStream());
+        assertEquals(new CharacterStream(reader), dataObject.getCharacterStream(), "wrong value set on data object");
     }
 
 
@@ -191,7 +194,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(resultMock.getInvocations());
         resultMock.assertInvoked(new MethodInvocation("getClob", new Class[]{String.class}, new Object[]{null}));
-        assertSame("wrong value set on data object", clob, dataObject.getClob());
+        assertSame(clob, dataObject.getClob(), "wrong value set on data object");
     }
 
     public void testDoubleSetterMapping() throws Exception {
@@ -207,7 +210,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(resultMock.getInvocations());
         resultMock.assertInvoked(new MethodInvocation("getDouble", new Class[]{String.class}, new Object[]{null}));
-        assertEquals("wrong value set on data object", new Double(10), new Double(dataObject.getDouble()));
+        assertEquals(new Double(10), new Double(dataObject.getDouble()), "wrong value set on data object");
 
         resultMock.clear();
         mapping.insertValueIntoObject(dataObject, result);
@@ -231,7 +234,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(resultMock.getInvocations());
         resultMock.assertInvoked(new MethodInvocation("getFloat", new Class[]{String.class}, new Object[]{null}));
-        assertEquals("wrong value set on data object", new Float(10), new Float(dataObject.getFloatData()));
+        assertEquals(new Float(10), new Float(dataObject.getFloatData()), "wrong value set on data object");
 
         resultMock.clear();
         mapping.insertValueIntoObject(dataObject, result);
@@ -255,7 +258,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(resultMock.getInvocations());
         resultMock.assertInvoked(new MethodInvocation("getInt", new Class[]{String.class}, new Object[]{null}));
-        assertEquals("wrong value set on data object", 10, dataObject.getIntData());
+        assertEquals(10, dataObject.getIntData(), "wrong value set on data object");
 
         resultMock.clear();
         mapping.insertValueIntoObject(dataObject, result);
@@ -277,7 +280,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(resultMock.getInvocations());
         resultMock.assertInvoked(new MethodInvocation("getLong", new Class[]{String.class}, new Object[]{null}));
-        assertEquals("wrong value set on data object", 10, dataObject.getLongData());
+        assertEquals(10, dataObject.getLongData(), "wrong value set on data object");
 
         resultMock.clear();
         mapping.insertValueIntoObject(dataObject, result);
@@ -300,7 +303,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(resultMock.getInvocations());
         resultMock.assertInvoked(new MethodInvocation("getShort", new Class[]{String.class}, new Object[]{null}));
-        assertEquals("wrong value set on data object", 10, dataObject.getShortData());
+        assertEquals(10, dataObject.getShortData(), "wrong value set on data object");
 
         resultMock.clear();
         mapping.insertValueIntoObject(dataObject, result);
@@ -324,7 +327,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(resultMock.getInvocations());
         resultMock.assertInvoked(new MethodInvocation("getDate", new Class[]{String.class}, new Object[]{null}));
-        assertEquals("wrong value set on data object", time, dataObject.getSqlDate().getTime());
+        assertEquals(time, dataObject.getSqlDate().getTime(), "wrong value set on data object");
     }
 
 
@@ -341,7 +344,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(resultMock.getInvocations());
         resultMock.assertInvoked(new MethodInvocation("getTime", new Class[]{String.class}, new Object[]{null}));
-        assertEquals("wrong value set on data object", time, dataObject.getTime().getTime());
+        assertEquals(time, dataObject.getTime().getTime(), "wrong value set on data object");
     }
 
 
@@ -358,7 +361,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(resultMock.getInvocations());
         resultMock.assertInvoked(new MethodInvocation("getTimestamp", new Class[]{String.class}, new Object[]{null}));
-        assertEquals("wrong value set on data object", time, dataObject.getTimestamp().getTime());
+        assertEquals(time, dataObject.getTimestamp().getTime(), "wrong value set on data object");
     }
 
     public void testUrlSetterMapping() throws Exception {
@@ -374,7 +377,7 @@ public class SetterMappingTests extends TestCase{
         mapping.insertValueIntoObject(dataObject, result);
         //System.out.println(resultMock.getInvocations());
         resultMock.assertInvoked(new MethodInvocation("getURL", new Class[]{String.class}, new Object[]{null}));
-        assertEquals("wrong value set on data object", url, dataObject.getUrl());
+        assertEquals(url, dataObject.getUrl(), "wrong value set on data object");
     }
 
 

@@ -4,7 +4,7 @@ import com.jenkov.db.impl.mapping.method.*;
 import com.jenkov.testing.mock.impl.MethodInvocation;
 import com.jenkov.testing.mock.impl.MockFactory;
 import com.jenkov.testing.mock.itf.IMock;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import java.io.InputStream;
 import java.io.Reader;
@@ -14,11 +14,14 @@ import java.sql.Blob;
 import java.sql.Clob;
 import java.sql.PreparedStatement;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class GetterMappingTests extends TestCase{
+public class GetterMappingTests {
 
+    @Test
     public void testAsciiStreamGetterMapping() throws Exception {
         AsciiStreamGetterMapping      mapping = new AsciiStreamGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -31,6 +34,7 @@ public class GetterMappingTests extends TestCase{
                 new Object[]{new Integer(1), null, new Integer(100)}));
     }
 
+    @Test
     public void testBigDecimalGetterMapping() throws Exception {
         BigDecimalGetterMapping  mapping = new BigDecimalGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -43,6 +47,7 @@ public class GetterMappingTests extends TestCase{
                 new Object[]{new Integer(1), bigDecimal}));
     }
 
+    @Test
     public void testBinaryStreamGetterMapping() throws Exception {
         BinaryStreamGetterMapping  mapping = new BinaryStreamGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -55,6 +60,7 @@ public class GetterMappingTests extends TestCase{
                 new Object[]{new Integer(1), null, new Integer(100)}));
     }
 
+    @Test
     public void testBlobGetterMapping() throws Exception {
         BlobGetterMapping  mapping = new BlobGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -67,6 +73,7 @@ public class GetterMappingTests extends TestCase{
                 new Object[]{new Integer(1), blob}));
     }
 
+    @Test
     public void testBooleanGetterMapping() throws Exception {
         BooleanGetterMapping  mapping = new BooleanGetterMapping();
         mapping.setColumnType(java.sql.Types.BOOLEAN);
@@ -101,6 +108,7 @@ public class GetterMappingTests extends TestCase{
                 new Object[]{new Integer(1), new Integer(0)}));
     }
 
+    @Test
     public void testByteArrayGetterMapping() throws Exception {
         ByteArrayGetterMapping   mapping = new ByteArrayGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -113,6 +121,7 @@ public class GetterMappingTests extends TestCase{
                 new Object[]{new Integer(1), byteArray}));
     }
 
+    @Test
     public void testByteGetterMapping() throws Exception {
         ByteGetterMapping        mapping = new ByteGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -131,6 +140,7 @@ public class GetterMappingTests extends TestCase{
         assertEquals(1, statementMock.getInvocations().size());
     }
 
+    @Test
     public void testCharacterStreamGetterMapping() throws Exception {
         CharacterStreamGetterMapping mapping = new CharacterStreamGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -143,6 +153,7 @@ public class GetterMappingTests extends TestCase{
                 new Object[]{new Integer(1), null, new Integer(110)}));
     }
 
+    @Test
     public void testClobGetterMapping() throws Exception {
         ClobGetterMapping  mapping = new ClobGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -155,6 +166,7 @@ public class GetterMappingTests extends TestCase{
                 new Object[]{new Integer(1), clob}));
     }
 
+    @Test
     public void testDateGetterMapping() throws Exception {
         DateGetterMapping      mapping = new DateGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -168,6 +180,7 @@ public class GetterMappingTests extends TestCase{
                 new Class[]{int.class, java.sql.Timestamp.class}, new Object[]{new Integer(1), new java.sql.Timestamp(date)}));
     }
 
+    @Test
     public void testDoubleGetterMapping() throws Exception {
         DoubleGetterMapping      mapping = new DoubleGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -185,6 +198,7 @@ public class GetterMappingTests extends TestCase{
         assertEquals(1, statementMock.getInvocations().size());
     }
 
+    @Test
     public void testFloatGetterMapping() throws Exception {
         FloatGetterMapping      mapping = new FloatGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -201,6 +215,7 @@ public class GetterMappingTests extends TestCase{
         assertEquals(1, statementMock.getInvocations().size());
     }
 
+    @Test
     public void testIntGetterMapping() throws Exception {
         IntGetterMapping      mapping = new IntGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -217,6 +232,7 @@ public class GetterMappingTests extends TestCase{
         assertEquals(1, statementMock.getInvocations().size());
     }
 
+    @Test
     public void testShortGetterMapping() throws Exception {
         ShortGetterMapping      mapping = new ShortGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -234,7 +250,7 @@ public class GetterMappingTests extends TestCase{
 
     }
 
-
+    @Test
     public void testStringGetterMapping() throws Exception {
         StringGetterMapping      mapping = new StringGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -245,6 +261,7 @@ public class GetterMappingTests extends TestCase{
                 new Class[]{int.class, String.class}, new Object[]{new Integer(1), "value"}));
     }
 
+    @Test
     public void testLongGetterMapping() throws Exception {
         LongGetterMapping      mapping = new LongGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -262,6 +279,7 @@ public class GetterMappingTests extends TestCase{
 
     }
 
+    @Test
     public void testSqlDateGetterMapping() throws Exception {
         SqlDateGetterMapping      mapping = new SqlDateGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -273,6 +291,7 @@ public class GetterMappingTests extends TestCase{
                 new Class[]{int.class, java.sql.Date.class}, new Object[]{new Integer(1), new java.sql.Date(date)}));
     }
 
+    @Test
     public void testTimeGetterMapping() throws Exception {
         TimeGetterMapping      mapping = new TimeGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -284,6 +303,7 @@ public class GetterMappingTests extends TestCase{
                 new Class[]{int.class, java.sql.Time.class}, new Object[]{new Integer(1), new java.sql.Time(date)}));
     }
 
+    @Test
     public void testTimestampGetterMapping() throws Exception {
         TimestampGetterMapping      mapping = new TimestampGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();
@@ -295,6 +315,7 @@ public class GetterMappingTests extends TestCase{
                 new Class[]{int.class, java.sql.Timestamp.class}, new Object[]{new Integer(1), new java.sql.Timestamp(date)}));
     }
 
+    @Test
     public void testUrlGetterMapping() throws Exception {
         UrlGetterMapping      mapping = new UrlGetterMapping();
         PreparedStatement statement = createPreparedStatementProxy();

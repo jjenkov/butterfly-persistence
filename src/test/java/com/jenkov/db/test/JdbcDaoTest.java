@@ -12,7 +12,7 @@ import com.jenkov.db.itf.IDaos;
 import com.jenkov.testing.mock.impl.MockFactory;
 import com.jenkov.testing.mock.impl.MethodInvocation;
 import com.jenkov.testing.mock.itf.IMock;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import java.sql.ResultSet;
 import java.sql.Connection;
@@ -20,14 +20,17 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Set;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * @author Jakob Jenkov - Copyright 2004-2006 Jenkov Development
  */
-public class JdbcDaoTest extends TestCase {
+public class JdbcDaoTest {
 
     PersistenceManager manager = new PersistenceManager(Environment.getDataSource());
 
+    @Test
     public void testRead_UsingGraphProcessor() throws Exception{
         IDaos daos = manager.createDaos();
         try{
@@ -67,6 +70,8 @@ public class JdbcDaoTest extends TestCase {
         }
     }
 
+
+    @Test
     public void testReadLong() throws Exception {
 
 
@@ -83,6 +88,7 @@ public class JdbcDaoTest extends TestCase {
         }
     }
 
+    @Test
     public void testRead() throws Exception {
 
         IDaos daos = manager.createDaos();
@@ -118,6 +124,7 @@ public class JdbcDaoTest extends TestCase {
         }
     }
 
+    @Test
     public void testRead_PreparedStatementManager() throws Exception{
         IDaos daos = manager.createDaos();
         try{
@@ -157,6 +164,7 @@ public class JdbcDaoTest extends TestCase {
         }
     }
 
+    @Test
     public void testRead_exceptions() throws Exception {
         IDaos daos = manager.createDaos();
         try{
@@ -173,6 +181,7 @@ public class JdbcDaoTest extends TestCase {
         }
     }
 
+    @Test
     public void testUpdate() throws Exception {
         IDaos daos = manager.createDaos();
 
@@ -194,7 +203,7 @@ public class JdbcDaoTest extends TestCase {
         }
     }
 
-
+    @Test
     public void testUpdate_exceptions() throws Exception{
         IDaos daos = manager.createDaos();
         try{
@@ -210,7 +219,7 @@ public class JdbcDaoTest extends TestCase {
     }
 
 
-
+    @Test
     public void testReadIdString() throws Exception {
         IDaos daos = manager.createDaos();
         try{

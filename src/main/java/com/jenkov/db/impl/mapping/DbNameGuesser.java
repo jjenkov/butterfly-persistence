@@ -1,6 +1,3 @@
-/**
- * User: Administrator
- */
 package com.jenkov.db.impl.mapping;
 
 import com.jenkov.db.impl.WordTokenizer;
@@ -10,6 +7,11 @@ import com.jenkov.db.util.ClassUtil;
 import java.lang.reflect.Method;
 import java.util.*;
 
+
+/**
+ *  This class guesses possible database table and column names based on class or field names.
+ *
+ */
 public class DbNameGuesser implements IDbNameGuesser {
 
     public Collection getPossibleNames(String name){
@@ -69,8 +71,8 @@ public class DbNameGuesser implements IDbNameGuesser {
     }
 
     private boolean isLastCharacterUpperCase(String nameInSingular) {
-        String upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZÆØÅÄÖÜ";
-        String lowerCase = "abcdefghijklmnopqrstuvwzyzæøåäöü";
+        String upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZÃ†Ã˜Ã…Ã„Ã–Ãœ";
+        String lowerCase = "abcdefghijklmnopqrstuvwzyzÃ¦Ã¸Ã¥Ã¤Ã¶Ã¼";
         String lastCharacter = nameInSingular.length() > 0 ?
                 nameInSingular.substring(nameInSingular.length()-1, nameInSingular.length()) : "";
         if(upperCase.indexOf(lastCharacter) > -1 ){

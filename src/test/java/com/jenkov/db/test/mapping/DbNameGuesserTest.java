@@ -5,58 +5,62 @@ package com.jenkov.db.test.mapping;
 
 import com.jenkov.db.impl.mapping.DbNameGuesser;
 import com.jenkov.db.test.objects.PersistentObject;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 
 import java.lang.reflect.Method;
 import java.util.Collection;
 
-public class DbNameGuesserTest extends TestCase{
+import static org.junit.jupiter.api.Assertions.*;
+
+public class DbNameGuesserTest{
 
     protected DbNameGuesser nameGuesser = new DbNameGuesser();
 
+    @Test
     public void testGetPossibleTableNames(){
         Collection names = this.nameGuesser.getPossibleTableNames(PersistentObject.class);
-        assertEquals("wrong number of names guessed", 16, names.size());
-        assertTrue("1", names.contains("PersistentObject"));
-        assertTrue("2", names.contains("persistentObject"));
-        assertTrue("3", names.contains("persistentobject"));
-        assertTrue("4", names.contains("PERSISTENTOBJECT"));
-        assertTrue("5", names.contains("Persistent_Object"));
-        assertTrue("6", names.contains("persistent_object"));
-        assertTrue("7", names.contains("PERSISTENT_OBJECT"));
+        assertEquals(16, names.size(), "wrong number of names guessed");
+        assertTrue(names.contains("PersistentObject"), "1");
+        assertTrue(names.contains("persistentObject"), "2");
+        assertTrue(names.contains("persistentobject"), "3");
+        assertTrue(names.contains("PERSISTENTOBJECT"), "4");
+        assertTrue(names.contains("Persistent_Object"), "5");
+        assertTrue(names.contains("persistent_object"), "6");
+        assertTrue(names.contains("PERSISTENT_OBJECT"), "7");
 
-        assertTrue("8", names.contains("PersistentObjects"));
-        assertTrue("9", names.contains("persistentObjects"));
-        assertTrue("10", names.contains("persistentobjects"));
-        assertTrue("11", names.contains("PERSISTENTOBJECTS"));
-        assertTrue("12", names.contains("PERSISTENTOBJECTs"));
-        assertTrue("13", names.contains("Persistent_Objects"));
-        assertTrue("14", names.contains("persistent_objects"));
-        assertTrue("15", names.contains("PERSISTENT_OBJECTS"));
-        assertTrue("16", names.contains("PERSISTENT_OBJECTs"));
+        assertTrue(names.contains("PersistentObjects"), "8");
+        assertTrue(names.contains("persistentObjects"), "9");
+        assertTrue(names.contains("persistentobjects"), "10");
+        assertTrue(names.contains("PERSISTENTOBJECTS"), "11");
+        assertTrue(names.contains("PERSISTENTOBJECTs"), "12");
+        assertTrue(names.contains("Persistent_Objects"), "13");
+        assertTrue(names.contains("persistent_objects"), "14");
+        assertTrue(names.contains("PERSISTENT_OBJECTS"), "15");
+        assertTrue(names.contains("PERSISTENT_OBJECTs"), "16");
     }
 
+    @Test
     public void testGetPossibleFieldNames() throws Exception{
         Class objectClass = PersistentObject.class;
 
         Method method = objectClass.getMethod("getObjectValue", new Class[] {});
 
         Collection names = this.nameGuesser.getPossibleColumnNames(method);
-        assertEquals("wrong number of names guessed for getObjectValue()", 7, names.size());
-        assertTrue("1", names.contains("ObjectValue"));
-        assertTrue("2", names.contains("objectValue"));
-        assertTrue("3", names.contains("objectvalue"));
-        assertTrue("4", names.contains("OBJECTVALUE"));
-        assertTrue("5", names.contains("Object_Value"));
-        assertTrue("6", names.contains("object_value"));
-        assertTrue("7", names.contains("OBJECT_VALUE"));
+        assertEquals(7, names.size(), "wrong number of names guessed for getObjectValue()");
+        assertTrue(names.contains("ObjectValue"), "1");
+        assertTrue(names.contains("objectValue"), "2");
+        assertTrue(names.contains("objectvalue"), "3");
+        assertTrue(names.contains("OBJECTVALUE"), "4");
+        assertTrue(names.contains("Object_Value"), "5");
+        assertTrue(names.contains("object_value"), "6");
+        assertTrue(names.contains("OBJECT_VALUE"), "7");
 
         method = objectClass.getMethod("getObject", new Class[] {});
         names = this.nameGuesser.getPossibleColumnNames(method);
-        assertEquals("wrong number of names guessed for getObject()",3, names.size());
-        assertTrue("1", names.contains("Object"));
-        assertTrue("2", names.contains("object"));
-        assertTrue("3", names.contains("OBJECT"));
+        assertEquals(3, names.size(), "wrong number of names guessed for getObject()");
+        assertTrue(names.contains("Object"), "1");
+        assertTrue(names.contains("object"), "2");
+        assertTrue(names.contains("OBJECT"), "3");
     }
 }

@@ -13,47 +13,50 @@ import com.jenkov.db.impl.mapping.method.SetterMapping;
 import com.jenkov.db.itf.mapping.*;
 import com.jenkov.db.itf.PersistenceException;
 import com.jenkov.db.test.objects.PersistentObject;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Method;
 import java.sql.Connection;
 
-public class ObjectMappingTest extends TestCase{
+import static org.junit.jupiter.api.Assertions.*;
+
+public class ObjectMappingTest {
 
     protected Connection         connection = null;
     protected IObjectMapping     mapping    = null;
 
-    public ObjectMappingTest(String test){
-        super(test);
-    }
 
+    @BeforeEach
     public void setUp() throws Exception {
         //this.connection = Environment.getConnection();
         //this.method = new ObjectMapper().mapToTable(PersistentObject.class, this.connection, (String) null);
         this.mapping = new ObjectMapping();
     }
 
+    @Test
     public void testGetTableName() throws Exception {
-        assertNull("should default to null", this.mapping.getTableName());
+        assertNull(this.mapping.getTableName(), "should default to null");
 
         this.mapping.setTableName("test table");
-        assertEquals("should be equal", "test table", this.mapping.getTableName());
+        assertEquals("test table", this.mapping.getTableName(), "should be equal");
 
         this.mapping.setTableName(null);
-        assertNull("should be null", this.mapping.getTableName());
+        assertNull(this.mapping.getTableName(), "should be null");
     }
 
-
+    @Test
     public void testGetObjectClass() throws Exception {
-        assertNull("should default to null", this.mapping.getObjectClass());
+        assertNull(this.mapping.getObjectClass(), "should default to null");
 
         this.mapping.setObjectClass(ObjectMapping.class);
-        assertEquals("should be equal", ObjectMapping.class, this.mapping.getObjectClass());
+        assertEquals(ObjectMapping.class, this.mapping.getObjectClass(), "should be equal");
 
         this.mapping.setObjectClass(null);
-        assertNull("should be null", this.mapping.getObjectClass());
+        assertNull(this.mapping.getObjectClass(), "should be null");
     }
 
+    @Test
     public void testGetKeyValueForObject() throws PersistenceException {
         IObjectMappingFactory factory = new ObjectMappingFactory();
         IObjectMapping        mapping = factory.createObjectMapping(PersistentObject.class, "persistent_object");
@@ -79,43 +82,44 @@ public class ObjectMappingTest extends TestCase{
         assertEquals("someName", keyValue.getColumnValue("name"));
     }
 
-
+    @Test
     public void testGetSetPrimaryKeyMapping() throws Exception{
         IKey key = new Key();
         key.setTable("table");
 
-        assertNotSame("should not be same", key, mapping.getPrimaryKey());
+        assertNotSame(key, mapping.getPrimaryKey(), "should not be same");
 
         this.mapping.setPrimaryKey(key);
-        assertSame("should be same", key, mapping.getPrimaryKey());
+        assertSame(key, mapping.getPrimaryKey(), "should be same");
 
         key = new Key();
         key.setTable("table");
-        assertNotSame("should not be same", key, mapping.getPrimaryKey());
+        assertNotSame(key, mapping.getPrimaryKey(), "should not be same");
 
 
     }
 
-
+    @Test
     public void testAddGetterMapping() throws Exception {
-        assertEquals("should default to 0", 0, this.mapping.getGetterMappings().size());
+        assertEquals(0, this.mapping.getGetterMappings().size(), "should default to 0");
 
         IGetterMapping fieldMapping1 = createGetterMapping("test1",
                 MethodMapping.class.getMethod("getColumnName", null));
 
         this.mapping.addGetterMapping(fieldMapping1);
-        assertEquals("should contain 1 method method", 1, this.mapping.getGetterMappings().size());
-        assertTrue("should contain getter method method",
-                this.mapping.getGetterMappings().contains(fieldMapping1));
+        assertEquals(1, this.mapping.getGetterMappings().size(), "should contain 1 method method");
+        assertTrue(this.mapping.getGetterMappings().contains(fieldMapping1),
+                "should contain getter method method");
 
 
         IGetterMapping fieldMapping2 = createGetterMapping("test2",
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getObjectMethod", null));
 
         this.mapping.addGetterMapping(fieldMapping2);
-        assertEquals("should contain 2 method mappings", 2, this.mapping.getGetterMappings().size());
-        assertTrue("should contain getter method method",
-                this.mapping.getGetterMappings().contains(fieldMapping2));
+        assertEquals(2, this.mapping.getGetterMappings().size(), "should contain 2 method mappings");
+        assertTrue( this.mapping.getGetterMappings().contains(fieldMapping2),
+                "should contain getter method method"
+        );
     }
 
 
@@ -127,25 +131,26 @@ public class ObjectMappingTest extends TestCase{
     }
 
 
+    @Test
     public void testAddSetterMapping() throws Exception {
-        assertEquals("should default to 0", 0, this.mapping.getSetterMappings().size());
+        assertEquals(0, this.mapping.getSetterMappings().size(), "should default to 0");
 
         ISetterMapping fieldMapping1 = createSetterMapping("test1",
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setColumnName", new Class[]{String.class}) );
 
         this.mapping.addSetterMapping(fieldMapping1);
-        assertEquals("should contain 1 method method", 1, this.mapping.getSetterMappings().size());
-        assertTrue("should contain setter method method 1",
-                this.mapping.getSetterMappings().contains(fieldMapping1));
+        assertEquals(1, this.mapping.getSetterMappings().size(), "should contain 1 method method");
+        assertTrue(this.mapping.getSetterMappings().contains(fieldMapping1),
+                "should contain setter method method 1");
 
 
         ISetterMapping fieldMapping2 = createSetterMapping("test2",
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setObjectMethod", new Class[]{Method.class}) );
 
         this.mapping.addSetterMapping(fieldMapping2);
-        assertEquals("should contain 2 method mappings", 2, this.mapping.getSetterMappings().size());
-        assertTrue("should contain setter method method 2",
-                this.mapping.getSetterMappings().contains(fieldMapping2));
+        assertEquals(2, this.mapping.getSetterMappings().size(), "should contain 2 method mappings");
+        assertTrue(this.mapping.getSetterMappings().contains(fieldMapping2),
+                "should contain setter method method 2");
     }
 
     private ISetterMapping createSetterMapping(String dbFieldName, Method method) {
@@ -155,51 +160,52 @@ public class ObjectMappingTest extends TestCase{
         return fieldMapping;
     }
 
-
+    @Test
     public void testRemoveGetterMappingByColumnName() throws Exception {
         IGetterMapping fieldMapping1 = createGetterMapping("test1",
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null));
 
         this.mapping.addGetterMapping(fieldMapping1);
-        assertEquals("should contain 1 method method", 1, this.mapping.getGetterMappings().size());
+        assertEquals(1, this.mapping.getGetterMappings().size(), "should contain 1 method method");
 
         this.mapping.removeGetterMapping("no method method");
-        assertEquals("should still contain 1 method method", 1, this.mapping.getGetterMappings().size());
+        assertEquals(1, this.mapping.getGetterMappings().size(), "should still contain 1 method method");
 
         this.mapping.removeGetterMapping("test1");
-        assertEquals("should contain 0 method mappings now", 0, this.mapping.getGetterMappings().size());
+        assertEquals(0, this.mapping.getGetterMappings().size(), "should contain 0 method mappings now");
     }
 
-
+    @Test
     public void testRemoveGetterMappingByMethod() throws Exception {
         IGetterMapping fieldMapping1 = createGetterMapping("test1",
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null));
 
         this.mapping.addGetterMapping(fieldMapping1);
-        assertEquals("should contain 1 method method", 1, this.mapping.getGetterMappings().size());
+        assertEquals(1, this.mapping.getGetterMappings().size(), "should contain 1 method method");
 
         this.mapping.removeGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getObjectMethod", null));
-        assertEquals("should still contain 1 method method", 1, this.mapping.getGetterMappings().size());
+        assertEquals(1, this.mapping.getGetterMappings().size(), "should still contain 1 method method");
 
         this.mapping.removeGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null));
-        assertEquals("should contain 0 method mappings now", 0, this.mapping.getGetterMappings().size());
+        assertEquals(0, this.mapping.getGetterMappings().size(), "should contain 0 method mappings now");
     }
 
-
+    @Test
     public void testRemoveSetterMappingByColumnName() throws Exception {
         ISetterMapping fieldMapping1 = createSetterMapping("test1",
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setColumnName", new Class[]{String.class}));
 
         this.mapping.addSetterMapping(fieldMapping1);
-        assertEquals("should contain 1 method method", 1, this.mapping.getSetterMappings().size());
+        assertEquals(1, this.mapping.getSetterMappings().size(), "should contain 1 method method");
 
         this.mapping.removeSetterMapping("no method method");
-        assertEquals("should still contain 1 method method", 1, this.mapping.getSetterMappings().size());
+        assertEquals(1, this.mapping.getSetterMappings().size(), "should still contain 1 method method");
 
         this.mapping.removeSetterMapping("test1");
-        assertEquals("should contain 0 method mappings now", 0, this.mapping.getSetterMappings().size());
+        assertEquals(0, this.mapping.getSetterMappings().size(), "should contain 0 method mappings now");
     }
 
+    @Test
     public void testRemoveSetterMappingByMethod() throws Exception {
         ISetterMapping fieldMapping1 = createSetterMapping("test1",
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setColumnName", new Class[]{String.class}));
@@ -208,15 +214,16 @@ public class ObjectMappingTest extends TestCase{
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setColumnName", new Class[]{String.class}));
 
         this.mapping.addSetterMapping(fieldMapping1);
-        assertEquals("should contain 1 method method", 1, this.mapping.getSetterMappings().size());
+        assertEquals(1, this.mapping.getSetterMappings().size(), "should contain 1 method method");
 
         this.mapping.removeSetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setObjectMethod", new Class[]{Method.class}));
-        assertEquals("should still contain 1 method method", 1, this.mapping.getSetterMappings().size());
+        assertEquals(1, this.mapping.getSetterMappings().size(), "should still contain 1 method method");
 
         this.mapping.removeSetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setColumnName", new Class[]{String.class}));
-        assertEquals("should contain 0 method mappings now", 0, this.mapping.getSetterMappings().size());
+        assertEquals(0, this.mapping.getSetterMappings().size(), "should contain 0 method mappings now");
     }
 
+    @Test
     public void testGetGetterMappings() throws Exception {
         IGetterMapping fieldMapping1 = createGetterMapping("test1",
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null));
@@ -226,15 +233,16 @@ public class ObjectMappingTest extends TestCase{
 
         this.mapping.addGetterMapping(fieldMapping1);
         this.mapping.addGetterMapping(fieldMapping2);
-        assertEquals("should contain 2 method mappings", 2, this.mapping.getGetterMappings().size());
+        assertEquals(2, this.mapping.getGetterMappings().size(), "should contain 2 method mappings");
 
         this.mapping.removeGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getObjectMethod", null));
-        assertEquals("should contain 1 method method", 1, this.mapping.getGetterMappings().size());
+        assertEquals(1, this.mapping.getGetterMappings().size(), "should contain 1 method method");
 
         this.mapping.removeGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null));
-        assertEquals("should contain 0 method mappings now", 0, this.mapping.getGetterMappings().size());
+        assertEquals(0, this.mapping.getGetterMappings().size(), "should contain 0 method mappings now");
     }
 
+    @Test
     public void testGetSetterMappings() throws Exception {
         ISetterMapping fieldMapping1 = createSetterMapping("test1",
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setColumnName", new Class[]{String.class}));
@@ -244,15 +252,16 @@ public class ObjectMappingTest extends TestCase{
 
         this.mapping.addSetterMapping(fieldMapping1);
         this.mapping.addSetterMapping(fieldMapping2);
-        assertEquals("should contain 2 method mappings", 2, this.mapping.getSetterMappings().size());
+        assertEquals(2, this.mapping.getSetterMappings().size(), "should contain 2 method mappings");
 
         this.mapping.removeSetterMapping("test1");
-        assertEquals("should contain 1 method method", 1, this.mapping.getSetterMappings().size());
+        assertEquals(1, this.mapping.getSetterMappings().size(), "should contain 1 method method");
 
         this.mapping.removeSetterMapping("test2");
-        assertEquals("should contain 0 method mappings now", 0, this.mapping.getSetterMappings().size());
+        assertEquals(0, this.mapping.getSetterMappings().size(), "should contain 0 method mappings now");
     }
 
+    @Test
     public void testGetGetterMappingByColumnName() throws Exception {
         IGetterMapping fieldMapping1 = createGetterMapping("test1",
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null));
@@ -261,18 +270,19 @@ public class ObjectMappingTest extends TestCase{
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getObjectMethod", null));
 
         this.mapping.addGetterMapping(fieldMapping1);
-        assertEquals("should contain method method 1", fieldMapping1, this.mapping.getGetterMapping("test1"));
-        assertNull("should not contain method method 2", this.mapping.getGetterMapping("test2"));
+        assertEquals(fieldMapping1, this.mapping.getGetterMapping("test1"), "should contain method method 1");
+        assertNull(this.mapping.getGetterMapping("test2"), "should not contain method method 2");
 
         this.mapping.addGetterMapping(fieldMapping2);
-        assertEquals("should contain method method 1", fieldMapping1, this.mapping.getGetterMapping("test1"));
-        assertEquals("should contain method method 2", fieldMapping2, this.mapping.getGetterMapping("test2"));
+        assertEquals(fieldMapping1, this.mapping.getGetterMapping("test1"), "should contain method method 1");
+        assertEquals(fieldMapping2, this.mapping.getGetterMapping("test2"), "should contain method method 2");
 
         this.mapping.removeGetterMapping("test1");
-        assertEquals("should contain method method 2", fieldMapping2, this.mapping.getGetterMapping("test2"));
-        assertNull("should not contain method method 1", this.mapping.getGetterMapping("test1"));
+        assertEquals(fieldMapping2, this.mapping.getGetterMapping("test2"), "should contain method method 2");
+        assertNull(this.mapping.getGetterMapping("test1"), "should not contain method method 1");
     }
 
+    @Test
     public void testGetGetterMappingByMethod() throws Exception {
         IGetterMapping fieldMapping1 = createGetterMapping("test1",
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null));
@@ -281,24 +291,33 @@ public class ObjectMappingTest extends TestCase{
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getObjectMethod", null));
 
         this.mapping.addGetterMapping(fieldMapping1);
-        assertEquals("should contain method method 1", fieldMapping1,
-                this.mapping.getGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null)));
-        assertNull("should not contain method method 2",
-                this.mapping.getGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getObjectMethod", null)));
+        assertEquals(fieldMapping1,
+                this.mapping.getGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null)),
+                "should contain method method 1"
+        );
+        assertNull(
+                this.mapping.getGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getObjectMethod", null)),
+                "should not contain method method 2");
 
         this.mapping.addGetterMapping(fieldMapping2);
-        assertEquals("should contain method method 1", fieldMapping1,
-                this.mapping.getGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null)));
-        assertEquals("should contain method method 2", fieldMapping2,
-                this.mapping.getGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getObjectMethod", null)));
+        assertEquals(fieldMapping1,
+                this.mapping.getGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null)),
+                "should contain method method 1"
+        );
+        assertEquals(fieldMapping2,
+                this.mapping.getGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getObjectMethod", null)),
+                "should contain method method 2");
 
         this.mapping.removeGetterMapping("test1");
-        assertEquals("should contain method method 2", fieldMapping2,
-                this.mapping.getGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getObjectMethod", null)));
-        assertNull("should not contain method method 1",
-                 this.mapping.getGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null)));
+        assertEquals(fieldMapping2,
+                this.mapping.getGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getObjectMethod", null)),
+                "should contain method method 2");
+        assertNull(
+                this.mapping.getGetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getColumnName", null)),
+                "should not contain method method 1");
     }
 
+    @Test
     public void testGetSetterMappingByColumnName() throws Exception {
         ISetterMapping fieldMapping1 = createSetterMapping("test1",
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setColumnName", new Class[] {String.class}));
@@ -307,18 +326,19 @@ public class ObjectMappingTest extends TestCase{
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setObjectMethod", new Class[]{Method.class}));
 
         this.mapping.addSetterMapping(fieldMapping1);
-        assertEquals("should contain method method 1", fieldMapping1, this.mapping.getSetterMapping("test1"));
-        assertNull("should not contain method method 2", this.mapping.getSetterMapping("test2"));
+        assertEquals(fieldMapping1, this.mapping.getSetterMapping("test1"), "should contain method method 1");
+        assertNull(this.mapping.getSetterMapping("test2"), "should not contain method method 2");
 
         this.mapping.addSetterMapping(fieldMapping2);
-        assertEquals("should contain method method 1", fieldMapping1, this.mapping.getSetterMapping("test1"));
-        assertEquals("should contain method method 2", fieldMapping2, this.mapping.getSetterMapping("test2"));
+        assertEquals(fieldMapping1, this.mapping.getSetterMapping("test1"), "should contain method method 1");
+        assertEquals(fieldMapping2, this.mapping.getSetterMapping("test2"), "should contain method method 2");
 
         this.mapping.removeSetterMapping("test1");
-        assertEquals("should contain method method 2", fieldMapping2, this.mapping.getSetterMapping("test2"));
-        assertNull("should not contain method method 1", this.mapping.getSetterMapping("test1"));
+        assertEquals(fieldMapping2, this.mapping.getSetterMapping("test2"), "should contain method method 2");
+        assertNull(this.mapping.getSetterMapping("test1"), "should not contain method method 1");
     }
 
+    @Test
     public void testGetSetterMappingByMethod() throws Exception {
         ISetterMapping fieldMapping1 = createSetterMapping("test1",
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setColumnName", new Class[]{String.class}));
@@ -327,65 +347,71 @@ public class ObjectMappingTest extends TestCase{
                 com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setObjectMethod", new Class[]{Method.class}));
 
         this.mapping.addSetterMapping(fieldMapping1);
-        assertEquals("should contain method method 1", fieldMapping1,
-                this.mapping.getSetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setColumnName", new Class[]{String.class})));
-        assertNull("should not contain method method 2",
-                this.mapping.getSetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getObjectMethod", null)));
+        assertEquals(fieldMapping1,
+                this.mapping.getSetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setColumnName", new Class[]{String.class})),
+                "should contain method method 1");
+        assertNull(
+                this.mapping.getSetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("getObjectMethod", null)),
+                "should not contain method method 2");
 
         this.mapping.addSetterMapping(fieldMapping2);
-        assertEquals("should contain method method 1", fieldMapping1,
-                this.mapping.getSetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setColumnName", new Class[]{String.class})));
-        assertEquals("should contain method method 2", fieldMapping2,
-                this.mapping.getSetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setObjectMethod", new Class[]{Method.class})));
+        assertEquals(fieldMapping1,
+                this.mapping.getSetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setColumnName", new Class[]{String.class})),
+                "should contain method method 1");
+        assertEquals(fieldMapping2,
+                this.mapping.getSetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setObjectMethod", new Class[]{Method.class})),
+                "should contain method method 2");
 
         this.mapping.removeSetterMapping("test1");
-        assertNull("should not contain method method 1",
-                 this.mapping.getSetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setColumnName", new Class[]{String.class})));
-        assertEquals("should contain method method 2", fieldMapping2,
-                this.mapping.getSetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setObjectMethod", new Class[]{Method.class})));
+        assertNull(
+                 this.mapping.getSetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setColumnName", new Class[]{String.class})),
+                "should not contain method method 1");
+        assertEquals(fieldMapping2,
+                this.mapping.getSetterMapping(com.jenkov.db.impl.mapping.method.MethodMapping.class.getMethod("setObjectMethod", new Class[]{Method.class})),
+                "should contain method method 2");
     }
 
-
+    @Test
     public void testEquals() throws Exception{
 
         IObjectMapping mapping1 = new ObjectMapping();
         IObjectMapping mapping2 = new ObjectMapping();
 
         //Testing default
-        assertEquals("should default to equal", mapping1, mapping2);
+        assertEquals(mapping1, mapping2, "should default to equal");
 
         //Testing table name
         mapping1.setTableName("testTable");
-        assertFalse("should not be equal, mapping1 has table name", mapping1.equals(mapping2));
+        assertFalse(mapping1.equals(mapping2), "should not be equal, mapping1 has table name");
 
         mapping1.setTableName(null);
         mapping2.setTableName("testTable");
-        assertFalse("should not be equal, mapping2 has table name", mapping1.equals(mapping2));
+        assertFalse(mapping1.equals(mapping2), "should not be equal, mapping2 has table name");
 
         mapping1.setTableName("testTable");
-        assertEquals("should be to equal with table names", mapping1, mapping2);
+        assertEquals(mapping1, mapping2, "should be to equal with table names");
 
         //Testing object class
         mapping1.setObjectClass(com.jenkov.db.impl.mapping.method.MethodMapping.class);
-        assertFalse("should not be equal, mapping1 has object class", mapping1.equals(mapping2));
+        assertFalse(mapping1.equals(mapping2), "should not be equal, mapping1 has object class");
 
         mapping1.setObjectClass(null);
         mapping2.setObjectClass(com.jenkov.db.impl.mapping.method.MethodMapping.class);
-        assertFalse("should not be equal, mapping2 has object class", mapping1.equals(mapping2));
+        assertFalse(mapping1.equals(mapping2), "should not be equal, mapping2 has object class");
 
         mapping1.setObjectClass(com.jenkov.db.impl.mapping.method.MethodMapping.class);
-        assertEquals("should be to equal with object classes", mapping1, mapping2);
+        assertEquals(mapping1, mapping2, "should be to equal with object classes");
 
         //Testing primary key method mappings
         mapping1.getPrimaryKey().addColumn("test1");
-        assertFalse("should not be equal, mapping1 has primary key method name", mapping1.equals(mapping2));
+        assertFalse(mapping1.equals(mapping2), "should not be equal, mapping1 has primary key method name");
 
         mapping1.getPrimaryKey().removeColumn("test1");
         mapping2.getPrimaryKey().addColumn("test1");
-        assertFalse("should not be equal, mapping2 has primary key method name", mapping1.equals(mapping2));
+        assertFalse(mapping1.equals(mapping2), "should not be equal, mapping2 has primary key method name");
 
         mapping1.getPrimaryKey().addColumn("test1");
-        assertEquals("should be to equal with primary key method mappings", mapping1, mapping2);
+        assertEquals(mapping1, mapping2, "should be to equal with primary key method mappings");
 
         //test method mappings are equal
         IGetterMapping fieldMapping1get = createGetterMapping("test1",
@@ -404,34 +430,35 @@ public class ObjectMappingTest extends TestCase{
         //getter method mappings
         mapping1.addGetterMapping(fieldMapping1get);
         mapping1.addGetterMapping(fieldMapping2get);
-        assertFalse("should not be equal, mapping1 has getter method mappings", mapping1.equals(mapping2));
+        assertFalse(mapping1.equals(mapping2), "should not be equal, mapping1 has getter method mappings");
 
         mapping1.removeGetterMapping(fieldMapping1get.getColumnName());
         mapping1.removeGetterMapping(fieldMapping2get.getColumnName());
         mapping2.addGetterMapping(fieldMapping1get);
         mapping2.addGetterMapping(fieldMapping2get);
-        assertFalse("should not be equal, mapping2 has getter method mappings", mapping1.equals(mapping2));
+        assertFalse(mapping1.equals(mapping2), "should not be equal, mapping2 has getter method mappings");
 
         mapping1.addGetterMapping(fieldMapping1get);
         mapping1.addGetterMapping(fieldMapping2get);
-        assertEquals("should be to equal with getter method mappings", mapping1, mapping2);
+        assertEquals(mapping1, mapping2, "should be to equal with getter method mappings");
 
         //setter method mappings
         mapping1.addSetterMapping(fieldMapping1set);
         mapping1.addSetterMapping(fieldMapping2set);
-        assertFalse("should not be equal, mapping1 has setter method mappings", mapping1.equals(mapping2));
+        assertFalse(mapping1.equals(mapping2), "should not be equal, mapping1 has setter method mappings");
 
         mapping1.removeSetterMapping(fieldMapping1get.getColumnName());
         mapping1.removeSetterMapping(fieldMapping2get.getColumnName());
         mapping2.addSetterMapping(fieldMapping1set);
         mapping2.addSetterMapping(fieldMapping2set);
-        assertFalse("should not be equal, mapping2 has setter method mappings", mapping1.equals(mapping2));
+        assertFalse(mapping1.equals(mapping2), "should not be equal, mapping2 has setter method mappings");
 
         mapping1.addSetterMapping(fieldMapping1set);
         mapping1.addSetterMapping(fieldMapping2set);
-        assertEquals("should be to equal with setter method mappings", mapping1, mapping2);
+        assertEquals(mapping1, mapping2, "should be to equal with setter method mappings");
     }
 
+    @Test
     public void testToString() throws Exception{
         ObjectMapping mapping = new ObjectMapping();
         assertEquals("Class: null\nTable: null\n-------------------\n", mapping.toString());
@@ -467,6 +494,7 @@ public class ObjectMappingTest extends TestCase{
         //fail("not finished");
     }
 
+    @Test
     public void testHashCode(){
         ObjectMapping mapping = new ObjectMapping();
         assertTrue(mapping.hashCode() > 0);

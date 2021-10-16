@@ -31,7 +31,7 @@ public class Environment {
     public static final String H2_IN_PROCESS       = "database/h2_in_process.properties";
     public static final String H2_SERVER           = "database/h2_server.properties";
     public static final String DERBY_IN_PROCESS    = "database/derby_in_process.properties";
-    public static final String DERBY_SERVER        = "database/derby_erver.properties";
+    public static final String DERBY_SERVER        = "database/derby_server.properties"; //todo note - this file does not exist!
 
 //    public static String DATABASE = MYSQL;
 //    public static String DATABASE = FIREBIRD;
@@ -39,8 +39,8 @@ public class Environment {
 //    public static String DATABASE = MSSQLSERVER;
 //    public static String DATABASE = HSQLDB_IN_PROCESS;
 //    public static String DATABASE = HSQLDB_SERVER;
-//   public static String DATABASE = H2_IN_PROCESS;
-   public static String DATABASE = H2_SERVER;
+   public static String DATABASE = H2_IN_PROCESS;
+//   public static String DATABASE = H2_SERVER;
 
     
     public static Database database = null;

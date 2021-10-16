@@ -12,15 +12,17 @@ import com.jenkov.db.itf.mapping.IObjectMapper;
 import com.jenkov.db.itf.mapping.IObjectMapping;
 import com.jenkov.db.test.objects.PersistentObject;
 import com.jenkov.db.util.JdbcUtil;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.*;
 
 import java.sql.*;
 import java.util.*;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author Jakob Jenkov,  Jenkov Development
  */
-public class ObjectReaderTest extends TestCase{
+public class ObjectReaderTest {
 
     protected String sqlRead1   = "select * from persistent_object where id=1";
     protected String sqlWrite1  = "insert into persistent_object(id, name, fieldValue, objectValue) " +
@@ -55,10 +57,11 @@ public class ObjectReaderTest extends TestCase{
     protected IObjectMapping mapping    = null;
     protected ISqlGenerator  generator  = null;
 
-    public ObjectReaderTest(String testName){
-        super(testName);
-    }
+    //public ObjectReaderTest(String testName){
+    //    super(testName);
+    //}
 
+    @BeforeEach
     public void setUp() throws Exception{
         this.connection = Environment.getConnection();
         this.reader = new ObjectReader();
@@ -68,6 +71,7 @@ public class ObjectReaderTest extends TestCase{
         this.generator = new SqlGenerator();
     }
 
+    @AfterEach
     public void tearDown() throws Exception{
         this.mapper = null;
         this.mapping = null;
@@ -80,6 +84,7 @@ public class ObjectReaderTest extends TestCase{
     // Testing Read Single Object Functions
     // ======================================
 
+    @Test
     public void testReadByPrimaryKey() throws Exception{
         PersistentObject object = null;
 
@@ -90,17 +95,17 @@ public class ObjectReaderTest extends TestCase{
 
             object = (PersistentObject) this.reader.readByPrimaryKey(this.mapping, new Long(1),
                     this.generator.generateReadByPrimaryKeyStatement(this.mapping), this.connection );
-            assertNotNull("object1 should not be null", object);
+            assertNotNull(object, "object1 should not be null");
             assertObject1ReadCorrectly(object);
 
             object = (PersistentObject) this.reader.readByPrimaryKey(this.mapping, new Long(3),
                     this.generator.generateReadByPrimaryKeyStatement(this.mapping), this.connection );
-            assertNotNull("object3 should not be null", object);
+            assertNotNull(object, "object3 should not be null");
             assertObject3ReadCorrectly(object);
 
             object = (PersistentObject) this.reader.readByPrimaryKey(this.mapping, new Long(4),
                     this.generator.generateReadByPrimaryKeyStatement(this.mapping), this.connection );
-            assertNull("object should be null", object);
+            assertNull(object, "object should be null");
 
             try{
                 object = (PersistentObject) this.reader.readByPrimaryKey(this.mapping, null,
@@ -116,6 +121,7 @@ public class ObjectReaderTest extends TestCase{
         }
     }
 
+    @Test
     public void testReadFromResultSet() throws Exception{
         try{
             this.connection.createStatement().execute(sqlWrite1);
@@ -131,6 +137,7 @@ public class ObjectReaderTest extends TestCase{
         }
     }
 
+    @Test
     public void testReadFromStatement() throws Exception{
         Statement statement = null;
 
@@ -143,11 +150,11 @@ public class ObjectReaderTest extends TestCase{
             PersistentObject object = (PersistentObject) this.reader.read(this.mapping, statement, sqlRead1);
             assertObject1ReadCorrectly(object);
 
-            assertNull("should get null from empty result set",
-                this.reader.read(this.mapping, statement, "select * from persistent_object where id=9"));
+            assertNull(this.reader.read(this.mapping, statement, "select * from persistent_object where id=9"),
+                    "should get null from empty result set");
 
             try{
-                this.reader.read(this.mapping, statement, "select from persistent_object");
+                this.reader.read(this.mapping, statement, "selcet from persistent_object");
                 fail("should throw PersistenceException on bad sql");
             } catch(PersistenceException e){
             }
@@ -160,7 +167,7 @@ public class ObjectReaderTest extends TestCase{
         }
     }
 
-
+    @Test
     public void testReadFromSqlString() throws Exception{
         try{
             Environment.executeSql(sqlDelete);
@@ -169,11 +176,11 @@ public class ObjectReaderTest extends TestCase{
             PersistentObject object = (PersistentObject) this.reader.read(this.mapping,  sqlRead1, this.connection);
             assertObject1ReadCorrectly(object);
 
-            assertNull("should get null from empty result set",
-                this.reader.read(this.mapping, "select * from persistent_object where id=-1", this.connection));
+            assertNull(this.reader.read(this.mapping, "select * from persistent_object where id=-1", this.connection),
+                    "should get null from empty result set");
 
             try{
-                this.reader.read(this.mapping, "select from persistent_object", this.connection);
+                this.reader.read(this.mapping, "selcet from persistent_object", this.connection);
                 fail("should throw PersistenceException on bad sql");
             } catch(PersistenceException e){
             }
@@ -185,7 +192,7 @@ public class ObjectReaderTest extends TestCase{
         }
     }
 
-
+    @Test
     public void testReadFromPreparedStatement() throws Exception{
         PreparedStatement preparedStatement = null;
 
@@ -199,8 +206,8 @@ public class ObjectReaderTest extends TestCase{
             assertObject1ReadCorrectly(object);
 
              preparedStatement = connection.prepareStatement("select * from persistent_object where id=-1");
-             assertNull("should get null from empty result set",
-                this.reader.read(this.mapping, preparedStatement ));
+             assertNull(this.reader.read(this.mapping, preparedStatement ),
+                     "should get null from empty result set");
 
 
             try{
@@ -220,6 +227,7 @@ public class ObjectReaderTest extends TestCase{
         }
     }
 
+    @Test
     public void testRead_Collection() throws Exception {
         String sql1 = "select * from persistent_object where id=?";
         String sql2 = "select * from persistent_object where name like ? and fieldValue like ?";
@@ -258,6 +266,7 @@ public class ObjectReaderTest extends TestCase{
         }
     }
 
+    @Test
     public void testRead_Collection_Exceptions() throws Exception{
         String sql1 = "select * from persistent_object where id=?";
         String sql2 = "select * from persistent_object where name like ? and fieldValue like ?";
@@ -316,6 +325,7 @@ public class ObjectReaderTest extends TestCase{
         }
     }
 
+    @Test
     public void testRead_Array() throws Exception {
         String sql1 = "select * from persistent_object where id=?";
         String sql2 = "select * from persistent_object where name like ? and fieldValue like ?";
@@ -358,6 +368,7 @@ public class ObjectReaderTest extends TestCase{
     // ======================================
     // Testing Read List Functions
     // ======================================
+    @Test
     public void testReadListByPrimaryKeys() throws Exception {
         List objects = null;
         try{
@@ -370,13 +381,13 @@ public class ObjectReaderTest extends TestCase{
             objects = this.reader.readListByPrimaryKeys(this.mapping, primaryKeys ,
                     "select * from persistent_object where id in (?,?)", this.connection );
 
-            assertNotNull("objects should not be null", objects);
-            assertEquals("should read two objects", 2, objects.size());
+            assertNotNull(objects, "objects should not be null");
+            assertEquals(2, objects.size(), "should read two objects");
 
-            assertNotNull("object1 should not be null", objects.get(0));
+            assertNotNull(objects.get(0), "object1 should not be null");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
 
-            assertNotNull("object3 should not be null", objects.get(1));
+            assertNotNull(objects.get(1), "object3 should not be null");
             assertObject3ReadCorrectly((PersistentObject) objects.get(1));
 
             objects = this.reader.readListByPrimaryKeys(this.mapping, primaryKeys ,
@@ -390,13 +401,13 @@ public class ObjectReaderTest extends TestCase{
             objects = this.reader.readListByPrimaryKeys(this.mapping, primaryKeys ,
                     "select * from persistent_object where id in (?,?)", this.connection );
             assertNotNull(objects);
-            assertEquals("list should be empty", 0, objects.size());
+            assertEquals(0, objects.size(), "list should be empty");
 
             primaryKeys.clear();
             objects = this.reader.readListByPrimaryKeys(this.mapping, primaryKeys ,
                     "select * from persistent_object where id in (?,?)", this.connection );
             assertNotNull(objects);
-            assertEquals("list should be empty", 0, objects.size());
+            assertEquals(0, objects.size(), "list should be empty");
 
         } finally {
             this.connection.createStatement().execute(sqlDelete1);
@@ -405,28 +416,28 @@ public class ObjectReaderTest extends TestCase{
         }
     }
 
-
+    @Test
     public void testReadListFromResultSet() throws Exception {
         try{
             executeSql(sqlWrite1, sqlWrite2, sqlWrite3);
 
             ResultSet result = this.connection.createStatement().executeQuery("select * from persistent_object order by id");
             List objects = this.reader.readList(this.mapping, result);
-            assertEquals("should be 3 objects in list", 3, objects.size());
+            assertEquals(3, objects.size(), "should be 3 objects in list");
 
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
 
             result  = this.connection.createStatement().executeQuery("select * from persistent_object order by id");
             result.next();
             objects = this.reader.readList(this.mapping, result);
-            assertEquals("should be 3 objects in list", 3, objects.size());
+            assertEquals(3, objects.size(), "should be 3 objects in list");
 
         } finally {
             executeSql(sqlDelete1, sqlDelete2, sqlDelete3);
         }
     }
 
-
+    @Test
     public void testReadListFromStatement() throws Exception {
         try{
             executeSql(sqlWrite1, sqlWrite2, sqlWrite3);
@@ -434,7 +445,7 @@ public class ObjectReaderTest extends TestCase{
             Statement statement = this.connection.createStatement();
             List objects = this.reader.readList(this.mapping, statement,
                 "select * from persistent_object order by id");
-            assertEquals("should be 3 objects in list", 3, objects.size());
+            assertEquals(3, objects.size(), "should be 3 objects in list");
 
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
          } finally {
@@ -443,14 +454,14 @@ public class ObjectReaderTest extends TestCase{
     }
 
 
-
+    @Test
     public void testReadListFromSqlString() throws Exception {
         try{
             executeSql(sqlWrite1, sqlWrite2, sqlWrite3);
 
             List objects = this.reader.readList(this.mapping,
                     "select * from persistent_object order by id", this.connection);
-            assertEquals("should be 3 objects in list", 3, objects.size());
+            assertEquals(3, objects.size(), "should be 3 objects in list");
 
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
          } finally {
@@ -458,7 +469,7 @@ public class ObjectReaderTest extends TestCase{
         }
     }
 
-
+    @Test
     public void testReadListFromPreparedStatement() throws Exception {
         try{
             executeSql(sqlWrite1, sqlWrite2, sqlWrite3);
@@ -466,7 +477,7 @@ public class ObjectReaderTest extends TestCase{
             PreparedStatement preparedStatement = this.connection
                         .prepareStatement("select * from persistent_object order by id");
             List objects = this.reader.readList(this.mapping, preparedStatement);
-            assertEquals("should be 3 objects in list", 3, objects.size());
+            assertEquals(3, objects.size(), "should be 3 objects in list");
 
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
          } finally {
@@ -474,6 +485,7 @@ public class ObjectReaderTest extends TestCase{
         }
     }
 
+    @Test
     public void testReadList_Collection() throws Exception {
         String sql1 = "select * from persistent_object where id > ? order by id";
         String sql2 = "select * from persistent_object where name like ? and fieldValue like ? order by id";
@@ -489,14 +501,14 @@ public class ObjectReaderTest extends TestCase{
             parameters.add(new Long(1));
 
             List objects = this.reader.readList(this.mapping, sql1, parameters, this.connection);
-            assertEquals("too many objects read", 4, objects.size());
+            assertEquals(4, objects.size(), "too many objects read");
             assertObject3ReadCorrectly((PersistentObject) objects.get(1));
 
             parameters.clear();
             parameters.add("name%");
             parameters.add("value%");
             objects = this.reader.readList(this.mapping, sql2, parameters, this.connection);
-            assertEquals("wrong number of objects", 5, objects.size());
+            assertEquals(5, objects.size(), "wrong number of objects");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             assertObjectCorrect((PersistentObject) objects.get(1), 2, "name2");
             assertObject3ReadCorrectly((PersistentObject) objects.get(2));
@@ -507,12 +519,13 @@ public class ObjectReaderTest extends TestCase{
             parameters.add("no_name");
             parameters.add("no_value");
             objects = this.reader.readList(this.mapping, sql2, parameters, this.connection);
-            assertEquals("no objects should be read", 0, objects.size());
+            assertEquals(0, objects.size(), "no objects should be read");
         } finally {
             Environment.executeSql(sqlDelete);
         }
     }
 
+    @Test
     public void testReadList_Array() throws Exception {
         String sql1 = "select * from persistent_object where id > ? order by id";
         String sql2 = "select * from persistent_object where name like ? and fieldValue like ? order by id";
@@ -528,14 +541,14 @@ public class ObjectReaderTest extends TestCase{
             parameters[0] = new Long(1);
 
             List objects = this.reader.readList(this.mapping, sql1, parameters, this.connection);
-            assertEquals("too many objects read", 4, objects.size());
+            assertEquals(4, objects.size(), "too many objects read");
             assertObject3ReadCorrectly((PersistentObject) objects.get(1));
 
             parameters = new Object[2];
             parameters[0] = "name%";
             parameters[1] = "value%";
             objects = this.reader.readList(this.mapping, sql2, parameters, this.connection);
-            assertEquals("wrong number of objects", 5, objects.size());
+            assertEquals(5, objects.size(), "wrong number of objects");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             assertObjectCorrect((PersistentObject) objects.get(1), 2, "name2");
             assertObject3ReadCorrectly((PersistentObject) objects.get(2));
@@ -546,7 +559,7 @@ public class ObjectReaderTest extends TestCase{
             parameters[0] = "no_name";
             parameters[1] = "no_value";
             objects = this.reader.readList(this.mapping, sql2, parameters, this.connection);
-            assertEquals("no objects should be read", 0, objects.size());
+            assertEquals(0, objects.size(), "no objects should be read");
         } finally {
             Environment.executeSql(sqlDelete);
         }
@@ -556,27 +569,28 @@ public class ObjectReaderTest extends TestCase{
     // ======================================
     // Testing Filtered Read List Functions
     // ======================================
+    @Test
     public void testReadListFromResultSetUsingFilter() throws Exception {
         try{
             executeSql(sqlWrite1, sqlWrite2, sqlWrite3, sqlWrite4, sqlWrite5);
 
             ResultSet result = this.connection.createStatement().executeQuery("select * from persistent_object order by id");
             List objects = this.reader.readList(this.mapping, result, new AcceptEveryOtherFilter(3));
-            assertEquals("should be 3 objects in list", 3, objects.size());
+            assertEquals(3, objects.size(), "should be 3 objects in list");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             assertObject3ReadCorrectly((PersistentObject) objects.get(1));
             result.close();
 
             result  = this.connection.createStatement().executeQuery("select * from persistent_object order by id");
             objects = this.reader.readList(this.mapping, result, new AcceptEveryOtherFilter(2));
-            assertEquals("should be 2 objects in list", 2, objects.size());
+            assertEquals(2, objects.size(), "should be 2 objects in list");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             assertObject3ReadCorrectly((PersistentObject) objects.get(1));
             result.close();
 
             result  = this.connection.createStatement().executeQuery("select * from persistent_object order by id");
             objects = this.reader.readList(this.mapping, result, new AcceptEveryOtherFilter(1));
-            assertEquals("should be 1 objects in list", 1, objects.size());
+            assertEquals(1, objects.size(), "should be 1 objects in list");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             result.close();
 
@@ -585,6 +599,7 @@ public class ObjectReaderTest extends TestCase{
         }
     }
 
+    @Test
     public void testReadListByPrimaryKeysUsingFilter() throws Exception {
         try{
             executeSql(sqlWrite1, sqlWrite2, sqlWrite3, sqlWrite4, sqlWrite5);
@@ -610,32 +625,32 @@ public class ObjectReaderTest extends TestCase{
             sql = sql + " order by id"; //necessary to be able to know for sure what records are returned.
             List objects = this.reader.readListByPrimaryKeys(this.mapping, primaryKeys, sql, this.connection, new AcceptEveryOtherFilter(3));
             Collections.sort(objects, comparator);
-            assertEquals("should be 3 objects in list", 3, objects.size());
+            assertEquals(3, objects.size(), "should be 3 objects in list");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             assertObject3ReadCorrectly((PersistentObject) objects.get(1));
 
             objects = this.reader.readListByPrimaryKeys(this.mapping, primaryKeys, sql, this.connection, new AcceptEveryOtherFilter(2));
             Collections.sort(objects, comparator);
-            assertEquals("should be 2 objects in list", 2, objects.size());
+            assertEquals(2, objects.size(), "should be 2 objects in list");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             assertObject3ReadCorrectly((PersistentObject) objects.get(1));
 
             objects = this.reader.readListByPrimaryKeys(this.mapping, primaryKeys, sql, this.connection, new AcceptEveryOtherFilter(1));
             Collections.sort(objects, comparator);
-            assertEquals("should be 1 objects in list", 1, objects.size());
+            assertEquals(1, objects.size(), "should be 1 objects in list");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
 
             primaryKeys.clear();
             objects = this.reader.readListByPrimaryKeys(this.mapping, primaryKeys, sql, this.connection, new AcceptEveryOtherFilter(1));
             assertNotNull(objects);
-            assertEquals("list should be empty", 0, objects.size());
+            assertEquals(0, objects.size(), "list should be empty");
 
         } finally {
             executeSql(sqlDelete1, sqlDelete2, sqlDelete3, sqlDelete4, sqlDelete5);
         }
     }
 
-
+    @Test
     public void testReadListFromStatementUsingFilter() throws Exception {
         try{
             executeSql(sqlWrite1, sqlWrite2, sqlWrite3, sqlWrite4, sqlWrite5);
@@ -644,17 +659,17 @@ public class ObjectReaderTest extends TestCase{
             Statement statement = this.connection.createStatement();
 
             List objects = this.reader.readList(this.mapping, statement, sql , new AcceptEveryOtherFilter(3));
-            assertEquals("should be 3 objects in list", 3, objects.size());
+            assertEquals(3, objects.size(), "should be 3 objects in list");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             assertObject3ReadCorrectly((PersistentObject) objects.get(1));
 
             objects = this.reader.readList(this.mapping, statement, sql, new AcceptEveryOtherFilter(2));
-            assertEquals("should be 2 objects in list", 2, objects.size());
+            assertEquals(2, objects.size(), "should be 2 objects in list");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             assertObject3ReadCorrectly((PersistentObject) objects.get(1));
 
             objects = this.reader.readList(this.mapping, statement, sql , new AcceptEveryOtherFilter(1));
-            assertEquals("should be 1 objects in list", 1, objects.size());
+            assertEquals(1, objects.size(), "should be 1 objects in list");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             statement.close();
         } finally {
@@ -662,6 +677,7 @@ public class ObjectReaderTest extends TestCase{
         }
     }
 
+    @Test
     public void testReadListFromSqlStringUsingFilter() throws Exception {
         try{
             executeSql(sqlWrite1, sqlWrite2, sqlWrite3, sqlWrite4, sqlWrite5);
@@ -669,23 +685,24 @@ public class ObjectReaderTest extends TestCase{
             String sql = "select * from persistent_object order by id";
 
             List objects = this.reader.readList(this.mapping,  sql, this.connection, new AcceptEveryOtherFilter(3));
-            assertEquals("should be 3 objects in list", 3, objects.size());
+            assertEquals(3, objects.size(), "should be 3 objects in list");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             assertObject3ReadCorrectly((PersistentObject) objects.get(1));
 
             objects = this.reader.readList(this.mapping, sql, this.connection, new AcceptEveryOtherFilter(2));
-            assertEquals("should be 2 objects in list", 2, objects.size());
+            assertEquals(2, objects.size(), "should be 2 objects in list");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             assertObject3ReadCorrectly((PersistentObject) objects.get(1));
 
             objects = this.reader.readList(this.mapping, sql, this.connection, new AcceptEveryOtherFilter(1));
-            assertEquals("should be 1 objects in list", 1, objects.size());
+            assertEquals(1, objects.size(), "should be 1 objects in list");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
         } finally {
             executeSql(sqlDelete1, sqlDelete2, sqlDelete3, sqlDelete4, sqlDelete5);
         }
     }
 
+    @Test
     public void testReadListFromPreparedStatementUsingFilter() throws Exception {
         try{
             executeSql(sqlWrite1, sqlWrite2, sqlWrite3, sqlWrite4, sqlWrite5);
@@ -695,17 +712,17 @@ public class ObjectReaderTest extends TestCase{
             statement.setLong(1, 0);
 
             List objects = this.reader.readList(this.mapping, statement, new AcceptEveryOtherFilter(3));
-            assertEquals("should be 3 objects in list", 3, objects.size());
+            assertEquals(3, objects.size(), "should be 3 objects in list");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             assertObject3ReadCorrectly((PersistentObject) objects.get(1));
 
             objects = this.reader.readList(this.mapping, statement, new AcceptEveryOtherFilter(2));
-            assertEquals("should be 2 objects in list", 2, objects.size());
+            assertEquals(2, objects.size(), "should be 2 objects in list");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             assertObject3ReadCorrectly((PersistentObject) objects.get(1));
 
             objects = this.reader.readList(this.mapping, statement, new AcceptEveryOtherFilter(1));
-            assertEquals("should be 1 objects in list", 1, objects.size());
+            assertEquals(1, objects.size(), "should be 1 objects in list");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             statement.close();
         } finally {
@@ -713,6 +730,7 @@ public class ObjectReaderTest extends TestCase{
         }
     }
 
+    @Test
     public void testReadList_Collection_Filtered() throws Exception {
         String sql1 = "select * from persistent_object where id > ? order by id";
         String sql2 = "select * from persistent_object where name like ? and fieldValue like ? order by id";
@@ -729,7 +747,7 @@ public class ObjectReaderTest extends TestCase{
 
             List objects = this.reader.readList(this.mapping, sql1, parameters,
                     this.connection, new AcceptEveryOtherFilter(3));
-            assertEquals("too many objects read", 2, objects.size());
+            assertEquals(2, objects.size(), "too many objects read");
             assertObjectCorrect((PersistentObject) objects.get(0), 2, "name2");
 
             parameters.clear();
@@ -737,7 +755,7 @@ public class ObjectReaderTest extends TestCase{
             parameters.add("value%");
             objects = this.reader.readList(this.mapping, sql2, parameters,
                     this.connection, new AcceptEveryOtherFilter(3));
-            assertEquals("wrong number of objects", 3, objects.size());
+            assertEquals(3, objects.size(), "wrong number of objects");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             assertObject3ReadCorrectly((PersistentObject) objects.get(1));
             assertObjectCorrect((PersistentObject) objects.get(2), 5, "name5");
@@ -746,12 +764,13 @@ public class ObjectReaderTest extends TestCase{
             parameters.add("no_name");
             parameters.add("no_value");
             objects = this.reader.readList(this.mapping, sql2, parameters, this.connection);
-            assertEquals("no objects should be read", 0, objects.size());
+            assertEquals(0, objects.size(), "no objects should be read");
         } finally {
             Environment.executeSql(sqlDelete);
         }
     }
 
+    @Test
     public void testReadList_Array_Filtered() throws Exception {
         String sql1 = "select * from persistent_object where id > ? ";
         String sql2 = "select * from persistent_object where name like ? and fieldValue like ? order by id";
@@ -768,7 +787,7 @@ public class ObjectReaderTest extends TestCase{
 
             List objects = this.reader.readList(this.mapping, sql1, parameters,
                     this.connection, new AcceptEveryOtherFilter(3));
-            assertEquals("too many objects read", 2, objects.size());
+            assertEquals(2, objects.size(), "too many objects read");
             assertObjectCorrect((PersistentObject) objects.get(0), 2, "name2");
 
             parameters = new Object[2];
@@ -776,7 +795,7 @@ public class ObjectReaderTest extends TestCase{
             parameters[1] = "value%";
             objects = this.reader.readList(this.mapping, sql2, parameters,
                     this.connection, new AcceptEveryOtherFilter(3));
-            assertEquals("wrong number of objects", 3, objects.size());
+            assertEquals(3, objects.size(), "wrong number of objects");
             assertObject1ReadCorrectly((PersistentObject) objects.get(0));
             assertObject3ReadCorrectly((PersistentObject) objects.get(1));
             assertObjectCorrect((PersistentObject) objects.get(2), 5, "name5");
@@ -784,7 +803,7 @@ public class ObjectReaderTest extends TestCase{
             parameters[0] = "no_name";
             parameters[1] = "no_value";
             objects = this.reader.readList(this.mapping, sql2, parameters, this.connection);
-            assertEquals("no objects should be read", 0, objects.size());
+            assertEquals(0, objects.size(), "no objects should be read");
         } finally {
             Environment.executeSql(sqlDelete);
         }
@@ -794,21 +813,21 @@ public class ObjectReaderTest extends TestCase{
     
 
     protected void assertObjectCorrect(PersistentObject object, long id, String name) throws Exception{
-        assertEquals("id    retrieved wrong", id     , object.getId());
-        assertEquals("name  retrieved wrong", name, object.getName());
-        assertEquals("value retrieved wrong", null  , object.getObjectValue());
-        assertEquals("object should not be retrieved", null, object.getObject());
+        assertEquals(id     , object.getId(), "id    retrieved wrong");
+        assertEquals(name, object.getName(), "name  retrieved wrong");
+        assertEquals(null, object.getObjectValue(), "value retrieved wrong");
+        assertEquals(null, object.getObject(), "object should not be retrieved");
     }
 
     protected void assertObject1ReadCorrectly(PersistentObject object) throws Exception{
         assertObjectCorrect(object, 1, "name");
-        assertTrue("ResultSet constructor not called", object.wasResultSetConstructorCalled());
+        assertTrue(object.wasResultSetConstructorCalled(), "ResultSet constructor not called");
     }
 
     protected void assertObject3ReadCorrectly(PersistentObject object) throws Exception{
         assertObjectCorrect(object, 3, "name3");
 
-        assertTrue("ResultSet constructor not called", object.wasResultSetConstructorCalled());
+        assertTrue(object.wasResultSetConstructorCalled(), "ResultSet constructor not called");
     }
 
 

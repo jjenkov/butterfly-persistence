@@ -1,15 +1,18 @@
 package com.jenkov.db.test.util;
 
-import junit.framework.TestCase;
 import com.jenkov.db.util.ClassUtil;
 import com.jenkov.db.impl.mapping.method.SetterMapping;
+import org.junit.jupiter.api.Test;
 
 import java.util.Properties;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class ClassUtilTest extends TestCase{
+public class ClassUtilTest{
+
 
     public void testIsSubstitutableFor(){
         fail("not implemented");
@@ -23,6 +26,7 @@ public class ClassUtilTest extends TestCase{
         fail("not implemented");
     }
 
+    @Test
     public void testCompare() throws Exception {
         assertEquals( 0, ClassUtil.compare((Object)null, (Object)null));
         assertEquals( 1, ClassUtil.compare(null, "test"));
@@ -32,6 +36,7 @@ public class ClassUtilTest extends TestCase{
         assertEquals( 0, ClassUtil.compare("a", "a"));
     }
 
+    @Test
     public void testAreEqual(){
         assertTrue(ClassUtil.areEqual(null, null));
 
@@ -42,6 +47,7 @@ public class ClassUtilTest extends TestCase{
         assertFalse(ClassUtil.areEqual("test2", "test")) ;
     }
 
+    @Test
     public void testIsGetter() throws Exception {
 
         try{
@@ -58,6 +64,7 @@ public class ClassUtilTest extends TestCase{
         assertFalse(ClassUtil.isGetter(ClassUtilTest.class.getMethod("testIsGetter", null)));
     }
 
+    @Test
     public void testIsSetter() throws Exception {
         try{
             ClassUtil.isSetter(null);

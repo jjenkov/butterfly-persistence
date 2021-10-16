@@ -1,22 +1,26 @@
 package com.jenkov.db.test.init;
 
-import junit.framework.TestCase;
 import com.jenkov.db.jdbc.SimpleDataSource;
 import com.jenkov.db.PersistenceManager;
 import com.jenkov.db.impl.init.DatabaseInitializer;
 import com.jenkov.db.impl.init.SqlInitialization;
 import com.jenkov.db.itf.IDaos;
 import com.jenkov.db.itf.PersistenceException;
+import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
 
  */
-public class DatabaseInitializerTest extends TestCase {
+public class DatabaseInitializerTest {
 
+    @Test
     public void testInitialize() throws PersistenceException {
-        SimpleDataSource    dataSource          = new SimpleDataSource("org.h2.Driver", "jdbc:h2:database/h2/init-test", "sa", "");
+        SimpleDataSource    dataSource          = new SimpleDataSource("org.h2.Driver", "jdbc:h2:./database/h2/init-test", "sa", "");
         PersistenceManager  persistenceManager  = new PersistenceManager(dataSource);
         DatabaseInitializer databaseInitializer = new DatabaseInitializer();
 

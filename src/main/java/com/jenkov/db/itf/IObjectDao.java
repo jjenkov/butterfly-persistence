@@ -157,7 +157,7 @@ public interface IObjectDao {
      *                    in the object mapping cache, in the persistence configuration used by this
      *                    instance of the DAO class.
      * @param primaryKey  The primary key value identifying the record to be read into an object.
-     * @return            The object coresponding to the given primary key, read according to
+     * @return            The object corresponding to the given primary key, read according to
      *                    the given object mapping. If no record/object was found by the given
      *                    primary key, null is returned.
      * @throws PersistenceException If anything goes wrong during the read, if no persistence
@@ -172,9 +172,13 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned object. It will
      * automatically be cast to the same type as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param primaryKey
-     * @return
+     * @param objectMappingKey  The object mapping key (as a Class object) by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param primaryKey  The primary key value identifying the record to be read into an object.
+     * @return            The object corresponding to the given primary key, read according to
+     *                    the given object mapping. If no record/object was found by the given
+     *                    primary key, null is returned.
      * @throws PersistenceException
      */
     public <T> T readByPrimaryKey(Class<T> objectMappingKey, Object primaryKey) throws PersistenceException;
@@ -220,10 +224,16 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned object. It will
      * automatically be cast to the same type as the Class object you provide as object mapping key.
 
-     * @param objectMappingKey
-     * @param sql
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param sql         The SQL string locating the record to be read into an object.
+     * @return            The object read using the given SQL string and object mapping stored by
+     *                    the given object mapping key.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> T read(Class<T> objectMappingKey, String sql) throws PersistenceException;
 
@@ -269,10 +279,16 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned object. It will
      * automatically be cast to the same type as the Class object you provide as object mapping key.
 
-     * @param objectMappingKey
-     * @param result
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param result      The <code>ResultSet</code> to read the object from.
+     * @return            The object read from the <code>ResultSet</code> using the object mapping
+     *                    stored by the given object mapping key.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> T read(Class<T> objectMappingKey, ResultSet result) throws PersistenceException;
 
@@ -313,7 +329,7 @@ public interface IObjectDao {
          *                    instance of the DAO class.
          * @param statement   The <code>Statement</code> instance to use to execute the SQL string.
          * @param sql         The SQL string to be executed by the <code>Statement</code> instance.
-         * @return
+         * @return            The object (record) retrieved using the given SQL in the database
          * @throws PersistenceException If anything goes wrong during the read, if no persistence
          *                    configuration is set, if the persistence configuration contains
          *                    no object reader, or if no object mapping could be found nor generated
@@ -326,11 +342,16 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned object. It will
      * automatically be cast to the same type as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param statement
-     * @param sql
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param statement   The <code>Statement</code> instance to use to execute the SQL string.
+     * @param sql         The SQL string to be executed by the <code>Statement</code> instance.
+     * @return            The object (record) retrieved using the given SQL in the database
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> T read(Class<T> objectMappingKey, Statement statement, String sql) throws PersistenceException;
 
@@ -381,10 +402,17 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned object. It will
      * automatically be cast to the same type as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param statement
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param statement   The <code>PreparedStatement</code> instance locating the object to read.
+     * @return            The object read from the <code>ResultSet</code> generated by the
+     *                    given <code>PreparedStatement</code>, according to the object mapping
+     *                    located or generated by the given object mapping key.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> T read(Class<T> objectMappingKey, PreparedStatement statement) throws PersistenceException;
 
@@ -425,6 +453,8 @@ public interface IObjectDao {
      * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
      *                    in the object mapping cache, in the persistence configuration used by this
      *                    instance of the DAO class.
+     * @param sql         The SQL statement retrieving the object (record) to read in the database.
+     * @param parameters  The parameters to insert into the SQL statement (via a PreparedStatement) before executing it.
      * @return            The object read from the <code>ResultSet</code> generated by the
      *                    given <code>PreparedStatement</code>, according to the object mapping
      *                    located or generated by the given object mapping key.
@@ -440,11 +470,18 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned object. It will
      * automatically be cast to the same type as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param sql
-     * @param parameters
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param sql         The SQL statement retrieving the object (record) to read in the database.
+     * @param parameters  The parameters to insert into the SQL statement (via a PreparedStatement) before executing it.
+     * @return            The object read from the <code>ResultSet</code> generated by the
+     *                    given <code>PreparedStatement</code>, according to the object mapping
+     *                    located or generated by the given object mapping key.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> T read(Class<T> objectMappingKey, String sql, Collection parameters) throws PersistenceException;
 
@@ -485,6 +522,8 @@ public interface IObjectDao {
      * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
      *                    in the object mapping cache, in the persistence configuration used by this
      *                    instance of the DAO class.
+     * @param sql         The SQL statement retrieving the object (record) to read in the database.
+     * @param parameters  The parameters to insert into the SQL statement (via a PreparedStatement) before executing it.
      * @return            The object read from the <code>ResultSet</code> generated by the
      *                    given <code>PreparedStatement</code>, according to the object mapping
      *                    located or generated by the given object mapping key.
@@ -500,11 +539,18 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned object. It will
      * automatically be cast to the same type as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param sql
-     * @param parameters
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param sql         The SQL statement retrieving the object (record) to read in the database.
+     * @param parameters  The parameters to insert into the SQL statement (via a PreparedStatement) before executing it.
+     * @return            The object read from the <code>ResultSet</code> generated by the
+     *                    given <code>PreparedStatement</code>, according to the object mapping
+     *                    located or generated by the given object mapping key.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> T read(Class<T> objectMappingKey, String sql, Object ...  parameters) throws PersistenceException;
 
@@ -552,10 +598,18 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned List. It will
      * automatically be cast to contain the same type of objects as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param primaryKeys
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param primaryKeys The primary key values identifying the records to be read into objects.
+     * @return            The list of objects coresponding to the given primary keys, read according to
+     *                    the given object mapping. If no records/objects were found by the given
+     *                    primary keys, an empty list is returned. An empty list is also returned
+     *                    if the collection of primary keys passed to this method is empty.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> List<T> readListByPrimaryKeys(Class<T> objectMappingKey, Collection primaryKeys) throws PersistenceException;
 
@@ -599,10 +653,15 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned List. It will
      * automatically be cast to contain the same type of objects as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param sql
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param sql         The String string locating the records to be read into objects.
+     * @return            A <code>List</code> of objects read from the database.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> List<T> readList(Class<T> objectMappingKey, String sql) throws PersistenceException;
 
@@ -647,10 +706,15 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned List. It will
      * automatically be cast to contain the same type of objects as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param result
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param result      The <code>ResultSet</code> to read the list of objects from.
+     * @return            A <code>List</code> of objects read from the database.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> List<T> readList(Class<T> objectMappingKey, ResultSet result) throws PersistenceException;
 
@@ -701,11 +765,16 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned List. It will
      * automatically be cast to contain the same type of objects as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param statement
-     * @param sql
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param statement   The <code>Statement</code> instance to be used to execute the SQL string.
+     * @param sql         The SQL string to be executed by the <code>Statement</code> instance.
+     * @return            A <code>List</code> of objects read from the database.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> List<T> readList(Class<T> objectMappingKey, Statement statement, String sql) throws PersistenceException;
 
@@ -752,10 +821,15 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned List. It will
      * automatically be cast to contain the same type of objects as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param statement
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param statement   The <code>PreparedStatement</code> instance locating the list of objects to read.
+     * @return            A <code>List</code> of objects read from the database.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> List<T> readList(Class<T> objectMappingKey, PreparedStatement statement) throws PersistenceException;
 
@@ -807,11 +881,16 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned List. It will
      * automatically be cast to contain the same type of objects as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param sql
-     * @param parameters
-     * @return
-     * @throws PersistenceException
+     * @param  objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param  sql        The SQL string to use to prepare a <code>PreparedStatement</code>.
+     * @param  parameters The parameters to insert into the <code>PreparedStatement</code>.
+     * @return            A <code>List</code> of objects read from the database.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> List<T> readList(Class<T> objectMappingKey, String sql, Collection parameters) throws PersistenceException;
 
@@ -863,11 +942,16 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned List. It will
      * automatically be cast to contain the same type of objects as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param sql
-     * @param parameters
-     * @return
-     * @throws PersistenceException
+     * @param  objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param  sql        The SQL string to use to prepare a <code>PreparedStatement</code>.
+     * @param  parameters The parameters to insert into the <code>PreparedStatement</code>.
+     * @return            A <code>List</code> of objects read from the database.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> List<T> readList(Class<T> objectMappingKey, String sql, Object ...  parameters) throws PersistenceException;
 
@@ -921,11 +1005,16 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned List. It will
      * automatically be cast to contain the same type of objects as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param sql
-     * @param filter
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param sql         The SQL string locating the records to read into objects.
+     * @param filter      A filter that can include or exclude individual records.
+     * @return            A <code>List</code> of objects read from the database.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> List<T> readList(Class<T> objectMappingKey, String sql, IReadFilter filter) throws PersistenceException;
 
@@ -980,11 +1069,16 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned List. It will
      * automatically be cast to contain the same type of objects as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param result
-     * @param filter
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param result      The <code>ResultSet</code> to read the list of objects from.
+     * @param filter      A filter that can include or exclude individual records.
+     * @return            A <code>List</code> of objects read from the database.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> List<T> readList(Class<T> objectMappingKey, ResultSet result, IReadFilter filter) throws PersistenceException;
 
@@ -1047,12 +1141,17 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned List. It will
      * automatically be cast to contain the same type of objects as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param statement
-     * @param sql
-     * @param filter
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param statement   The <code>Statement</code> instance to be used to execute the SQL string.
+     * @param sql         The SQL string to be executed by the <code>Statement</code> instance.
+     * @param filter      A filter that can include or exclude individual records.
+     * @return            A <code>List</code> of objects read from the database.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> List<T> readList(Class<T> objectMappingKey, Statement statement, String sql, IReadFilter filter) throws PersistenceException;
 
@@ -1110,11 +1209,16 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned List. It will
      * automatically be cast to contain the same type of objects as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param statement
-     * @param filter
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param statement   The <code>PreparedStatement</code> instance locating the list of objects to read.
+     * @param filter      A filter that can include or exclude individual records.
+     * @return            A <code>List</code> of objects read from the database.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> List<T> readList(Class<T> objectMappingKey, PreparedStatement statement, IReadFilter filter) throws PersistenceException;
 
@@ -1177,12 +1281,17 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned List. It will
      * automatically be cast to contain the same type of objects as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param sql
-     * @param filter
-     * @param parameters
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param  sql        The SQL string to use to prepare a <code>PreparedStatement</code>.
+     * @param  parameters The parameters to insert into the <code>PreparedStatement</code>.
+     * @param filter      A filter that can include or exclude individual records.
+     * @return            A <code>List</code> of objects read from the database.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> List<T> readList(Class<T> objectMappingKey, String sql, IReadFilter filter, Collection parameters) throws PersistenceException;
 
@@ -1245,12 +1354,17 @@ public interface IObjectDao {
      * Class objects as object mapping keys, and that you don't need to cast the returned List. It will
      * automatically be cast to contain the same type of objects as the Class object you provide as object mapping key.
      *
-     * @param objectMappingKey
-     * @param sql
-     * @param filter
-     * @param parameters
-     * @return
-     * @throws PersistenceException
+     * @param objectMappingKey  The object mapping key by which the object mapping to be used is stored
+     *                    in the object mapping cache, in the persistence configuration used by this
+     *                    instance of the DAO class.
+     * @param sql         The SQL string to use to prepare a <code>PreparedStatement</code>.
+     * @param parameters  The parameters to insert into the <code>PreparedStatement</code>.
+     * @param filter      A filter that can include or exclude individual records.
+     * @return            A <code>List</code> of objects read from the database.
+     * @throws PersistenceException If anything goes wrong during the read, if no persistence
+     *                    configuration is set, if the persistence configuration contains
+     *                    no object reader, or if no object mapping could be found nor generated
+     *                    from the given object mapping key.
      */
     public <T> List<T> readList(Class<T> objectMappingKey, String sql, IReadFilter filter,  Object ...  parameters) throws PersistenceException;
 

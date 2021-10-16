@@ -1,11 +1,11 @@
 package com.jenkov.db.test.mapping;
 
-import junit.framework.TestCase;
 import com.jenkov.db.itf.mapping.*;
 import com.jenkov.db.itf.PersistenceException;
 import com.jenkov.db.impl.mapping.method.*;
 import com.jenkov.db.impl.mapping.ObjectMappingFactory;
 import com.jenkov.db.test.objects.PersistentObject;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.Array;
 import java.math.BigDecimal;
@@ -15,6 +15,8 @@ import java.sql.*;
 import java.util.Date;
 import java.net.URL;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 
 /**
  * Created by IntelliJ IDEA.
@@ -23,7 +25,7 @@ import java.net.URL;
  * Time: 15:18:42
  * To change this template use File | Settings | File Templates.
  */
-public class ObjectMappingFactoryTest extends TestCase{
+public class ObjectMappingFactoryTest {
 
     IObjectMappingFactory mappingFactory = new ObjectMappingFactory();
 
@@ -37,80 +39,80 @@ public class ObjectMappingFactoryTest extends TestCase{
     }
 
 
-
+    @Test
     public void testCreateGetterMapping_correctInstanceType() throws Exception{
-        assertEquals("Array", ArrayGetterMapping.class,
-                mappingFactory.createGetterMapping(Array.class).getClass());
-        assertEquals("AsciiStream", AsciiStreamGetterMapping.class,
-                mappingFactory.createGetterMapping(AsciiStream.class).getClass());
-        assertEquals("Boolean", BooleanGetterMapping.class,
-                mappingFactory.createGetterMapping(Boolean.class).getClass());
-        assertEquals("boolean", BooleanGetterMapping.class,
-                mappingFactory.createGetterMapping(boolean.class).getClass());
-        assertEquals("Byte", ByteGetterMapping.class,
-                mappingFactory.createGetterMapping(Byte.class).getClass());
-        assertEquals("byte", ByteGetterMapping.class,
-                mappingFactory.createGetterMapping(byte.class).getClass());
-        assertEquals("Byte[]", ByteArrayGetterMapping.class,
-                mappingFactory.createGetterMapping(Byte[].class).getClass());
-        assertEquals("byte[]", ByteArrayGetterMapping.class,
-                mappingFactory.createGetterMapping(byte[].class).getClass());
-        assertEquals("Double", DoubleGetterMapping.class,
-                mappingFactory.createGetterMapping(Double.class).getClass());
-        assertEquals("double", DoubleGetterMapping.class,
-                mappingFactory.createGetterMapping(double.class).getClass());
-        assertEquals("Float", FloatGetterMapping.class,
-                mappingFactory.createGetterMapping(Float.class).getClass());
-        assertEquals("float", FloatGetterMapping.class,
-                mappingFactory.createGetterMapping(float.class).getClass());
-        assertEquals("Integer", IntGetterMapping.class,
-                mappingFactory.createGetterMapping(Integer.class).getClass());
-        assertEquals("int", IntGetterMapping.class,
-                mappingFactory.createGetterMapping(int.class).getClass());
-        assertEquals("Long", LongGetterMapping.class,
-                mappingFactory.createGetterMapping(Long.class).getClass());
-        assertEquals("long", LongGetterMapping.class,
-                mappingFactory.createGetterMapping(long.class).getClass());
-        assertEquals("Short", ShortGetterMapping.class,
-                mappingFactory.createGetterMapping(Short.class).getClass());
-        assertEquals("short", ShortGetterMapping.class,
-                mappingFactory.createGetterMapping(short.class).getClass());
+        assertEquals(ArrayGetterMapping.class,
+                mappingFactory.createGetterMapping(Array.class).getClass(), "Array");
+        assertEquals(AsciiStreamGetterMapping.class,
+                mappingFactory.createGetterMapping(AsciiStream.class).getClass(), "AsciiStream");
+        assertEquals(BooleanGetterMapping.class,
+                mappingFactory.createGetterMapping(Boolean.class).getClass(), "Boolean");
+        assertEquals(BooleanGetterMapping.class,
+                mappingFactory.createGetterMapping(boolean.class).getClass(), "boolean");
+        assertEquals(ByteGetterMapping.class,
+                mappingFactory.createGetterMapping(Byte.class).getClass(), "Byte");
+        assertEquals(ByteGetterMapping.class,
+                mappingFactory.createGetterMapping(byte.class).getClass(), "byte");
+        assertEquals(ByteArrayGetterMapping.class,
+                mappingFactory.createGetterMapping(Byte[].class).getClass(), "Byte[]");
+        assertEquals(ByteArrayGetterMapping.class,
+                mappingFactory.createGetterMapping(byte[].class).getClass(), "byte[]");
+        assertEquals(DoubleGetterMapping.class,
+                mappingFactory.createGetterMapping(Double.class).getClass(), "Double");
+        assertEquals(DoubleGetterMapping.class,
+                mappingFactory.createGetterMapping(double.class).getClass(), "double");
+        assertEquals(FloatGetterMapping.class,
+                mappingFactory.createGetterMapping(Float.class).getClass(), "Float");
+        assertEquals(FloatGetterMapping.class,
+                mappingFactory.createGetterMapping(float.class).getClass(), "float");
+        assertEquals(IntGetterMapping.class,
+                mappingFactory.createGetterMapping(Integer.class).getClass(), "Integer");
+        assertEquals(IntGetterMapping.class,
+                mappingFactory.createGetterMapping(int.class).getClass(), "int");
+        assertEquals(LongGetterMapping.class,
+                mappingFactory.createGetterMapping(Long.class).getClass(), "Long");
+        assertEquals(LongGetterMapping.class,
+                mappingFactory.createGetterMapping(long.class).getClass(), "long");
+        assertEquals(ShortGetterMapping.class,
+                mappingFactory.createGetterMapping(Short.class).getClass(), "Short");
+        assertEquals(ShortGetterMapping.class,
+                mappingFactory.createGetterMapping(short.class).getClass(), "short");
 
 
-        assertEquals("BigDecimal", BigDecimalGetterMapping.class,
-                mappingFactory.createGetterMapping(BigDecimal.class).getClass());
-        assertEquals("InputStream", BinaryStreamGetterMapping.class,
-                mappingFactory.createGetterMapping(InputStream.class).getClass());
-        assertEquals("BlobMock", BlobGetterMapping.class,
-                mappingFactory.createGetterMapping(Blob.class).getClass());
-        assertEquals("Reader", CharacterStreamGetterMapping.class,
-                mappingFactory.createGetterMapping(Reader.class).getClass());
-        assertEquals("Clob", ClobGetterMapping.class,
-                mappingFactory.createGetterMapping(Clob.class).getClass());
-        assertEquals("Date", DateGetterMapping.class,
-                mappingFactory.createGetterMapping(Date.class).getClass());
-        assertEquals("Object", ObjectGetterMapping.class,
-                mappingFactory.createGetterMapping(Object.class).getClass());
-        assertEquals("Ref", RefGetterMapping.class,
-                mappingFactory.createGetterMapping(Ref.class).getClass());
-        assertEquals("String", StringGetterMapping.class,
-                mappingFactory.createGetterMapping(String.class).getClass());
-        assertEquals("Time", TimeGetterMapping.class,
-                mappingFactory.createGetterMapping(Time.class).getClass());
-        assertEquals("Timestamp", TimestampGetterMapping.class,
-                mappingFactory.createGetterMapping(Timestamp.class).getClass());
-        assertEquals("URL", UrlGetterMapping.class,
-                mappingFactory.createGetterMapping(URL.class).getClass());
+        assertEquals(BigDecimalGetterMapping.class,
+                mappingFactory.createGetterMapping(BigDecimal.class).getClass(), "BigDecimal");
+        assertEquals(BinaryStreamGetterMapping.class,
+                mappingFactory.createGetterMapping(InputStream.class).getClass(), "InputStream");
+        assertEquals(BlobGetterMapping.class,
+                mappingFactory.createGetterMapping(Blob.class).getClass(), "BlobMock");
+        assertEquals(CharacterStreamGetterMapping.class,
+                mappingFactory.createGetterMapping(Reader.class).getClass(), "Reader");
+        assertEquals(ClobGetterMapping.class,
+                mappingFactory.createGetterMapping(Clob.class).getClass(), "Clob");
+        assertEquals(DateGetterMapping.class,
+                mappingFactory.createGetterMapping(Date.class).getClass(), "Date");
+        assertEquals(ObjectGetterMapping.class,
+                mappingFactory.createGetterMapping(Object.class).getClass(), "Object");
+        assertEquals(RefGetterMapping.class,
+                mappingFactory.createGetterMapping(Ref.class).getClass(), "Ref");
+        assertEquals(StringGetterMapping.class,
+                mappingFactory.createGetterMapping(String.class).getClass(), "String");
+        assertEquals(TimeGetterMapping.class,
+                mappingFactory.createGetterMapping(Time.class).getClass(), "Time");
+        assertEquals(TimestampGetterMapping.class,
+                mappingFactory.createGetterMapping(Timestamp.class).getClass(), "Timestamp");
+        assertEquals(UrlGetterMapping.class,
+                mappingFactory.createGetterMapping(URL.class).getClass(), "URL");
     }
 
+    @Test
     public void testCreateGetterMapping() throws Exception{
         IGetterMapping mapping1 = mappingFactory.createGetterMapping(
                 PersistentObject.class.getMethod("getId", null), "id", true);
 
-        assertEquals("wrong method",
-                PersistentObject.class.getMethod("getId", null), mapping1.getObjectMethod());
-        assertEquals("wrong db method name", "id", mapping1.getColumnName());
-        assertTrue("should be table mapped", mapping1.isTableMapped());
+        assertEquals(PersistentObject.class.getMethod("getId", null), mapping1.getObjectMethod(), "wrong method");
+        assertEquals("id", mapping1.getColumnName(), "wrong db method name");
+        assertTrue(mapping1.isTableMapped(), "should be table mapped");
     }
 
     public void testCopyGetterMapping() throws Exception{
@@ -119,96 +121,98 @@ public class ObjectMappingFactoryTest extends TestCase{
 
         IGetterMapping mapping2 = mappingFactory.copyGetterMapping(mapping1);
 
-        assertNotSame("should be copy, not same", mapping1, mapping2);
-        assertEquals("should be equal after copy", mapping1, mapping2);
+        assertNotSame(mapping1, mapping2, "should be copy, not same");
+        assertEquals(mapping1, mapping2, "should be equal after copy");
     }
 
     public void testCreateSetterMapping_correctInstanceType() throws Exception{
-        assertEquals("Array", ArraySetterMapping.class,
-                mappingFactory.createSetterMapping(Array.class).getClass());
-        assertEquals("AsciiStream", AsciiStreamSetterMapping.class,
-                mappingFactory.createSetterMapping(AsciiStream.class).getClass());
-        assertEquals("Boolean", BooleanSetterMapping.class,
-                mappingFactory.createSetterMapping(Boolean.class).getClass());
-        assertEquals("boolean", BooleanSetterMapping.class,
-                mappingFactory.createSetterMapping(boolean.class).getClass());
-        assertEquals("Byte", ByteSetterMapping.class,
-                mappingFactory.createSetterMapping(Byte.class).getClass());
-        assertEquals("byte", ByteSetterMapping.class,
-                mappingFactory.createSetterMapping(byte.class).getClass());
-        assertEquals("Byte[]", ByteArraySetterMapping.class,
-                mappingFactory.createSetterMapping(Byte[].class).getClass());
-        assertEquals("byte[]", ByteArraySetterMapping.class,
-                mappingFactory.createSetterMapping(byte[].class).getClass());
-        assertEquals("Double", DoubleSetterMapping.class,
-                mappingFactory.createSetterMapping(Double.class).getClass());
-        assertEquals("double", DoubleSetterMapping.class,
-                mappingFactory.createSetterMapping(double.class).getClass());
-        assertEquals("Float", FloatSetterMapping.class,
-                mappingFactory.createSetterMapping(Float.class).getClass());
-        assertEquals("float", FloatSetterMapping.class,
-                mappingFactory.createSetterMapping(float.class).getClass());
-        assertEquals("Integer", IntSetterMapping.class,
-                mappingFactory.createSetterMapping(Integer.class).getClass());
-        assertEquals("int", IntSetterMapping.class,
-                mappingFactory.createSetterMapping(int.class).getClass());
-        assertEquals("Long", LongSetterMapping.class,
-                mappingFactory.createSetterMapping(Long.class).getClass());
-        assertEquals("long", LongSetterMapping.class,
-                mappingFactory.createSetterMapping(long.class).getClass());
-        assertEquals("Short", ShortSetterMapping.class,
-                mappingFactory.createSetterMapping(Short.class).getClass());
-        assertEquals("short", ShortSetterMapping.class,
-                mappingFactory.createSetterMapping(short.class).getClass());
+        assertEquals(ArraySetterMapping.class,
+                mappingFactory.createSetterMapping(Array.class).getClass(), "Array");
+        assertEquals(AsciiStreamSetterMapping.class,
+                mappingFactory.createSetterMapping(AsciiStream.class).getClass(), "AsciiStream");
+        assertEquals(BooleanSetterMapping.class,
+                mappingFactory.createSetterMapping(Boolean.class).getClass(), "Boolean");
+        assertEquals(BooleanSetterMapping.class,
+                mappingFactory.createSetterMapping(boolean.class).getClass(), "boolean");
+        assertEquals(ByteSetterMapping.class,
+                mappingFactory.createSetterMapping(Byte.class).getClass(), "Byte");
+        assertEquals(ByteSetterMapping.class,
+                mappingFactory.createSetterMapping(byte.class).getClass(), "byte");
+        assertEquals(ByteArraySetterMapping.class,
+                mappingFactory.createSetterMapping(Byte[].class).getClass(), "Byte[]");
+        assertEquals(ByteArraySetterMapping.class,
+                mappingFactory.createSetterMapping(byte[].class).getClass(), "byte[]");
+        assertEquals(DoubleSetterMapping.class,
+                mappingFactory.createSetterMapping(Double.class).getClass(), "Double");
+        assertEquals(DoubleSetterMapping.class,
+                mappingFactory.createSetterMapping(double.class).getClass(), "double");
+        assertEquals(FloatSetterMapping.class,
+                mappingFactory.createSetterMapping(Float.class).getClass(), "Float");
+        assertEquals(FloatSetterMapping.class,
+                mappingFactory.createSetterMapping(float.class).getClass(), "float");
+        assertEquals(IntSetterMapping.class,
+                mappingFactory.createSetterMapping(Integer.class).getClass(), "Integer");
+        assertEquals(IntSetterMapping.class,
+                mappingFactory.createSetterMapping(int.class).getClass(), "int");
+        assertEquals(LongSetterMapping.class,
+                mappingFactory.createSetterMapping(Long.class).getClass(), "Long");
+        assertEquals(LongSetterMapping.class,
+                mappingFactory.createSetterMapping(long.class).getClass(), "long");
+        assertEquals(ShortSetterMapping.class,
+                mappingFactory.createSetterMapping(Short.class).getClass(), "Short");
+        assertEquals(ShortSetterMapping.class,
+                mappingFactory.createSetterMapping(short.class).getClass(), "short");
 
 
-        assertEquals("BigDecimal", BigDecimalSetterMapping.class,
-                mappingFactory.createSetterMapping(BigDecimal.class).getClass());
-        assertEquals("InputStream", BinaryStreamSetterMapping.class,
-                mappingFactory.createSetterMapping(InputStream.class).getClass());
-        assertEquals("BlobMock", BlobSetterMapping.class,
-                mappingFactory.createSetterMapping(Blob.class).getClass());
-        assertEquals("Reader", CharacterStreamSetterMapping.class,
-                mappingFactory.createSetterMapping(Reader.class).getClass());
-        assertEquals("Clob", ClobSetterMapping.class,
-                mappingFactory.createSetterMapping(Clob.class).getClass());
-        assertEquals("Date", DateSetterMapping.class,
-                mappingFactory.createSetterMapping(Date.class).getClass());
-        assertEquals("Object", ObjectSetterMapping.class,
-                mappingFactory.createSetterMapping(Object.class).getClass());
-        assertEquals("Ref", RefSetterMapping.class,
-                mappingFactory.createSetterMapping(Ref.class).getClass());
-        assertEquals("String", StringSetterMapping.class,
-                mappingFactory.createSetterMapping(String.class).getClass());
-        assertEquals("Time", TimeSetterMapping.class,
-                mappingFactory.createSetterMapping(Time.class).getClass());
-        assertEquals("Timestamp", TimestampSetterMapping.class,
-                mappingFactory.createSetterMapping(Timestamp.class).getClass());
-        assertEquals("URL", UrlSetterMapping.class,
-                mappingFactory.createSetterMapping(URL.class).getClass());
+        assertEquals(BigDecimalSetterMapping.class,
+                mappingFactory.createSetterMapping(BigDecimal.class).getClass(), "BigDecimal");
+        assertEquals(BinaryStreamSetterMapping.class,
+                mappingFactory.createSetterMapping(InputStream.class).getClass(), "InputStream");
+        assertEquals(BlobSetterMapping.class,
+                mappingFactory.createSetterMapping(Blob.class).getClass(), "BlobMock");
+        assertEquals(CharacterStreamSetterMapping.class,
+                mappingFactory.createSetterMapping(Reader.class).getClass(), "Reader");
+        assertEquals(ClobSetterMapping.class,
+                mappingFactory.createSetterMapping(Clob.class).getClass(), "Clob");
+        assertEquals(DateSetterMapping.class,
+                mappingFactory.createSetterMapping(Date.class).getClass(), "Date");
+        assertEquals(ObjectSetterMapping.class,
+                mappingFactory.createSetterMapping(Object.class).getClass(), "Object");
+        assertEquals(RefSetterMapping.class,
+                mappingFactory.createSetterMapping(Ref.class).getClass(), "Ref");
+        assertEquals(StringSetterMapping.class,
+                mappingFactory.createSetterMapping(String.class).getClass(), "String");
+        assertEquals(TimeSetterMapping.class,
+                mappingFactory.createSetterMapping(Time.class).getClass(), "Time");
+        assertEquals(TimestampSetterMapping.class,
+                mappingFactory.createSetterMapping(Timestamp.class).getClass(), "Timestamp");
+        assertEquals(UrlSetterMapping.class,
+                mappingFactory.createSetterMapping(URL.class).getClass(), "URL");
     }
 
+    @Test
     public void testCreateSetterMapping() throws Exception{
         ISetterMapping mapping1 = mappingFactory.createSetterMapping(
                 PersistentObject.class.getMethod("setId", new Class[]{long.class}), "id", true);
 
-        assertEquals("wrong method",
-                PersistentObject.class.getMethod("setId",  new Class[]{long.class}), mapping1.getObjectMethod());
-        assertEquals("wrong db method name", "id", mapping1.getColumnName());
-        assertTrue("should be table mapped", mapping1.isTableMapped());
+        assertEquals(PersistentObject.class.getMethod("setId",  new Class[]{long.class}), mapping1.getObjectMethod(),
+                "wrong method");
+        assertEquals("id", mapping1.getColumnName(), "wrong db method name");
+        assertTrue(mapping1.isTableMapped(), "should be table mapped");
     }
 
+    @Test
     public void testCopySetterMapping() throws Exception{
         ISetterMapping mapping1 = mappingFactory.createSetterMapping(
                 PersistentObject.class.getMethod("setId", new Class[]{long.class}), "id", true);
 
         ISetterMapping mapping2 = mappingFactory.copySetterMapping(mapping1);
 
-        assertNotSame("should be copy, not same", mapping1, mapping2);
-        assertEquals("should be equal after copy", mapping1, mapping2);
+        assertNotSame(mapping1, mapping2, "should be copy, not same");
+        assertEquals(mapping1, mapping2, "should be equal after copy");
     }
 
-
+    @Test
     public void testAddGetterMapping() throws Exception{
         IObjectMappingFactory factory = mappingFactory;
 
@@ -227,21 +231,20 @@ public class ObjectMappingFactoryTest extends TestCase{
         factory.addGetterMapping(mapping, "getName", "name", false);
 
         IGetterMapping getterMapping = mapping.getGetterMapping("id");
-        assertNotNull("getter method not added", getterMapping);
-        assertEquals ("wrong getter method",
-                PersistentObject.class.getMethod("getId", null), getterMapping.getObjectMethod());
-        assertEquals ("wrong column name", "id", getterMapping.getColumnName());
-        assertTrue   ("isTableMapped wrong", getterMapping.isTableMapped());
+        assertNotNull(getterMapping, "getter method not added");
+        assertEquals (PersistentObject.class.getMethod("getId", null), getterMapping.getObjectMethod(), "wrong getter method");
+        assertEquals ("id", getterMapping.getColumnName(), "wrong column name");
+        assertTrue   (getterMapping.isTableMapped(), "isTableMapped wrong");
 
         getterMapping = mapping.getGetterMapping("name");
-        assertNotNull("getter method not added", getterMapping);
-        assertEquals ("wrong getter method",
-                PersistentObject.class.getMethod("getName", null), getterMapping.getObjectMethod());
-        assertEquals ("wrong column name", "name", getterMapping.getColumnName());
-        assertFalse  ("isTableMapped wrong", getterMapping.isTableMapped());
+        assertNotNull(getterMapping, "getter method not added");
+        assertEquals (PersistentObject.class.getMethod("getName", null), getterMapping.getObjectMethod(),
+                "wrong getter method");
+        assertEquals ("name", getterMapping.getColumnName(), "wrong column name");
+        assertFalse  (getterMapping.isTableMapped(), "isTableMapped wrong");
     }
 
-
+    @Test
     public void testAddGetterMappingAllParameters() throws Exception{
         IObjectMappingFactory factory = mappingFactory;
 
@@ -260,22 +263,23 @@ public class ObjectMappingFactoryTest extends TestCase{
         factory.addGetterMapping(mapping, "getName", "name", false, false);
 
         IGetterMapping getterMapping = mapping.getGetterMapping("id");
-        assertNotNull("getter method not added", getterMapping);
-        assertEquals ("wrong getter method",
-                PersistentObject.class.getMethod("getId", null), getterMapping.getObjectMethod());
-        assertEquals ("wrong column name", "id", getterMapping.getColumnName());
-        assertTrue   ("isTableMapped wrong"  , getterMapping.isTableMapped());
-        assertTrue   ("isAutoGenerated wrong", getterMapping.isAutoGenerated());
+        assertNotNull(getterMapping, "getter method not added");
+        assertEquals (PersistentObject.class.getMethod("getId", null), getterMapping.getObjectMethod(),
+                "wrong getter method");
+        assertEquals (getterMapping.getColumnName(), "id", "wrong column name");
+        assertTrue   (getterMapping.isTableMapped(), "isTableMapped wrong");
+        assertTrue   (getterMapping.isAutoGenerated(), "isAutoGenerated wrong");
 
         getterMapping = mapping.getGetterMapping("name");
-        assertNotNull("getter method not added", getterMapping);
-        assertEquals ("wrong getter method",
-                PersistentObject.class.getMethod("getName", null), getterMapping.getObjectMethod());
-        assertEquals ("wrong column name", "name", getterMapping.getColumnName());
-        assertFalse  ("isTableMapped wrong", getterMapping.isTableMapped());
-        assertFalse  ("isAutoGenerated wrong", getterMapping.isAutoGenerated());
+        assertNotNull(getterMapping, "getter method not added");
+        assertEquals (PersistentObject.class.getMethod("getName", null), getterMapping.getObjectMethod(),
+                "wrong getter method");
+        assertEquals ("name", getterMapping.getColumnName(), "wrong column name");
+        assertFalse  (getterMapping.isTableMapped(), "isTableMapped wrong");
+        assertFalse  (getterMapping.isAutoGenerated(), "isAutoGenerated wrong");
     }
 
+    @Test
     public void testAddSetterMapping() throws Exception{
         IObjectMappingFactory factory = mappingFactory;
 
@@ -294,22 +298,23 @@ public class ObjectMappingFactoryTest extends TestCase{
         factory.addSetterMapping(mapping, "setName", "name", false);
 
         ISetterMapping setterMapping = mapping.getSetterMapping("id");
-        assertNotNull("setter method not added", setterMapping);
-        assertEquals ("wrong setter method",
-                PersistentObject.class.getMethod("setId", new Class[]{long.class}),
-                setterMapping.getObjectMethod());
-        assertEquals ("wrong column name", "id", setterMapping.getColumnName());
-        assertTrue   ("isTableMapped wrong", setterMapping.isTableMapped());
+        assertNotNull(setterMapping, "setter method not added");
+        assertEquals (PersistentObject.class.getMethod("setId", new Class[]{long.class}),
+                setterMapping.getObjectMethod(),
+                "wrong setter method");
+        assertEquals ("id", setterMapping.getColumnName(), "wrong column name");
+        assertTrue   (setterMapping.isTableMapped(), "isTableMapped wrong");
 
         setterMapping = mapping.getSetterMapping("name");
-        assertNotNull("setter method not added", setterMapping);
-        assertEquals ("wrong setter method",
-                PersistentObject.class.getMethod("setName", new Class[]{String.class}),
-                setterMapping.getObjectMethod());
-        assertEquals ("wrong column name", "name", setterMapping.getColumnName());
-        assertFalse  ("isTableMapped wrong", setterMapping.isTableMapped());
+        assertNotNull(setterMapping, "setter method not added");
+        assertEquals (PersistentObject.class.getMethod("setName", new Class[]{String.class}),
+                setterMapping.getObjectMethod(),
+                "wrong setter method");
+        assertEquals ("name", setterMapping.getColumnName(), "wrong column name");
+        assertFalse  (setterMapping.isTableMapped(), "isTableMapped wrong");
     }
 
+    @Test
     public void testAddSetterMappingAllParametersNoParameterType() throws Exception{
         IObjectMappingFactory factory = mappingFactory;
 
@@ -328,24 +333,26 @@ public class ObjectMappingFactoryTest extends TestCase{
         factory.addSetterMapping(mapping, "setName",  "name", false);
 
         ISetterMapping setterMapping = mapping.getSetterMapping("id");
-        assertNotNull("setter method not added", setterMapping);
-        assertEquals ("wrong setter method",
+        assertNotNull(setterMapping, "setter method not added");
+        assertEquals (
                 PersistentObject.class.getMethod("setId", new Class[]{long.class}),
-                setterMapping.getObjectMethod());
-        assertEquals ("wrong column name", "id", setterMapping.getColumnName());
-        assertTrue   ("isTableMapped wrong", setterMapping.isTableMapped());
+                setterMapping.getObjectMethod(),
+                "wrong setter method");
+        assertEquals ("id", setterMapping.getColumnName(), "wrong column name");
+        assertTrue   (setterMapping.isTableMapped(), "isTableMapped wrong");
 
         setterMapping = mapping.getSetterMapping("name");
-        assertNotNull("setter method not added", setterMapping);
-        assertEquals ("wrong setter method",
+        assertNotNull(setterMapping, "setter method not added");
+        assertEquals (
                 PersistentObject.class.getMethod("setName", new Class[]{String.class}),
-                setterMapping.getObjectMethod());
-        assertEquals ("wrong column name", "name", setterMapping.getColumnName());
-        assertFalse  ("isTableMapped wrong", setterMapping.isTableMapped());
+                setterMapping.getObjectMethod(),
+                "wrong setter method");
+        assertEquals ("name", setterMapping.getColumnName(), "wrong column name");
+        assertFalse  (setterMapping.isTableMapped(), "isTableMapped wrong");
     }
 
 
-
+    @Test
     public void testAddSetterMappingWithParameterType() throws Exception{
         IObjectMappingFactory factory = mappingFactory;
 
@@ -364,23 +371,24 @@ public class ObjectMappingFactoryTest extends TestCase{
         factory.addSetterMapping(mapping, "setName", String.class, "name", false);
 
         ISetterMapping setterMapping = mapping.getSetterMapping("id");
-        assertNotNull("setter method not added", setterMapping);
-        assertEquals ("wrong setter method",
-                PersistentObject.class.getMethod("setId", new Class[]{long.class}),
-                setterMapping.getObjectMethod());
-        assertEquals ("wrong column name", "id", setterMapping.getColumnName());
-        assertTrue   ("isTableMapped wrong", setterMapping.isTableMapped());
+        assertNotNull(setterMapping, "setter method not added");
+        assertEquals (PersistentObject.class.getMethod("setId", new Class[]{long.class}),
+                setterMapping.getObjectMethod(),
+                "wrong setter method");
+        assertEquals ("id", setterMapping.getColumnName(), "wrong column name");
+        assertTrue   (setterMapping.isTableMapped(), "isTableMapped wrong");
 
         setterMapping = mapping.getSetterMapping("name");
-        assertNotNull("setter method not added", setterMapping);
-        assertEquals ("wrong setter method",
+        assertNotNull(setterMapping, "setter method not added");
+        assertEquals (
                 PersistentObject.class.getMethod("setName", new Class[]{String.class}),
-                setterMapping.getObjectMethod());
-        assertEquals ("wrong column name", "name", setterMapping.getColumnName());
-        assertFalse  ("isTableMapped wrong", setterMapping.isTableMapped());
+                setterMapping.getObjectMethod(),
+                "wrong setter method");
+        assertEquals ("name", setterMapping.getColumnName(), "wrong column name");
+        assertFalse  (setterMapping.isTableMapped(), "isTableMapped wrong");
     }
 
-
+    @Test
     public void testAddSetterMappingAllParametersWithParameterType() throws Exception{
         IObjectMappingFactory factory = mappingFactory;
 
@@ -399,20 +407,24 @@ public class ObjectMappingFactoryTest extends TestCase{
         factory.addSetterMapping(mapping, "setName", String.class, "name", false);
 
         ISetterMapping setterMapping = mapping.getSetterMapping("id");
-        assertNotNull("setter method not added", setterMapping);
-        assertEquals ("wrong setter method",
+        assertNotNull(setterMapping, "setter method not added");
+        assertEquals (
                 PersistentObject.class.getMethod("setId", new Class[]{long.class}),
-                setterMapping.getObjectMethod());
-        assertEquals ("wrong column name", "id", setterMapping.getColumnName());
-        assertTrue   ("isTableMapped wrong", setterMapping.isTableMapped());
+                setterMapping.getObjectMethod(),
+                "wrong setter method"
+                );
+        assertEquals ("id", setterMapping.getColumnName(), "wrong column name");
+        assertTrue   (setterMapping.isTableMapped(), "isTableMapped wrong");
 
         setterMapping = mapping.getSetterMapping("name");
-        assertNotNull("setter method not added", setterMapping);
-        assertEquals ("wrong setter method",
+        assertNotNull(setterMapping, "setter method not added");
+        assertEquals (
                 PersistentObject.class.getMethod("setName", new Class[]{String.class}),
-                setterMapping.getObjectMethod());
-        assertEquals ("wrong column name", "name", setterMapping.getColumnName());
-        assertFalse  ("isTableMapped wrong", setterMapping.isTableMapped());
+                setterMapping.getObjectMethod(),
+                "wrong setter method"
+                );
+        assertEquals ("name", setterMapping.getColumnName(), "wrong column name");
+        assertFalse  (setterMapping.isTableMapped(), "isTableMapped wrong");
     }
 
 

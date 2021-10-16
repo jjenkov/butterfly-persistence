@@ -1,20 +1,23 @@
 package com.jenkov.db.test.filter;
 
-import junit.framework.TestCase;
 import com.jenkov.db.impl.filter.PageReadFilter;
 import com.jenkov.db.itf.PersistenceException;
 import com.jenkov.testing.mock.impl.MockFactory;
 import com.jenkov.testing.mock.impl.MethodInvocation;
 import com.jenkov.testing.mock.itf.IMock;
+import org.junit.jupiter.api.Test;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class PagedReadFilterTest extends TestCase {
+public class PagedReadFilterTest {
 
+    @Test
     public void testInit() throws SQLException, PersistenceException {
         PageReadFilter filter = new PageReadFilter(10, 15);
         ResultSet      result = (ResultSet) MockFactory.createProxy(ResultSet.class);
@@ -36,6 +39,7 @@ public class PagedReadFilterTest extends TestCase {
         assertEquals(2, resultMock.getInvocations().size());
     }
 
+    @Test
     public void testAccept() throws SQLException, PersistenceException {
         PageReadFilter filter = new PageReadFilter(10, 15);
         ResultSet      result = (ResultSet) MockFactory.createProxy(ResultSet.class);

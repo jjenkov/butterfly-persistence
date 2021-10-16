@@ -1,6 +1,5 @@
 package com.jenkov.db.test.util;
 
-import junit.framework.TestCase;
 import com.jenkov.db.impl.ObjectDao;
 import com.jenkov.db.impl.PersistenceConfiguration;
 import com.jenkov.db.itf.IPersistenceConfiguration;
@@ -12,6 +11,7 @@ import com.jenkov.db.PersistenceManager;
 import com.jenkov.testing.mock.impl.MockFactory;
 import com.jenkov.testing.mock.impl.MethodInvocation;
 import com.jenkov.testing.mock.itf.IMock;
+import org.junit.jupiter.api.Test;
 
 import java.sql.*;
 import java.math.BigDecimal;
@@ -20,8 +20,9 @@ import java.net.URL;
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class JdbcUtilTest extends TestCase {
+public class JdbcUtilTest {
 
+    @Test
     public void testCloseDao() throws Exception{
         Connection connection = null;
 
@@ -48,6 +49,7 @@ public class JdbcUtilTest extends TestCase {
         }
     }
 
+    @Test
     public void testCloseConnection() throws Exception {
         Connection connection = null;
 
@@ -75,6 +77,7 @@ public class JdbcUtilTest extends TestCase {
         }
     }
 
+    @Test
     public void testCloseConnectionStatementResultSet() throws Exception {
         Connection connection = null;
 
@@ -121,6 +124,7 @@ public class JdbcUtilTest extends TestCase {
         }
     }
 
+    @Test
     public void testCloseStatement() throws PersistenceException {
         Statement statementProxy = (Statement) MockFactory.createProxy(Statement.class);
         IMock     statementMock  = MockFactory.getMock(statementProxy);
@@ -134,6 +138,7 @@ public class JdbcUtilTest extends TestCase {
         JdbcUtil.closeIgnore((Statement) null);
     }
 
+    @Test
     public void testCloseResultSet() throws PersistenceException {
         ResultSet resultSetProxy = (ResultSet) MockFactory.createProxy(ResultSet.class);
         IMock     statementMock  = MockFactory.getMock(resultSetProxy);
@@ -147,6 +152,7 @@ public class JdbcUtilTest extends TestCase {
         JdbcUtil.closeIgnore((ResultSet) null);
     }
 
+    @Test
     public void testInsertParameter() throws Exception {
         PreparedStatement stmProxy = (PreparedStatement) MockFactory.createProxy(PreparedStatement.class);
         IMock stmMock = MockFactory.getMock(stmProxy);
@@ -199,8 +205,6 @@ public class JdbcUtilTest extends TestCase {
         Object object = new Object();
         JdbcUtil.insertParameter(stmProxy, 1, object);
         stmMock.assertInvoked(new MethodInvocation("setObject", new Class[]{int.class, Object.class}, new Object[]{new Integer(1), object}));
-
-
     }
 
 

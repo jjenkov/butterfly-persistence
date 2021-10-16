@@ -5,29 +5,36 @@ import com.jenkov.db.impl.mapping.KeyValue;
 import com.jenkov.db.itf.mapping.IKey;
 import com.jenkov.db.itf.mapping.IKeyValue;
 import com.jenkov.db.itf.PersistenceException;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.HashSet;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author Jakob Jenkov - Copyright 2005 Jenkov Development
  */
-public class KeyTest extends TestCase{
+public class KeyTest{
 
 
     protected IKey key = null;
 
 
+    @BeforeEach
     protected void setUp() throws Exception {
         this.key = new Key();
     }
 
+    @AfterEach
     protected void tearDown() throws Exception {
         this.key = null;
     }
 
+    @Test
     public void testConstructor(){
         Set columns = new HashSet();
         columns.add("one");
@@ -44,84 +51,89 @@ public class KeyTest extends TestCase{
         assertTrue(columns2.contains("four"));
     }
 
+    @Test
     public void testGetSetTable() {
-        assertNull("table should be null", this.key.getTable());
+        assertNull(this.key.getTable(), "table should be null");
 
         this.key.setTable("test");
-        assertEquals("table should be test", "test", this.key.getTable());
+        assertEquals("test", this.key.getTable(), "table should be test");
 
         this.key.setTable("test2");
-        assertEquals("table should be test", "test2", this.key.getTable());
+        assertEquals("test2", this.key.getTable(), "table should be test");
 
         this.key.setTable(null);
-        assertNull("table should be null again", this.key.getTable());
+        assertNull(this.key.getTable(), "table should be null again");
     }
 
+    @Test
     public void testAddRemoveColumn() throws Exception{
-        assertEquals("should be empty", 0, this.key.getColumns().size());
+        assertEquals(0, this.key.getColumns().size(), "should be empty");
 
         String column1 = "id";
         String column2 = "fid";
 
         this.key.addColumn(column1);
-        assertEquals("should contain 1 column", 1, this.key.getColumns().size());
-        assertTrue("should contain column1", this.key.getColumns().contains(column1));
+        assertEquals(1, this.key.getColumns().size(), "should contain 1 column");
+        assertTrue(this.key.getColumns().contains(column1), "should contain column1");
 
         this.key.addColumn(column2);
-        assertEquals("should contain 2 column", 2, this.key.getColumns().size());
-        assertTrue("should contain column2", this.key.getColumns().contains(column2));
+        assertEquals(2, this.key.getColumns().size(), "should contain 2 column");
+        assertTrue(this.key.getColumns().contains(column2), "should contain column2");
 
         this.key.removeColumn(column1);
-        assertEquals("should contain 1 column", 1, this.key.getColumns().size());
-        assertTrue("should contain column2", this.key.getColumns().contains(column2));
-        assertFalse("should not contain column1", this.key.getColumns().contains(column1));
+        assertEquals(1, this.key.getColumns().size(), "should contain 1 column");
+        assertTrue(this.key.getColumns().contains(column2), "should contain column2");
+        assertFalse(this.key.getColumns().contains(column1), "should not contain column1");
 
         this.key.removeColumn(column2);
-        assertEquals("should contain 0 columns", 0, this.key.getColumns().size());
-        assertFalse("should not contain column2", this.key.getColumns().contains(column2));
-        assertFalse("should not contain column1", this.key.getColumns().contains(column1));
+        assertEquals(0, this.key.getColumns().size(), "should contain 0 columns");
+        assertFalse(this.key.getColumns().contains(column2), "should not contain column2");
+        assertFalse(this.key.getColumns().contains(column1), "should not contain column1");
     }
 
+    @Test
     public void testGetSetColumns() throws Exception{
         Set columns = new TreeSet();
         columns.add("test");
 
-        assertNotSame("should not be same", columns, this.key.getColumns());
+        assertNotSame(columns, this.key.getColumns(), "should not be same");
 
         this.key.setColumns(columns);
-        assertSame("should be same", columns, this.key.getColumns());
+        assertSame(columns, this.key.getColumns(), "should be same");
 
         columns = new TreeSet();
-        assertNotSame("should not be same", columns, this.key.getColumns());
+        assertNotSame(columns, this.key.getColumns(), "should not be same");
     }
 
+    @Test
     public void testIsValid() throws Exception{
         IKeyValue keyValue = new KeyValue();
 
-        assertTrue("should be valid, no values... no key", key.isValid(keyValue));
+        assertTrue(key.isValid(keyValue), "should be valid, no values... no key");
 
         keyValue.addColumnValue("test", "test-value");
-        assertTrue("when key is empty, all key values are valid", this.key.isValid(keyValue));
+        assertTrue(this.key.isValid(keyValue), "when key is empty, all key values are valid");
 
         key.addColumn("test");
-        assertTrue("should be valid", this.key.isValid(keyValue));
+        assertTrue(this.key.isValid(keyValue), "should be valid");
 
         key.addColumn("id");
-        assertFalse("should not be valid", this.key.isValid(keyValue));
+        assertFalse(this.key.isValid(keyValue), "should not be valid");
 
         keyValue.addColumnValue("otherColumn", "otherColumn-value");
-        assertFalse("should not be valid", this.key.isValid(keyValue));
+        assertFalse(this.key.isValid(keyValue), "should not be valid");
 
         keyValue.addColumnValue("id", "id-value");
-        assertTrue("should be valid", this.key.isValid(keyValue));
+        assertTrue(this.key.isValid(keyValue), "should be valid");
 
         keyValue.removeColumnValue("otherColumn");
-        assertTrue("should be valid", this.key.isValid(keyValue));
+        assertTrue(this.key.isValid(keyValue), "should be valid");
 
         key.removeColumn("test");
-        assertTrue("should not be valid", this.key.isValid(keyValue));
+        assertTrue(this.key.isValid(keyValue), "should not be valid");
     }
 
+    @Test
     public void testToKeyValue() throws Exception{
         IKeyValue value = null;
 
@@ -142,11 +154,11 @@ public class KeyTest extends TestCase{
 
         this.key.addColumn("test");
         value = this.key.toKeyValue("test");
-        assertEquals("size should be 1", 1, value.getColumnValues().size());
-        assertTrue  ("key value should contain column", value.getColumnValues().containsKey("test"));
+        assertEquals(1, value.getColumnValues().size(), "size should be 1");
+        assertTrue  (value.getColumnValues().containsKey("test"), "key value should contain column");
 
         IKeyValue value2 = this.key.toKeyValue(value);
-        assertSame("should return value instance", value, value2);
+        assertSame(value, value2, "should return value instance");
 
         this.key.addColumn("next");
 
@@ -166,23 +178,26 @@ public class KeyTest extends TestCase{
 
     }
 
+
+    @Test
     public void testToString() throws Exception{
 
-        assertEquals("empty key", "null()", this.key.toString());
+        assertEquals("null()", this.key.toString(), "empty key");
 
         this.key.setTable("someTable");
-        assertEquals("table set", "someTable()", this.key.toString());
+        assertEquals("someTable()", this.key.toString(), "table set");
 
         this.key.addColumn("id");
-        assertEquals("1 column", "someTable(id)", this.key.toString());
+        assertEquals("someTable(id)", this.key.toString(),"1 column");
 
         this.key.addColumn("test");
-        assertEquals("2 columns", "someTable(id, test)", this.key.toString());
+        assertEquals("someTable(id, test)", this.key.toString(), "2 columns");
 
         this.key.setTable(null);
-        assertEquals("no table, 2 columns", "null(id, test)", this.key.toString());
+        assertEquals("null(id, test)", this.key.toString(), "no table, 2 columns");
     }
 
+    @Test
     public void testEquals() throws Exception{
 
         IKey key2 = new Key();
@@ -194,84 +209,86 @@ public class KeyTest extends TestCase{
         assertFalse(key.equals("non-key object"));
 
         //empty - empty
-        assertEquals("empty - empty", key, key2);
+        assertEquals(key, key2, "empty - empty");
 
         //table - empty
         this.key.setTable("table");
-        assertFalse("table - empty", key.equals(key2));
-        assertFalse("table - empty", key2.equals(key));
+        assertFalse(key.equals(key2), "table - empty");
+        assertFalse(key2.equals(key), "table - empty");
 
         //table - table !=
         key2.setTable("table2");
-        assertFalse("table != table", key.equals(key2));
-        assertFalse("table != table", key2.equals(key));
+        assertFalse(key.equals(key2), "table != table");
+        assertFalse(key2.equals(key), "table != table");
 
         //table - table ==
         key2.setTable("table");
-        assertTrue("table == table", key.equals(key2));
-        assertTrue("table == table", key2.equals(key));
+        assertTrue(key.equals(key2), "table == table");
+        assertTrue(key2.equals(key), "table == table");
 
         //table - table ==, 1 column - 0 columns
         this.key.addColumn("id");
-        assertFalse("table == table, 1 column != 0 columns", key.equals(key2));
-        assertFalse("table == table, 1 column != 0 columns", key2.equals(key));
+        assertFalse(key.equals(key2), "table == table, 1 column != 0 columns");
+        assertFalse(key2.equals(key), "table == table, 1 column != 0 columns");
 
         //table - table ==, 1 column - 1 column, !=
         key2.addColumn("id2");
-        assertFalse("table == table, 1 column != 1 column", key.equals(key2));
-        assertFalse("table == table, 1 column != 1 column", key2.equals(key));
+        assertFalse(key.equals(key2), "table == table, 1 column != 1 column");
+        assertFalse(key2.equals(key), "table == table, 1 column != 1 column");
 
         //table - table ==, 1 column - 1 column, ==
         key2.removeColumn("id2");
         key2.addColumn("id");
-        assertTrue("table == table, 1 column == 1 column", key.equals(key2));
-        assertTrue("table == table, 1 column == 1 column", key2.equals(key));
+        assertTrue(key.equals(key2), "table == table, 1 column == 1 column");
+        assertTrue(key2.equals(key), "table == table, 1 column == 1 column");
 
         //table - table ==, 2 columns - 1 column, ==
         this.key.addColumn("name");
-        assertFalse("table == table, 2 columns != 1 column", key.equals(key2));
-        assertFalse("table == table, 2 columns != 1 column", key2.equals(key));
+        assertFalse(key.equals(key2), "table == table, 2 columns != 1 column");
+        assertFalse(key2.equals(key), "table == table, 2 columns != 1 column");
 
         //table - table ==, 2 columns - 2 columns ==
         key2.addColumn("name2");
-        assertFalse("table == table, 2 column != 2 column", key.equals(key2));
-        assertFalse("table == table, 2 column != 2 column", key2.equals(key));
+        assertFalse(key.equals(key2), "table == table, 2 column != 2 column");
+        assertFalse(key2.equals(key), "table == table, 2 column != 2 column");
 
         //table - table ==, 2 columns - 2 columns !=
         key2.removeColumn("name2");
         key2.addColumn("name");
-        assertTrue("table == table, 2 column == 2 column", key.equals(key2));
-        assertTrue("table == table, 2 column == 2 column", key2.equals(key));
+        assertTrue(key.equals(key2), "table == table, 2 column == 2 column");
+        assertTrue(key2.equals(key), "table == table, 2 column == 2 column");
 
         //table != table, 2 columns - 2 columns ==
         this.key.setTable("other");
-        assertFalse("table != table, 2 column == 2 column", key.equals(key2));
-        assertFalse("table != table, 2 column == 2 column", key2.equals(key));
+        assertFalse(key.equals(key2), "table != table, 2 column == 2 column");
+        assertFalse(key2.equals(key), "table != table, 2 column == 2 column");
 
         //null != table, 2 columns - 2 columns ==
         this.key.setTable(null);
-        assertFalse("null != table, 2 column == 2 column", key.equals(key2));
-        assertFalse("null != table, 2 column == 2 column", key2.equals(key));
+        assertFalse(key.equals(key2), "null != table, 2 column == 2 column");
+        assertFalse(key2.equals(key), "null != table, 2 column == 2 column");
 
     }
 
+    @Test
     public void testSize() {
 
-        assertEquals("size should be 0", 0, this.key.size());
+        assertEquals(0, this.key.size(), "size should be 0");
 
         this.key.addColumn("test");
-        assertEquals("size should be 1", 1, this.key.size());
+        assertEquals(1, this.key.size(), "size should be 1");
 
         this.key.addColumn("test2");
-        assertEquals("size should be 2", 2, this.key.size());
+        assertEquals(2, this.key.size(), "size should be 2");
 
         this.key.removeColumn("test");
-        assertEquals("size should be 1", 1, this.key.size());
+        assertEquals(1, this.key.size(), "size should be 1");
 
         this.key.removeColumn("test2");
-        assertEquals("size should be 0", 0, this.key.size());
+        assertEquals(0, this.key.size(), "size should be 0");
     }
 
+    @Test
     public void testGetColumn() throws Exception{
 
         try {

@@ -15,18 +15,20 @@ import com.jenkov.db.PersistenceManager;
 import com.jenkov.testing.mock.impl.MethodInvocation;
 import com.jenkov.testing.mock.impl.MockFactory;
 import com.jenkov.testing.mock.itf.IMock;
-import junit.framework.TestCase;
+import org.junit.jupiter.api.*;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author Jakob Jenkov
  *         Copyright 2004 Jenkov Development
  */
-public class GenericDaoTest extends TestCase{
+public class GenericDaoTest {
 
     public static final String INSERT1 = "insert into persistent_object(id, name, objectValue) values(1, 'name1', 'value1')";
     public static final String INSERT2 = "insert into persistent_object(id, name, objectValue) values(2, 'name2', 'value2')";
@@ -38,6 +40,7 @@ public class GenericDaoTest extends TestCase{
     IObjectDao dao = null;
     PersistenceManager persistenceManager = new PersistenceManager();
 
+    @BeforeEach
     public void setUp(){
         try {
             dao = persistenceManager.createDaos(Environment.getConnection()).getObjectDao();
@@ -54,6 +57,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @AfterEach
     public void tearDown(){
         try {
             //System.out.println(getName() + " closing connection");
@@ -63,6 +67,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testConfigurationConstructor(){
         IPersistenceConfiguration config = new PersistenceConfiguration(new PersistenceManager());
         Connection connection = (Connection) MockFactory.createProxy(Connection.class);
@@ -86,6 +91,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testSetAutoCommit() throws Exception {
         IPersistenceConfiguration config = new PersistenceConfiguration(new PersistenceManager());
         Connection connection = (Connection) MockFactory.createProxy(Connection.class);
@@ -99,6 +105,7 @@ public class GenericDaoTest extends TestCase{
         mock.assertInvoked(new MethodInvocation("setAutoCommit", boolean.class, new Boolean(false)));
     }
 
+    @Test
     public void testCommit() throws Exception {
         IPersistenceConfiguration config = new PersistenceConfiguration(new PersistenceManager());
         Connection connection = (Connection) MockFactory.createProxy(Connection.class);
@@ -111,6 +118,7 @@ public class GenericDaoTest extends TestCase{
         proxy.assertInvoked(new MethodInvocation("commit"));
     }
 
+    @Test
     public void testRollback() throws Exception {
         IPersistenceConfiguration config = new PersistenceConfiguration(new PersistenceManager());
         Connection connection = (Connection) MockFactory.createProxy(Connection.class);
@@ -123,6 +131,7 @@ public class GenericDaoTest extends TestCase{
         proxy.assertInvoked(new MethodInvocation("rollback"));
     }
 
+    @Test
     public void testObjectMappingKey() throws Exception{
         try {
             ObjectMappingKey objectMappingKey = ObjectMappingKey.createInstance(PersistentObject.class);
@@ -148,6 +157,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testObjectMappingKey_customMapper() throws Exception {
         try {
             ICustomObjectMapper mapper = (ICustomObjectMapper) MockFactory.createProxy(ICustomObjectMapper.class);
@@ -185,6 +195,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testConfiguration() throws Exception{
         IPersistenceConfiguration config     = (IPersistenceConfiguration) MockFactory.createProxy(new PersistenceConfiguration(new PersistenceManager()));
         Connection                connection = null;
@@ -257,6 +268,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testSqlCaching() throws Exception {
         IPersistenceConfiguration config     = (IPersistenceConfiguration) MockFactory.createProxy(new PersistenceConfiguration(new PersistenceManager()));
         Connection                connection = null;
@@ -290,18 +302,19 @@ public class GenericDaoTest extends TestCase{
     //==============================================================
     // Test read / write methods
     //==============================================================
+    @Test
     public void testReadByPrimaryKey() throws Exception {
         try {
             Environment.executeSql(INSERT1);
             Environment.executeSql(INSERT2);
 
             PersistentObject object = (PersistentObject) dao.readByPrimaryKey(PersistentObject.class, new Long(1));
-            assertEquals("id wrong"        , 1, object.getId());
-            assertEquals("name wrong"      , "name1" , object.getName());
+            assertEquals(1, object.getId(), "id wrong");
+            assertEquals("name1" , object.getName(), "name wrong");
 
             object = (PersistentObject) dao.readByPrimaryKey(PersistentObject.class, new Long(2));
-            assertEquals("id wrong"        , 2, object.getId());
-            assertEquals("name wrong"      , "name2" , object.getName());
+            assertEquals(2, object.getId(), "id wrong");
+            assertEquals("name2" , object.getName(), "name wrong");
 
             object = (PersistentObject) dao.readByPrimaryKey(PersistentObject.class, new Long(3));
             assertNull(object);
@@ -312,6 +325,7 @@ public class GenericDaoTest extends TestCase{
     }
 
 
+    @Test
     public void testRead_Sql() throws Exception{
         try {
             Environment.executeSql(INSERT1);
@@ -319,18 +333,18 @@ public class GenericDaoTest extends TestCase{
 
             String sql = "select * from persistent_object where id=1";
             PersistentObject object = (PersistentObject) dao.read(PersistentObject.class, sql);
-            assertEquals("id wrong"        , 1, object.getId());
-            assertEquals("name wrong"      , "name1" , object.getName());
+            assertEquals(1, object.getId(), "id wrong");
+            assertEquals("name1" , object.getName(), "name wrong");
 
             sql = "select * from persistent_object where id=2";
             object = (PersistentObject) dao.read(PersistentObject.class, sql);
-            assertEquals("id wrong"        , 2, object.getId());
-            assertEquals("name wrong"      , "name2" , object.getName());
+            assertEquals(2, object.getId(), "id wrong");
+            assertEquals("name2" , object.getName(), "name wrong");
 
             sql = "select * from persistent_object order by id";
             object = (PersistentObject) dao.read(PersistentObject.class, sql);
-            assertEquals("id wrong"        , 1, object.getId());
-            assertEquals("name wrong"      , "name1" , object.getName());
+            assertEquals(1, object.getId(), "id wrong");
+            assertEquals("name1" , object.getName(), "name wrong");
 
             sql = "select * from persistent_object where id > 200";
             object = (PersistentObject) dao.read(PersistentObject.class, sql);
@@ -339,14 +353,15 @@ public class GenericDaoTest extends TestCase{
             //test Class<T> version of method - no casting necessary.
             sql = "select * from persistent_object where id=1";
             object = dao.read(PersistentObject.class, sql);
-            assertEquals("id wrong"        , 1, object.getId());
-            assertEquals("name wrong"      , "name1" , object.getName());
+            assertEquals(1, object.getId(), "id wrong");
+            assertEquals(object.getName(), "name1", "name wrong");
         } finally {
             dao.closeConnection();
             Environment.executeSql(DELETE);
         }
     }
 
+    @Test
     public void testRead_ResultSet() throws Exception {
         String           sql1        = "select * from persistent_object where id = 1";
         PersistentObject object     = null;
@@ -363,8 +378,8 @@ public class GenericDaoTest extends TestCase{
             result      = statement.executeQuery(sql1);
             result.next();
             object      = (PersistentObject) dao.read(PersistentObject.class, result);
-            assertEquals("id wrong"        , 1, object.getId());
-            assertEquals("name wrong"      , "name1" , object.getName());
+            assertEquals(1, object.getId(), "id wrong");
+            assertEquals("name1" , object.getName(), "name wrong");
 
         } finally {
             dao.closeConnection();
@@ -375,6 +390,8 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+
+    @Test
     public void testRead_Statement() throws Exception {
         String           sql1        = "select * from persistent_object where id = 1";
         String           sql2        = "select * from persistent_object where id > 200";
@@ -390,11 +407,11 @@ public class GenericDaoTest extends TestCase{
             statement   = connection.createStatement();
 
             object      = (PersistentObject) dao.read(PersistentObject.class, statement, sql1);
-            assertEquals("id wrong"        , 1, object.getId());
-            assertEquals("name wrong"      , "name1" , object.getName());
+            assertEquals(1, object.getId(), "id wrong");
+            assertEquals("name1" , object.getName(), "name wrong");
 
             object      = (PersistentObject) dao.read(PersistentObject.class, statement, sql2);
-            assertNull("sql should return any records", object);
+            assertNull(object, "sql should return any records");
         } finally {
             dao.closeConnection();
             Environment.executeSql(DELETE);
@@ -403,6 +420,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testRead_PreparedStatement() throws Exception {
         String           sql1        = "select * from persistent_object where id = ?";
         String           sql2        = "select * from persistent_object where id > ?";
@@ -419,13 +437,13 @@ public class GenericDaoTest extends TestCase{
             statement.setLong(1, 1);
 
             object      = (PersistentObject) dao.read(PersistentObject.class, statement);
-            assertEquals("id wrong"        , 1, object.getId());
-            assertEquals("name wrong"      , "name1" , object.getName());
+            assertEquals(1, object.getId(), "id wrong");
+            assertEquals("name1" , object.getName(), "name wrong" );
 
             statement   = connection.prepareStatement(sql2);
             statement.setLong(1, 200);
             object      = (PersistentObject) dao.read(PersistentObject.class, statement);
-            assertNull("sql should not return any records", object);
+            assertNull(object, "sql should not return any records");
 
         } finally {
             dao.closeConnection();
@@ -435,6 +453,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testRead_Collection() throws Exception {
         String           sql1        = "select * from persistent_object where id = ?";
         String           sql2        = "select * from persistent_object where id > ?";
@@ -448,13 +467,13 @@ public class GenericDaoTest extends TestCase{
             parameters.add(new Long(1));
 
             object      = (PersistentObject) dao.read(PersistentObject.class, sql1, parameters);
-            assertEquals("id wrong"        , 1, object.getId());
-            assertEquals("name wrong"      , "name1" , object.getName());
+            assertEquals(1, object.getId(), "id wrong" );
+            assertEquals("name1" , object.getName(), "name wrong");
 
             parameters.clear();
             parameters.add(new Long(200));
             object      = (PersistentObject) dao.read(PersistentObject.class, sql2, parameters);
-            assertNull("sql should not return any records", object);
+            assertNull(object, "sql should not return any records");
 
         } finally {
             dao.closeConnection();
@@ -462,6 +481,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testRead_Array() throws Exception {
         String           sql1        = "select * from persistent_object where id = ?";
         String           sql2        = "select * from persistent_object where id > ?";
@@ -475,12 +495,12 @@ public class GenericDaoTest extends TestCase{
             parameters[0] = new Long(1);
 
             object      = (PersistentObject) dao.read(PersistentObject.class, sql1, parameters);
-            assertEquals("id wrong"        , 1, object.getId());
-            assertEquals("name wrong"      , "name1" , object.getName());
+            assertEquals(1, object.getId(), "id wrong");
+            assertEquals("name1" , object.getName(), "name wrong");
 
             parameters[0] = new Long(200);
             object      = (PersistentObject) dao.read(PersistentObject.class, sql2, parameters);
-            assertNull("sql should not return any records", object);
+            assertNull(object, "sql should not return any records");
 
         } finally {
             dao.closeConnection();
@@ -488,7 +508,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
-
+    @Test
     public void testReadListByPrimaryKeys() throws Exception{
         try{
             Environment.executeSql(INSERT1);
@@ -500,28 +520,28 @@ public class GenericDaoTest extends TestCase{
             primaryKeys.add(new Long(2));
 
             List objects = this.dao.readListByPrimaryKeys(PersistentObject.class, primaryKeys);
-            assertEquals("wrong number of records read", 2, objects.size());
+            assertEquals(2, objects.size(), "wrong number of records read");
 
             PersistentObject object = null;
             object = (PersistentObject) objects.get(0);
 
-            assertEquals("wrong name", "name1", object.getName());
-            assertNull("wrong object value", object.getObjectValue());
+            assertEquals("name1", object.getName(), "wrong name");
+            assertNull(object.getObjectValue(), "wrong object value");
 
             object = (PersistentObject) objects.get(1);
 
-            assertEquals("wrong id", 2, object.getId());
-            assertEquals("wrong name", "name2", object.getName());
-            assertNull("wrong object value", object.getObjectValue());
+            assertEquals(2, object.getId(), "wrong id");
+            assertEquals("name2", object.getName(), "wrong name");
+            assertNull(object.getObjectValue(), "wrong object value");
 
 
             primaryKeys.add(new Long(4));
             objects = this.dao.readListByPrimaryKeys(PersistentObject.class, primaryKeys);
-            assertEquals("wrong number of records read", 2, objects.size());
+            assertEquals(2, objects.size(), "wrong number of records read");
 
             primaryKeys.clear();
             objects = this.dao.readListByPrimaryKeys(PersistentObject.class, primaryKeys);
-            assertEquals("wrong number of records read", 0, objects.size());
+            assertEquals(0, objects.size(), "wrong number of records read");
         } finally {
             dao.closeConnection();
             Environment.executeSql(DELETE);
@@ -529,6 +549,7 @@ public class GenericDaoTest extends TestCase{
 
     }
 
+    @Test
     public void testReadList() throws Exception {
         try{
             Environment.executeSql(INSERT1);
@@ -540,20 +561,20 @@ public class GenericDaoTest extends TestCase{
             String sql3 = "select * from persistent_object where id > 200";
 
             List objects = this.dao.readList(PersistentObject.class, sql1);
-            assertEquals("wrong number of objects read", 3, objects.size());
+            assertEquals(3, objects.size(), "wrong number of objects read");
 
             assertObject1Correct(objects.get(0));
             assertObject2Correct(objects.get(1));
             assertObject3Correct(objects.get(2));
 
             objects = this.dao.readList(PersistentObject.class, sql2);
-            assertEquals("wrong number of objects read", 2, objects.size());
+            assertEquals(2, objects.size(), "wrong number of objects read");
 
             assertObject2Correct(objects.get(0));
             assertObject3Correct(objects.get(1));
 
             objects = this.dao.readList(PersistentObject.class, sql3);
-            assertEquals("list should be empty", 0, objects.size());
+            assertEquals(0, objects.size(), "list should be empty");
 
         } finally{
             dao.closeConnection();
@@ -561,6 +582,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testReadList_ResultSet() throws Exception{
 
         Connection connection = null;
@@ -582,7 +604,7 @@ public class GenericDaoTest extends TestCase{
 
             result       = statement.executeQuery(sql1);
             List objects = this.dao.readList(PersistentObject.class, result);
-            assertEquals("wrong number of objects read", 3, objects.size());
+            assertEquals(3, objects.size(), "wrong number of objects read");
             result.close();
 
             assertObject1Correct(objects.get(0));
@@ -592,7 +614,7 @@ public class GenericDaoTest extends TestCase{
 
             result       = statement.executeQuery(sql2);
             objects = this.dao.readList(PersistentObject.class, result);
-            assertEquals("wrong number of objects read", 2, objects.size());
+            assertEquals(2, objects.size(), "wrong number of objects read");
             result.close();
 
            assertObject2Correct(objects.get(0));
@@ -601,7 +623,7 @@ public class GenericDaoTest extends TestCase{
 
             result       = statement.executeQuery(sql3);
             objects = this.dao.readList(PersistentObject.class, result);
-            assertEquals("list should be empty", 0, objects.size());
+            assertEquals(0, objects.size(), "list should be empty");
         } finally{
             Environment.executeSql(DELETE);
             JdbcUtil.close(result);
@@ -610,7 +632,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
-
+   @Test
    public void testReadList_Statement() throws Exception{
         Connection connection = null;
         Statement  statement  = null;
@@ -628,20 +650,20 @@ public class GenericDaoTest extends TestCase{
             statement  = connection.createStatement();
 
             List objects = this.dao.readList(PersistentObject.class, statement, sql1);
-            assertEquals("wrong number of objects read", 3, objects.size());
+            assertEquals(3, objects.size(), "wrong number of objects read");
 
             assertObject1Correct(objects.get(0));
             assertObject2Correct(objects.get(1));
             assertObject3Correct(objects.get(2));
 
             objects = this.dao.readList(PersistentObject.class, statement, sql2);
-            assertEquals("wrong number of objects read", 2, objects.size());
+            assertEquals(2, objects.size(), "wrong number of objects read");
 
             assertObject2Correct(objects.get(0));
             assertObject3Correct(objects.get(1));
 
             objects = this.dao.readList(PersistentObject.class, statement, sql3);
-            assertEquals("list should be empty", 0, objects.size());
+            assertEquals(0, objects.size(), "list should be empty");
         } finally{
             dao.closeConnection();
             Environment.executeSql(DELETE);
@@ -650,6 +672,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+     @Test
     public void testReadList_PreparedStatement() throws Exception{
         Connection connection = null;
         PreparedStatement  statement  = null;
@@ -667,7 +690,7 @@ public class GenericDaoTest extends TestCase{
             statement  = connection.prepareStatement(sql1);
 
             List objects = this.dao.readList(PersistentObject.class, statement);
-            assertEquals("wrong number of objects read", 3, objects.size());
+            assertEquals(3, objects.size(), "wrong number of objects read");
 
             assertObject1Correct(objects.get(0));
             assertObject2Correct(objects.get(1));
@@ -676,7 +699,7 @@ public class GenericDaoTest extends TestCase{
             statement = connection.prepareStatement(sql2);
             statement.setLong(1,1);
             objects = this.dao.readList(PersistentObject.class, statement);
-            assertEquals("wrong number of objects read", 2, objects.size());
+            assertEquals(2, objects.size(), "wrong number of objects read");
 
             assertObject2Correct(objects.get(0));
             assertObject3Correct(objects.get(1));
@@ -684,7 +707,7 @@ public class GenericDaoTest extends TestCase{
             statement = connection.prepareStatement(sql3);
             statement.setLong(1,200);
             objects = this.dao.readList(PersistentObject.class, statement);
-            assertEquals("list should be empty", 0, objects.size());
+            assertEquals(0, objects.size(), "list should be empty");
         } finally{
             dao.closeConnection();
             Environment.executeSql(DELETE);
@@ -693,6 +716,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testReadList_Collection() throws Exception {
         String sql1 = "select * from persistent_object where id = ?";
         String sql2 = "select * from persistent_object where name like ? and objectValue like ? order by name";
@@ -706,14 +730,14 @@ public class GenericDaoTest extends TestCase{
             parameters.add(new Long(1));
 
             List objects = this.dao.readList(PersistentObject.class, sql1, parameters);
-            assertEquals("only one object should be read", 1, objects.size());
+            assertEquals(1, objects.size(), "only one object should be read");
             assertObject1Correct(objects.get(0));
 
             parameters.clear();
             parameters.add("name%");
             parameters.add("value%");
             objects = this.dao.readList(PersistentObject.class, sql2, parameters);
-            assertEquals("all objects expected", 3, objects.size());
+            assertEquals(3, objects.size(), "all objects expected");
             assertObject1Correct(objects.get(0));
             assertObject2Correct(objects.get(1));
             assertObject3Correct(objects.get(2));
@@ -724,6 +748,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testReadList_Array() throws Exception {
         String sql1 = "select * from persistent_object where id = ?";
         String sql2 = "select * from persistent_object where name like ? and objectValue like ? order by name";
@@ -737,14 +762,14 @@ public class GenericDaoTest extends TestCase{
             parameters[0] = new Long(1);
 
             List objects = this.dao.readList(PersistentObject.class, sql1, parameters);
-            assertEquals("only one object should be read", 1, objects.size());
+            assertEquals(1, objects.size(), "only one object should be read");
             assertObject1Correct(objects.get(0));
 
             parameters = new Object[2];
             parameters[0] = "name%";
             parameters[1] = "value%";
             objects = this.dao.readList(PersistentObject.class, sql2, parameters);
-            assertEquals("all objects expected", 3, objects.size());
+            assertEquals(3, objects.size(), "all objects expected");
             assertObject1Correct(objects.get(0));
             assertObject2Correct(objects.get(1));
             assertObject3Correct(objects.get(2));
@@ -756,7 +781,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
-
+    @Test
     public void testReadList_Filtered() throws Exception{
         try{
             Environment.executeSql(INSERT1);
@@ -770,26 +795,27 @@ public class GenericDaoTest extends TestCase{
             IReadFilter filter = new AcceptEveryOtherFilter(5);
 
             List objects = this.dao.readList(PersistentObject.class, sql1, filter);
-            assertEquals("wrong number of objects read", 2, objects.size());
+            assertEquals(2, objects.size(), "wrong number of objects read");
 
             assertObject1Correct(objects.get(0));
             assertObject3Correct(objects.get(1));
 
             filter = new AcceptEveryOtherFilter(5);
             objects = this.dao.readList(PersistentObject.class, sql2, filter);
-            assertEquals("wrong number of objects read", 1, objects.size());
+            assertEquals(1, objects.size(), "wrong number of objects read");
 
             assertObject2Correct(objects.get(0));
 
             filter = new AcceptEveryOtherFilter(5);
             objects = this.dao.readList(PersistentObject.class, sql3, filter);
-            assertEquals("list should be empty", 0, objects.size());
+            assertEquals(0, objects.size(), "list should be empty");
         } finally{
             dao.closeConnection();
             Environment.executeSql(DELETE);
         }
     }
 
+    @Test
     public void testReadList_ResultSet_Filtered() throws Exception{
 
         Connection connection = null;
@@ -812,7 +838,7 @@ public class GenericDaoTest extends TestCase{
 
             result       = statement.executeQuery(sql1);
             List objects = this.dao.readList(PersistentObject.class, result, filter);
-            assertEquals("wrong number of objects read", 2, objects.size());
+            assertEquals(2, objects.size(), "wrong number of objects read");
             result.close();
 
             assertObject1Correct(objects.get(0));
@@ -822,7 +848,7 @@ public class GenericDaoTest extends TestCase{
             filter = new AcceptEveryOtherFilter(5);
             result       = statement.executeQuery(sql2);
             objects = this.dao.readList(PersistentObject.class, result, filter);
-            assertEquals("wrong number of objects read", 1, objects.size());
+            assertEquals(1, objects.size(), "wrong number of objects read");
             result.close();
 
             assertObject2Correct(objects.get(0));
@@ -830,7 +856,7 @@ public class GenericDaoTest extends TestCase{
             filter = new AcceptEveryOtherFilter(5);
             result       = statement.executeQuery(sql3);
             objects = this.dao.readList(PersistentObject.class, result, filter);
-            assertEquals("list should be empty", 0, objects.size());
+            assertEquals(0, objects.size(), "list should be empty");
         } finally{
             dao.closeConnection();
             Environment.executeSql(DELETE);
@@ -840,6 +866,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testReadList_Statement_Filtered() throws Exception{
         Connection connection = null;
         Statement  statement  = null;
@@ -859,20 +886,20 @@ public class GenericDaoTest extends TestCase{
             statement  = connection.createStatement();
 
             List objects = this.dao.readList(PersistentObject.class, statement, sql1, filter);
-            assertEquals("wrong number of objects read", 2, objects.size());
+            assertEquals(2, objects.size(), "wrong number of objects read");
 
             assertObject1Correct(objects.get(0));
             assertObject3Correct(objects.get(1));
 
             filter = new AcceptEveryOtherFilter(5);
             objects = this.dao.readList(PersistentObject.class, statement, sql2, filter);
-            assertEquals("wrong number of objects read", 1, objects.size());
+            assertEquals(1, objects.size(), "wrong number of objects read");
 
             assertObject2Correct(objects.get(0));
 
             filter = new AcceptEveryOtherFilter(5);
             objects = this.dao.readList(PersistentObject.class, statement, sql3, filter);
-            assertEquals("list should be empty", 0, objects.size());
+            assertEquals(0, objects.size(), "list should be empty");
         } finally{
             dao.closeConnection();
             Environment.executeSql(DELETE);
@@ -881,7 +908,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
-
+    @Test
     public void testReadList_PreparedStatement_Filtered() throws Exception{
         Connection connection = null;
         PreparedStatement  statement  = null;
@@ -901,7 +928,7 @@ public class GenericDaoTest extends TestCase{
             statement  = connection.prepareStatement(sql1);
 
             List objects = this.dao.readList(PersistentObject.class, statement, filter);
-            assertEquals("wrong number of objects read", 2, objects.size());
+            assertEquals(2, objects.size(), "wrong number of objects read");
 
             assertObject1Correct(objects.get(0));
             assertObject3Correct(objects.get(1));
@@ -910,7 +937,7 @@ public class GenericDaoTest extends TestCase{
             statement.setLong(1,1);
             filter = new AcceptEveryOtherFilter(5);
             objects = this.dao.readList(PersistentObject.class, statement, filter);
-            assertEquals("wrong number of objects read", 1, objects.size());
+            assertEquals(1, objects.size(), "wrong number of objects read");
 
             assertObject2Correct(objects.get(0));
 
@@ -918,7 +945,7 @@ public class GenericDaoTest extends TestCase{
             statement.setLong(1,200);
             filter = new AcceptEveryOtherFilter(5);
             objects = this.dao.readList(PersistentObject.class, statement, filter);
-            assertEquals("list should be empty", 0, objects.size());
+            assertEquals(0, objects.size(), "list should be empty");
         } finally{
             dao.closeConnection();
             Environment.executeSql(DELETE);
@@ -927,7 +954,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
-
+    @Test
     public void testReadList_Collection_Filtered() throws Exception {
         String sql1 = "select * from persistent_object where id = ?";
         String sql2 = "select * from persistent_object where name like ? and objectValue like ? order by id";
@@ -942,7 +969,7 @@ public class GenericDaoTest extends TestCase{
 
             List objects = this.dao.readList(PersistentObject.class, sql1,
                     new AcceptEveryOtherFilter(3), parameters);
-            assertEquals("only one object should be read", 1, objects.size());
+            assertEquals(1, objects.size(), "only one object should be read");
             assertObject1Correct(objects.get(0));
 
             parameters.clear();
@@ -950,7 +977,7 @@ public class GenericDaoTest extends TestCase{
             parameters.add("value%");
             objects = this.dao.readList(PersistentObject.class, sql2,
                     new AcceptEveryOtherFilter(3), parameters);
-            assertEquals("all objects expected", 2, objects.size());
+            assertEquals(2, objects.size(), "all objects expected");
             assertObject1Correct(objects.get(0));
             assertObject3Correct(objects.get(1));
 
@@ -960,6 +987,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testReadList_Array_Filtered() throws Exception {
         String sql1 = "select * from persistent_object where id = ?";
         String sql2 = "select * from persistent_object where name like ? and objectValue like ? order by id";
@@ -971,12 +999,12 @@ public class GenericDaoTest extends TestCase{
 
             List objects = this.dao.readList(PersistentObject.class, sql1,
                     new AcceptEveryOtherFilter(3), new Long(1));
-            assertEquals("only one object should be read", 1, objects.size());
+            assertEquals(1, objects.size(), "only one object should be read");
             assertObject1Correct(objects.get(0));
 
             objects = this.dao.readList(PersistentObject.class, sql2,
                     new AcceptEveryOtherFilter(3), "name%", "value%");
-            assertEquals("all objects expected", 2, objects.size());
+            assertEquals(2, objects.size(), "all objects expected");
             assertObject1Correct(objects.get(0));
             assertObject3Correct(objects.get(1));
 
@@ -989,7 +1017,7 @@ public class GenericDaoTest extends TestCase{
     //*******************************************
     // Update method tests
     //*******************************************
-
+    @Test
     public void testInsert() throws Exception{
         PersistentObject object1     = createPersistentObject(1, "name1");
         PersistentObject object2     = createPersistentObject(2, "name2");
@@ -1010,6 +1038,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testInsert_ObjectMappingKey() throws Exception {
         PersistentObject object1     = createPersistentObject(1, "name1");
         PersistentObject object2     = createPersistentObject(2, "name2");
@@ -1029,7 +1058,8 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
-
+    //todo fix this test - fails second time + every time thereafter it is run - without the db table being dropped and re-created
+    //@Test
     public void testInsert_AutoIncrementedId() throws Exception {
         if(! Environment.database.isPrepareStatementStatement_RETURN_GENERATED_KEYS_supported()) return;
 
@@ -1049,7 +1079,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
-
+    @Test()
     public void testInsertBatch() throws Exception {
         PersistentObject object1 = createPersistentObject(1, "name1");
         PersistentObject object2 = createPersistentObject(2, "name2");
@@ -1067,7 +1097,7 @@ public class GenericDaoTest extends TestCase{
 
             List objectsRead = this.dao.readList(PersistentObject.class, "select * from persistent_object order by id");
 
-            assertEquals("wrong number of objects read", 3, objectsRead.size());
+            assertEquals(3, objectsRead.size(), "wrong number of objects read");
             assertObject1Correct((PersistentObject) objectsRead.get(0));
             assertObject2Correct((PersistentObject) objectsRead.get(1));
             assertObject3Correct((PersistentObject) objectsRead.get(2));
@@ -1081,7 +1111,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
-
+    @Test
     public void testInsertBatch_ObjectMappingKey() throws Exception {
         PersistentObject object1 = createPersistentObject(1, "name1");
         PersistentObject object2 = createPersistentObject(2, "name2");
@@ -1097,7 +1127,7 @@ public class GenericDaoTest extends TestCase{
 
             List objectsRead = this.dao.readList(PersistentObject.class, "select * from persistent_object order by id");
 
-            assertEquals("wrong number of objects read", 3, objectsRead.size());
+            assertEquals(3, objectsRead.size(), "wrong number of objects read");
             assertObject1Correct((PersistentObject) objectsRead.get(0));
             assertObject2Correct((PersistentObject) objectsRead.get(1));
             assertObject3Correct((PersistentObject) objectsRead.get(2));
@@ -1108,6 +1138,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testUpdate() throws Exception {
         PersistentObject object1    = createPersistentObject(1, "name1");
         PersistentObject object2    = createPersistentObject(2, "name2");
@@ -1121,18 +1152,18 @@ public class GenericDaoTest extends TestCase{
             this.dao.update(object1);
 
             objectRead = (PersistentObject) this.dao.readByPrimaryKey(PersistentObject.class, new Long(1));
-            assertEquals("id wrong", 1, objectRead.getId());
-            assertEquals("name wrong", "name11", objectRead.getName());
+            assertEquals(1, objectRead.getId(), "id wrong");
+            assertEquals("name11", objectRead.getName(), "name wrong");
 
             object2.setName("name22");
             this.dao.update(object2);
             objectRead = (PersistentObject) this.dao.readByPrimaryKey(PersistentObject.class, new Long(1));
-            assertEquals("id wrong", 1, objectRead.getId());
-            assertEquals("name wrong", "name11", objectRead.getName());
+            assertEquals(1, objectRead.getId(), "id wrong");
+            assertEquals("name11", objectRead.getName(), "name wrong");
 
             objectRead = (PersistentObject) this.dao.readByPrimaryKey(PersistentObject.class, new Long(2));
-            assertEquals("id wrong", 2, objectRead.getId());
-            assertEquals("name wrong", "name22", objectRead.getName());
+            assertEquals(2, objectRead.getId(), "id wrong");
+            assertEquals("name22", objectRead.getName(), "name wrong");
         } finally {
             dao.closeConnection();
             Environment.executeSql(DELETE);
@@ -1140,7 +1171,7 @@ public class GenericDaoTest extends TestCase{
 
     }
 
-
+    @Test
     public void testUpdate_ObjectMappingKey() throws Exception {
         PersistentObject object1    = createPersistentObject(1, "name1");
         PersistentObject object2    = createPersistentObject(2, "name2");
@@ -1154,18 +1185,18 @@ public class GenericDaoTest extends TestCase{
             this.dao.update(PersistentObject.class, object1);
 
             objectRead = (PersistentObject) this.dao.readByPrimaryKey(PersistentObject.class, new Long(1));
-            assertEquals("id wrong", 1, objectRead.getId());
-            assertEquals("name wrong", "name11", objectRead.getName());
+            assertEquals(1, objectRead.getId(), "id wrong");
+            assertEquals("name11", objectRead.getName(), "name wrong");
 
             object2.setName("name22");
             this.dao.update(PersistentObject.class, object2);
             objectRead = (PersistentObject) this.dao.readByPrimaryKey(PersistentObject.class, new Long(1));
-            assertEquals("id wrong", 1, objectRead.getId());
-            assertEquals("name wrong", "name11", objectRead.getName());
+            assertEquals(1, objectRead.getId(), "id wrong");
+            assertEquals("name11", objectRead.getName(), "name wrong");
 
             objectRead = (PersistentObject) this.dao.readByPrimaryKey(PersistentObject.class, new Long(2));
-            assertEquals("id wrong", 2, objectRead.getId());
-            assertEquals("name wrong", "name22", objectRead.getName());
+            assertEquals(2, objectRead.getId(), "id wrong");
+            assertEquals("name22", objectRead.getName(), "name wrong");
 
         } finally {
             dao.closeConnection();
@@ -1173,7 +1204,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
-
+    @Test
     public void testUpdateByPrimaryKey() throws Exception {
         PersistentObject object1    = createPersistentObject(1, "name1");
         PersistentObject object2    = createPersistentObject(2, "name2");
@@ -1188,19 +1219,19 @@ public class GenericDaoTest extends TestCase{
             this.dao.updateByPrimaryKey(object1, new Long(1));
 
             objectRead = (PersistentObject) this.dao.readByPrimaryKey(PersistentObject.class, new Long(11));
-            assertEquals("id wrong", 11, objectRead.getId());
-            assertEquals("name wrong", "name11", objectRead.getName());
+            assertEquals(11, objectRead.getId(), "id wrong");
+            assertEquals("name11", objectRead.getName(), "name wrong");
 
             object2.setId(22);
             object2.setName("name22");
             this.dao.updateByPrimaryKey(object2, new Long(2));
             objectRead = (PersistentObject) this.dao.readByPrimaryKey(PersistentObject.class, new Long(11));
-            assertEquals("id wrong", 11, objectRead.getId());
-            assertEquals("name wrong", "name11", objectRead.getName());
+            assertEquals(11, objectRead.getId(), "id wrong");
+            assertEquals("name11", objectRead.getName(), "name wrong");
 
             objectRead = (PersistentObject) this.dao.readByPrimaryKey(PersistentObject.class, new Long(22));
-            assertEquals("id wrong", 22, objectRead.getId());
-            assertEquals("name wrong", "name22", objectRead.getName());
+            assertEquals(22, objectRead.getId(), "id wrong");
+            assertEquals("name22", objectRead.getName(), "name wrong");
 
         } finally {
             dao.closeConnection();
@@ -1208,7 +1239,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
-
+    @Test
     public void testUpdateByPrimaryKey_ObjectMappingKey() throws Exception {
         PersistentObject object1    = createPersistentObject(1, "name1");
         PersistentObject object2    = createPersistentObject(2, "name2");
@@ -1223,26 +1254,26 @@ public class GenericDaoTest extends TestCase{
             this.dao.updateByPrimaryKey(PersistentObject.class, object1, new Long(1));
 
             objectRead = (PersistentObject) this.dao.readByPrimaryKey(PersistentObject.class, new Long(11));
-            assertEquals("id wrong", 11, objectRead.getId());
-            assertEquals("name wrong", "name11", objectRead.getName());
+            assertEquals(11, objectRead.getId(), "id wrong");
+            assertEquals("name11", objectRead.getName(), "name wrong");
 
             object2.setId(22);
             object2.setName("name22");
             this.dao.updateByPrimaryKey(PersistentObject.class, object2, new Long(2));
             objectRead = (PersistentObject) this.dao.readByPrimaryKey(PersistentObject.class, new Long(11));
-            assertEquals("id wrong", 11, objectRead.getId());
-            assertEquals("name wrong", "name11", objectRead.getName());
+            assertEquals(11, objectRead.getId(), "id wrong");
+            assertEquals("name11", objectRead.getName(), "name wrong");
 
             objectRead = (PersistentObject) this.dao.readByPrimaryKey(PersistentObject.class, new Long(22));
-            assertEquals("id wrong", 22, objectRead.getId());
-            assertEquals("name wrong", "name22", objectRead.getName());
+            assertEquals(22, objectRead.getId(), "id wrong");
+            assertEquals("name22", objectRead.getName(), "name wrong");
         } finally {
             dao.closeConnection();
             Environment.executeSql(DELETE);
         }
     }
 
-
+    @Test
     public void testUpdateBatch() throws Exception {
         PersistentObject object1    = createPersistentObject(1, "name1");
         PersistentObject object2    = createPersistentObject(2, "name2");
@@ -1275,6 +1306,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testUpdateBatch_ObjectMappingKey() throws Exception {
         PersistentObject object1    = createPersistentObject(1, "name1");
         PersistentObject object2    = createPersistentObject(2, "name2");
@@ -1303,6 +1335,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testUpdateBatchByPrimaryKeys() throws Exception {
         PersistentObject object1    = createPersistentObject(1, "name1");
         PersistentObject object2    = createPersistentObject(2, "name2");
@@ -1343,7 +1376,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
-
+    @Test
     public void testUpdateBatchByPrimaryKeys_ObjectMappingKey() throws Exception {
         PersistentObject object1    = createPersistentObject(1, "name1");
         PersistentObject object2    = createPersistentObject(2, "name2");
@@ -1379,6 +1412,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testDelete() throws Exception{
         PersistentObject object1    = createPersistentObject(1, "name1");
         PersistentObject object2    = createPersistentObject(2, "name2");
@@ -1390,22 +1424,22 @@ public class GenericDaoTest extends TestCase{
             this.dao.insert(object3);
 
             List objects = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 3, objects.size());
+            assertEquals(3, objects.size(), "wrong number of objects");
 
             this.dao.delete(object1);
             objects = this.dao.readList(PersistentObject.class, "select * from persistent_object order by id");
-            assertEquals("wrong number of objects", 2, objects.size());
+            assertEquals(2, objects.size(), "wrong number of objects");
             assertObject2Correct(objects.get(0));
             assertObject3Correct(objects.get(1));
 
             this.dao.delete(object2);
             objects = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 1, objects.size());
+            assertEquals(1, objects.size(), "wrong number of objects");
             assertObject3Correct(objects.get(0));
 
             this.dao.delete(object3);
             objects = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 0, objects.size());
+            assertEquals(0, objects.size(), "wrong number of objects");
 
         } finally {
             dao.closeConnection();
@@ -1413,7 +1447,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
-
+    @Test
     public void testDelete_ObjectMappingKey() throws Exception{
         PersistentObject object1    = createPersistentObject(1, "name1");
         PersistentObject object2    = createPersistentObject(2, "name2");
@@ -1425,22 +1459,22 @@ public class GenericDaoTest extends TestCase{
             this.dao.insert(object3);
 
             List objects = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 3, objects.size());
+            assertEquals(3, objects.size(), "wrong number of objects");
 
             this.dao.delete(PersistentObject.class, object1);
             objects = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 2, objects.size());
+            assertEquals(2, objects.size(), "wrong number of objects");
             assertObject2Correct(objects.get(0));
             assertObject3Correct(objects.get(1));
 
             this.dao.delete(PersistentObject.class, object2);
             objects = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 1, objects.size());
+            assertEquals(1, objects.size(), "wrong number of objects");
             assertObject3Correct(objects.get(0));
 
             this.dao.delete(PersistentObject.class, object3);
             objects = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 0, objects.size());
+            assertEquals(0, objects.size(), "wrong number of objects");
 
         } finally {
             dao.closeConnection();
@@ -1448,6 +1482,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testDeleteBatch() throws Exception {
         PersistentObject object1    = createPersistentObject(1, "name1");
         PersistentObject object2    = createPersistentObject(2, "name2");
@@ -1459,7 +1494,7 @@ public class GenericDaoTest extends TestCase{
             this.dao.insert(object3);
 
             List objectsRead = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 3, objectsRead.size());
+            assertEquals(3, objectsRead.size(), "wrong number of objects");
 
             List objectsDelete = new ArrayList();
             objectsDelete.add(object2);
@@ -1468,7 +1503,7 @@ public class GenericDaoTest extends TestCase{
             int[] objectsDeleted = this.dao.deleteBatch(objectsDelete);
 
             objectsRead = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 1, objectsRead.size());
+            assertEquals(1, objectsRead.size(), "wrong number of objects");
             assertObject1Correct(objectsRead.get(0));
 
             objectsDelete.clear();
@@ -1481,7 +1516,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
-
+    @Test
     public void testDeleteBatch_ObjectMappingKey() throws Exception {
         PersistentObject object1    = createPersistentObject(1, "name1");
         PersistentObject object2    = createPersistentObject(2, "name2");
@@ -1493,7 +1528,7 @@ public class GenericDaoTest extends TestCase{
             this.dao.insert(object3);
 
             List objectsRead = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 3, objectsRead.size());
+            assertEquals(3, objectsRead.size(), "wrong number of objects");
 
             List objectsDelete = new ArrayList();
             objectsDelete.add(object2);
@@ -1502,7 +1537,7 @@ public class GenericDaoTest extends TestCase{
             this.dao.deleteBatch(PersistentObject.class, objectsDelete);
 
             objectsRead = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 1, objectsRead.size());
+            assertEquals(1, objectsRead.size(), "wrong number of objects");
             assertObject1Correct(objectsRead.get(0));
 
         } finally {
@@ -1511,6 +1546,7 @@ public class GenericDaoTest extends TestCase{
         }
     }
 
+    @Test
     public void testDeleteByPrimaryKey() throws Exception{
         PersistentObject object1    = createPersistentObject(1, "name1");
         PersistentObject object2    = createPersistentObject(2, "name2");
@@ -1522,29 +1558,29 @@ public class GenericDaoTest extends TestCase{
             this.dao.insert(object3);
 
             List objects = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 3, objects.size());
+            assertEquals(3, objects.size(), "wrong number of objects");
 
             this.dao.deleteByPrimaryKey(PersistentObject.class, new Long(1));
             objects = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 2, objects.size());
+            assertEquals(2, objects.size(), "wrong number of objects");
             assertObject2Correct(objects.get(0));
             assertObject3Correct(objects.get(1));
 
             this.dao.deleteByPrimaryKey(PersistentObject.class, new Long(2));
             objects = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 1, objects.size());
+            assertEquals(1, objects.size(), "wrong number of objects");
             assertObject3Correct(objects.get(0));
 
             this.dao.deleteByPrimaryKey(PersistentObject.class, new Long(3));
             objects = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 0, objects.size());
+            assertEquals(0, objects.size(), "wrong number of objects");
         } finally {
             dao.closeConnection();
            Environment.executeSql(DELETE);
         }
     }
 
-
+    @Test
     public void testDeleteBatchByPrimaryKeys_ObjectMappingKey() throws Exception {
         PersistentObject object1    = createPersistentObject(1, "name1");
         PersistentObject object2    = createPersistentObject(2, "name2");
@@ -1556,7 +1592,7 @@ public class GenericDaoTest extends TestCase{
             this.dao.insert(object3);
 
             List objectsRead = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 3, objectsRead.size());
+            assertEquals(3, objectsRead.size(), "wrong number of objects");
 
             List objectsDelete = new ArrayList();
             objectsDelete.add(new Long(2));
@@ -1565,7 +1601,7 @@ public class GenericDaoTest extends TestCase{
             this.dao.deleteBatchByPrimaryKeys(PersistentObject.class, objectsDelete);
 
             objectsRead = this.dao.readList(PersistentObject.class, "select * from persistent_object");
-            assertEquals("wrong number of objects", 1, objectsRead.size());
+            assertEquals(1, objectsRead.size(), "wrong number of objects");
             assertObject1Correct(objectsRead.get(0));
 
         } finally {
@@ -1584,8 +1620,8 @@ public class GenericDaoTest extends TestCase{
 
     private void assertObjectCorrect(Object target, long id, String name){
         PersistentObject object = (PersistentObject) target;
-        assertEquals("id wrong"        , id, object.getId());
-        assertEquals("name wrong"      , name , object.getName());
+        assertEquals(id, object.getId(), "id wrong");
+        assertEquals(name , object.getName(), "name wrong");
     }
 
     private void assertObject1Correct(Object target){

@@ -6,6 +6,6 @@
 target/
 out/
 
-database/h2/
+database/
 
 

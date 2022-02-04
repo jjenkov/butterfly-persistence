@@ -10,8 +10,8 @@ import java.util.List;
 /**
  * This interface represents a generic dao which is the preferred way of accessing Butterfly Persistence.
  * Objects implementing this interface are capable of reading and writing objects to a database.
- * <code>IGenericDao</code> instances should be obtained from the generic dao factory available
- * from the <code>com.jenkov.mrpersister.MrPersister</code> class.
+ * <code>IObjectDao</code> instances should be obtained from the IDaos instance obtained from
+ * from the <code>com.jenkov.db.PersistenceManager</code> class.
  *
  *
  *

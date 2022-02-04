@@ -1,0 +1,1 @@
+mvn install:install-file -DlocalRepositoryPath=repo -DcreateChecksum=true -Dpackaging=jar -Dfile=jenkov-butterfly-testing-tools-2.0.1.jar -DgroupId=jenkov-com -DartifactId=jenkov-butterfly-testing-tools -Dversion=2.0.1
